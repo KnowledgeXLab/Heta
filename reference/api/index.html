@@ -1,0 +1,4732 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://hetateam.github.io/Heta/reference/api/">
+      
+      
+        <link rel="prev" href="../../hetagen/">
+      
+      
+        <link rel="next" href="../config/">
+      
+      
+        
+          <link rel="alternate" href="./" hreflang="en">
+        
+          <link rel="alternate" href="../../zh/reference/api/" hreflang="zh">
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>REST API - Heta</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#api-reference" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Heta" class="md-header__button md-logo" aria-label="Heta" data-md-component="logo">
+      
+  <img src="../../images/banner.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Heta
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              REST API
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../zh/reference/api/" hreflang="zh" class="md-select__link">
+              中文
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/HetaTeam/Heta" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    HetaTeam/Heta
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../quick-start/docker/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Quick Start
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../hetadb/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  HetaDB
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../hetamem/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  HetaMem
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../hetagen/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  HetaGen
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../faq/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  FAQ
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../demo/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Demo
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Heta" class="md-nav__button md-logo" aria-label="Heta" data-md-component="logo">
+      
+  <img src="../../images/banner.png" alt="logo">
+
+    </a>
+    Heta
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/HetaTeam/Heta" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    HetaTeam/Heta
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Quick Start
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker Compose
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/manual/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Manual Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/mcp-clients/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Connect MCP Clients
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../hetadb/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HetaDB
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    HetaDB
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hetadb/ingest/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ingest Documents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hetadb/query-modes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Query Modes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../hetamem/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HetaMem
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    HetaMem
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hetamem/memoryvg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MemoryVG — Episodic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hetamem/memorykb/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MemoryKB — Knowledge Graph
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hetamem/querying-skill/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Querying Skill
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../hetagen/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HetaGen
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    HetaGen
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REST API
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REST API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table of Contents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#endpoint-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Endpoint Index
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-conventions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Conventions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        System
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="System">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-health" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /health
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hetadb-chat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HetaDB — Chat
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="HetaDB — Chat">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#post-apiv1hetadbchat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /api/v1/hetadb/chat
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hetadb-datasets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HetaDB — Datasets
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="HetaDB — Datasets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get-apiv1hetadbfilesraw-filesdatasets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/v1/hetadb/files/raw-files/datasets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-apiv1hetadbfilesraw-filesdatasets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /api/v1/hetadb/files/raw-files/datasets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-apiv1hetadbfilesraw-filesdatasetsdatasetfiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/v1/hetadb/files/raw-files/datasets/{dataset}/files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-apiv1hetadbfilesraw-filesdatasetsdatasetfiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /api/v1/hetadb/files/raw-files/datasets/{dataset}/files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete-apiv1hetadbfilesraw-filesdatasetsdatasetfilesfilename" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DELETE /api/v1/hetadb/files/raw-files/datasets/{dataset}/files/{filename}
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete-apiv1hetadbfilesraw-filesdatasetsdataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DELETE /api/v1/hetadb/files/raw-files/datasets/{dataset}
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chunked-upload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chunked Upload
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Chunked Upload">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#post-apiv1hetadbfilesraw-filesdatasetsdatasetuploadinit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /api/v1/hetadb/files/raw-files/datasets/{dataset}/upload/init
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-apiv1hetadbfilesraw-filesdatasetsdatasetuploadupload_idchunk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /api/v1/hetadb/files/raw-files/datasets/{dataset}/upload/{upload_id}/chunk
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-apiv1hetadbfilesraw-filesdatasetsdatasetuploadupload_idcomplete" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /api/v1/hetadb/files/raw-files/datasets/{dataset}/upload/{upload_id}/complete
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete-apiv1hetadbfilesraw-filesdatasetsdatasetuploadupload_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DELETE /api/v1/hetadb/files/raw-files/datasets/{dataset}/upload/{upload_id}
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hetadb-knowledge-bases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HetaDB — Knowledge Bases
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="HetaDB — Knowledge Bases">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get-apiv1hetadbfilesknowledge-bases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/v1/hetadb/files/knowledge-bases
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-apiv1hetadbfilesknowledge-bases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /api/v1/hetadb/files/knowledge-bases
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-apiv1hetadbfilesknowledge-baseskb_name" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/v1/hetadb/files/knowledge-bases/{kb_name}
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-apiv1hetadbfilesknowledge-baseskb_nameoverview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/v1/hetadb/files/knowledge-bases/{kb_name}/overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete-apiv1hetadbfilesknowledge-baseskb_name" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DELETE /api/v1/hetadb/files/knowledge-bases/{kb_name}
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete-apiv1hetadbfilesknowledge-baseskb_namedatasetsdataset_name" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DELETE /api/v1/hetadb/files/knowledge-bases/{kb_name}/datasets/{dataset_name}
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-apiv1hetadbfilesknowledge-baseskb_nameparse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /api/v1/hetadb/files/knowledge-bases/{kb_name}/parse
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hetadb-processing-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HetaDB — Processing Tasks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="HetaDB — Processing Tasks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get-apiv1hetadbfilesprocessingtasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/v1/hetadb/files/processing/tasks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-apiv1hetadbfilesprocessingtaskstask_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/v1/hetadb/files/processing/tasks/{task_id}
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-apiv1hetadbfilesprocessingtaskstask_idcancel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /api/v1/hetadb/files/processing/tasks/{task_id}/cancel
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-apiv1hetadbfilesprocessingconfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/v1/hetadb/files/processing/config
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hetadb-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HetaDB — Config
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="HetaDB — Config">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get-apiv1hetadbconfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/v1/hetadb/config
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-apiv1hetadbconfigsection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/v1/hetadb/config/{section}
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-apiv1hetadbconfigreload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /api/v1/hetadb/config/reload
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hetadb-schemas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HetaDB — Schemas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="HetaDB — Schemas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#post-apiv1hetadbschemas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /api/v1/hetadb/schemas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-apiv1hetadbschemas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/v1/hetadb/schemas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-apiv1hetadbschemasname" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/v1/hetadb/schemas/{name}
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete-apiv1hetadbschemasname" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DELETE /api/v1/hetadb/schemas/{name}
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hetagen-table-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HetaGen — Table Generation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="HetaGen — Table Generation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#post-apiv1hetagenpipelinesubmit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /api/v1/hetagen/pipeline/submit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-apiv1hetagenpipelinestatustask_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/v1/hetagen/pipeline/status/{task_id}
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ws-apiv1hetagenpipelinestream" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WS /api/v1/hetagen/pipeline/stream
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hetagen-tag-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HetaGen — Tag Tree
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="HetaGen — Tag Tree">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#post-apiv1hetagentag-treegenerate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /api/v1/hetagen/tag-tree/generate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-apiv1hetagentag-treesubmit-legacy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /api/v1/hetagen/tag-tree/submit (legacy)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-apiv1hetagentag-treestatustask_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/v1/hetagen/tag-tree/status/{task_id}
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hetamem-memorykb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HetaMem — MemoryKB
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="HetaMem — MemoryKB">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#post-apiv1hetamemkbinsert" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /api/v1/hetamem/kb/insert
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-apiv1hetamemkbquery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /api/v1/hetamem/kb/query
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hetamem-memoryvg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HetaMem — MemoryVG
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="HetaMem — MemoryVG">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#post-apiv1hetamemvgadd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /api/v1/hetamem/vg/add
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-apiv1hetamemvgsearch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /api/v1/hetamem/vg/search
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-apiv1hetamemvg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/v1/hetamem/vg
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-apiv1hetamemvgmemory_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/v1/hetamem/vg/{memory_id}
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-apiv1hetamemvgmemory_idhistory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/v1/hetamem/vg/{memory_id}/history
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#put-apiv1hetamemvgmemory_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PUT /api/v1/hetamem/vg/{memory_id}
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete-apiv1hetamemvgmemory_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DELETE /api/v1/hetamem/vg/{memory_id}
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete-apiv1hetamemvg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DELETE /api/v1/hetamem/vg
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../demo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Demo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table of Contents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#endpoint-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Endpoint Index
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-conventions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Conventions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        System
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="System">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-health" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /health
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hetadb-chat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HetaDB — Chat
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="HetaDB — Chat">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#post-apiv1hetadbchat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /api/v1/hetadb/chat
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hetadb-datasets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HetaDB — Datasets
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="HetaDB — Datasets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get-apiv1hetadbfilesraw-filesdatasets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/v1/hetadb/files/raw-files/datasets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-apiv1hetadbfilesraw-filesdatasets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /api/v1/hetadb/files/raw-files/datasets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-apiv1hetadbfilesraw-filesdatasetsdatasetfiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/v1/hetadb/files/raw-files/datasets/{dataset}/files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-apiv1hetadbfilesraw-filesdatasetsdatasetfiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /api/v1/hetadb/files/raw-files/datasets/{dataset}/files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete-apiv1hetadbfilesraw-filesdatasetsdatasetfilesfilename" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DELETE /api/v1/hetadb/files/raw-files/datasets/{dataset}/files/{filename}
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete-apiv1hetadbfilesraw-filesdatasetsdataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DELETE /api/v1/hetadb/files/raw-files/datasets/{dataset}
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chunked-upload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chunked Upload
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Chunked Upload">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#post-apiv1hetadbfilesraw-filesdatasetsdatasetuploadinit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /api/v1/hetadb/files/raw-files/datasets/{dataset}/upload/init
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-apiv1hetadbfilesraw-filesdatasetsdatasetuploadupload_idchunk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /api/v1/hetadb/files/raw-files/datasets/{dataset}/upload/{upload_id}/chunk
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-apiv1hetadbfilesraw-filesdatasetsdatasetuploadupload_idcomplete" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /api/v1/hetadb/files/raw-files/datasets/{dataset}/upload/{upload_id}/complete
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete-apiv1hetadbfilesraw-filesdatasetsdatasetuploadupload_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DELETE /api/v1/hetadb/files/raw-files/datasets/{dataset}/upload/{upload_id}
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hetadb-knowledge-bases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HetaDB — Knowledge Bases
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="HetaDB — Knowledge Bases">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get-apiv1hetadbfilesknowledge-bases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/v1/hetadb/files/knowledge-bases
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-apiv1hetadbfilesknowledge-bases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /api/v1/hetadb/files/knowledge-bases
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-apiv1hetadbfilesknowledge-baseskb_name" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/v1/hetadb/files/knowledge-bases/{kb_name}
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-apiv1hetadbfilesknowledge-baseskb_nameoverview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/v1/hetadb/files/knowledge-bases/{kb_name}/overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete-apiv1hetadbfilesknowledge-baseskb_name" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DELETE /api/v1/hetadb/files/knowledge-bases/{kb_name}
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete-apiv1hetadbfilesknowledge-baseskb_namedatasetsdataset_name" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DELETE /api/v1/hetadb/files/knowledge-bases/{kb_name}/datasets/{dataset_name}
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-apiv1hetadbfilesknowledge-baseskb_nameparse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /api/v1/hetadb/files/knowledge-bases/{kb_name}/parse
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hetadb-processing-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HetaDB — Processing Tasks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="HetaDB — Processing Tasks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get-apiv1hetadbfilesprocessingtasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/v1/hetadb/files/processing/tasks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-apiv1hetadbfilesprocessingtaskstask_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/v1/hetadb/files/processing/tasks/{task_id}
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-apiv1hetadbfilesprocessingtaskstask_idcancel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /api/v1/hetadb/files/processing/tasks/{task_id}/cancel
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-apiv1hetadbfilesprocessingconfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/v1/hetadb/files/processing/config
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hetadb-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HetaDB — Config
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="HetaDB — Config">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get-apiv1hetadbconfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/v1/hetadb/config
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-apiv1hetadbconfigsection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/v1/hetadb/config/{section}
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-apiv1hetadbconfigreload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /api/v1/hetadb/config/reload
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hetadb-schemas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HetaDB — Schemas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="HetaDB — Schemas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#post-apiv1hetadbschemas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /api/v1/hetadb/schemas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-apiv1hetadbschemas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/v1/hetadb/schemas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-apiv1hetadbschemasname" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/v1/hetadb/schemas/{name}
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete-apiv1hetadbschemasname" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DELETE /api/v1/hetadb/schemas/{name}
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hetagen-table-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HetaGen — Table Generation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="HetaGen — Table Generation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#post-apiv1hetagenpipelinesubmit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /api/v1/hetagen/pipeline/submit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-apiv1hetagenpipelinestatustask_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/v1/hetagen/pipeline/status/{task_id}
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ws-apiv1hetagenpipelinestream" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WS /api/v1/hetagen/pipeline/stream
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hetagen-tag-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HetaGen — Tag Tree
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="HetaGen — Tag Tree">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#post-apiv1hetagentag-treegenerate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /api/v1/hetagen/tag-tree/generate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-apiv1hetagentag-treesubmit-legacy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /api/v1/hetagen/tag-tree/submit (legacy)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-apiv1hetagentag-treestatustask_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/v1/hetagen/tag-tree/status/{task_id}
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hetamem-memorykb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HetaMem — MemoryKB
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="HetaMem — MemoryKB">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#post-apiv1hetamemkbinsert" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /api/v1/hetamem/kb/insert
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-apiv1hetamemkbquery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /api/v1/hetamem/kb/query
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hetamem-memoryvg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HetaMem — MemoryVG
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="HetaMem — MemoryVG">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#post-apiv1hetamemvgadd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /api/v1/hetamem/vg/add
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-apiv1hetamemvgsearch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /api/v1/hetamem/vg/search
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-apiv1hetamemvg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/v1/hetamem/vg
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-apiv1hetamemvgmemory_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/v1/hetamem/vg/{memory_id}
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-apiv1hetamemvgmemory_idhistory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/v1/hetamem/vg/{memory_id}/history
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#put-apiv1hetamemvgmemory_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PUT /api/v1/hetamem/vg/{memory_id}
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete-apiv1hetamemvgmemory_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DELETE /api/v1/hetamem/vg/{memory_id}
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete-apiv1hetamemvg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DELETE /api/v1/hetamem/vg
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="api-reference">API Reference</h1>
+<p>Complete REST API reference for all Heta modules.</p>
+<p><strong>Base URL:</strong> <code>http://&lt;host&gt;:8000</code>
+<strong>Content-Type:</strong> <code>application/json</code> unless noted otherwise</p>
+<hr />
+<h2 id="table-of-contents">Table of Contents</h2>
+<ul>
+<li><a href="#system">System</a></li>
+<li><a href="#hetadb--chat">HetaDB — Chat</a></li>
+<li><a href="#hetadb--datasets">HetaDB — Datasets</a></li>
+<li><a href="#hetadb--knowledge-bases">HetaDB — Knowledge Bases</a></li>
+<li><a href="#hetadb--processing-tasks">HetaDB — Processing Tasks</a></li>
+<li><a href="#hetadb--config">HetaDB — Config</a></li>
+<li><a href="#hetadb--schemas">HetaDB — Schemas</a></li>
+<li><a href="#hetagen--table-generation">HetaGen — Table Generation</a></li>
+<li><a href="#hetagen--tag-tree">HetaGen — Tag Tree</a></li>
+<li><a href="#hetamem--memorykb">HetaMem — MemoryKB</a></li>
+<li><a href="#hetamem--memoryvg">HetaMem — MemoryVG</a></li>
+</ul>
+<hr />
+<h2 id="endpoint-index">Endpoint Index</h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td><code>/</code></td>
+<td>Service info</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/health</code></td>
+<td>Health check</td>
+</tr>
+<tr>
+<td><strong>HetaDB — Chat</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/v1/hetadb/chat</code></td>
+<td>Query a knowledge base</td>
+</tr>
+<tr>
+<td><strong>HetaDB — Datasets</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/v1/hetadb/files/raw-files/datasets</code></td>
+<td>List datasets</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/v1/hetadb/files/raw-files/datasets</code></td>
+<td>Create dataset</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/v1/hetadb/files/raw-files/datasets/{dataset}/files</code></td>
+<td>List files in dataset</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/v1/hetadb/files/raw-files/datasets/{dataset}/files</code></td>
+<td>Upload files (simple)</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td><code>/api/v1/hetadb/files/raw-files/datasets/{dataset}/files/{filename}</code></td>
+<td>Delete file</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td><code>/api/v1/hetadb/files/raw-files/datasets/{dataset}</code></td>
+<td>Delete dataset</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/v1/hetadb/files/raw-files/datasets/{dataset}/upload/init</code></td>
+<td>Init chunked upload</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/v1/hetadb/files/raw-files/datasets/{dataset}/upload/{upload_id}/chunk</code></td>
+<td>Upload chunk</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/v1/hetadb/files/raw-files/datasets/{dataset}/upload/{upload_id}/complete</code></td>
+<td>Complete upload</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td><code>/api/v1/hetadb/files/raw-files/datasets/{dataset}/upload/{upload_id}</code></td>
+<td>Abort upload</td>
+</tr>
+<tr>
+<td><strong>HetaDB — Knowledge Bases</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/v1/hetadb/files/knowledge-bases</code></td>
+<td>List knowledge bases</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/v1/hetadb/files/knowledge-bases</code></td>
+<td>Create knowledge base</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/v1/hetadb/files/knowledge-bases/{kb_name}</code></td>
+<td>Get KB detail</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/v1/hetadb/files/knowledge-bases/{kb_name}/overview</code></td>
+<td>Get KB overview</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td><code>/api/v1/hetadb/files/knowledge-bases/{kb_name}</code></td>
+<td>Delete KB (async)</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td><code>/api/v1/hetadb/files/knowledge-bases/{kb_name}/datasets/{dataset_name}</code></td>
+<td>Remove dataset from KB</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/v1/hetadb/files/knowledge-bases/{kb_name}/parse</code></td>
+<td>Trigger document parsing</td>
+</tr>
+<tr>
+<td><strong>HetaDB — Processing Tasks</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/v1/hetadb/files/processing/tasks</code></td>
+<td>List tasks</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/v1/hetadb/files/processing/tasks/{task_id}</code></td>
+<td>Get task</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/v1/hetadb/files/processing/tasks/{task_id}/cancel</code></td>
+<td>Cancel task</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/v1/hetadb/files/processing/config</code></td>
+<td>Get processing config</td>
+</tr>
+<tr>
+<td><strong>HetaDB — Config</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/v1/hetadb/config</code></td>
+<td>Get full config</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/v1/hetadb/config/{section}</code></td>
+<td>Get config section</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/v1/hetadb/config/reload</code></td>
+<td>Reload config from disk</td>
+</tr>
+<tr>
+<td><strong>HetaDB — Schemas</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/v1/hetadb/schemas</code></td>
+<td>Create entity schema</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/v1/hetadb/schemas</code></td>
+<td>List schemas</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/v1/hetadb/schemas/{name}</code></td>
+<td>Get schema detail</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td><code>/api/v1/hetadb/schemas/{name}</code></td>
+<td>Delete schema</td>
+</tr>
+<tr>
+<td><strong>HetaGen — Table Generation</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/v1/hetagen/pipeline/submit</code></td>
+<td>Submit table generation task</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/v1/hetagen/pipeline/status/{task_id}</code></td>
+<td>Get task status</td>
+</tr>
+<tr>
+<td>WS</td>
+<td><code>/api/v1/hetagen/pipeline/stream</code></td>
+<td>Stream execution (WebSocket)</td>
+</tr>
+<tr>
+<td><strong>HetaGen — Tag Tree</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/v1/hetagen/tag-tree/generate</code></td>
+<td>Generate knowledge tree</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/v1/hetagen/tag-tree/submit</code></td>
+<td>Submit Excel tree task (legacy)</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/v1/hetagen/tag-tree/status/{task_id}</code></td>
+<td>Get task status</td>
+</tr>
+<tr>
+<td><strong>HetaMem — MemoryKB</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/v1/hetamem/kb/insert</code></td>
+<td>Insert knowledge (async)</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/v1/hetamem/kb/query</code></td>
+<td>Query knowledge graph</td>
+</tr>
+<tr>
+<td><strong>HetaMem — MemoryVG</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/v1/hetamem/vg/add</code></td>
+<td>Extract and store memories</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/v1/hetamem/vg/search</code></td>
+<td>Search memories</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/v1/hetamem/vg</code></td>
+<td>List memories</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/v1/hetamem/vg/{memory_id}</code></td>
+<td>Get memory</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/v1/hetamem/vg/{memory_id}/history</code></td>
+<td>Memory modification history</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td><code>/api/v1/hetamem/vg/{memory_id}</code></td>
+<td>Update memory</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td><code>/api/v1/hetamem/vg/{memory_id}</code></td>
+<td>Delete memory</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td><code>/api/v1/hetamem/vg</code></td>
+<td>Delete all memories (scoped)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="common-conventions">Common Conventions</h2>
+<p><strong>Names</strong> — Dataset and KB names must match <code>^[A-Za-z0-9_\-]+$</code>, max 64 characters.</p>
+<p><strong>Task states</strong> — <code>pending</code> → <code>running</code> → <code>completed</code> | <code>failed</code>; cancel path: <code>running</code> → <code>cancelling</code> → <code>cancelled</code>.</p>
+<p><strong>Standard response envelope</strong> (HetaDB endpoints):
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div></p>
+<p><strong>HTTP errors</strong> — HetaDB uses real HTTP status codes (404, 409, 500). HetaMem uses HTTP status codes too. HetaDB Chat returns HTTP 200 for all responses; check the <code>success</code> and <code>code</code> fields.</p>
+<hr />
+<h2 id="system">System</h2>
+<h3 id="get">GET /</h3>
+<p>Returns service name and version.</p>
+<p><strong>Response</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">&quot;service&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Heta API&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.1.0&quot;</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div></p>
+<hr />
+<h3 id="get-health">GET /health</h3>
+<p><strong>Response</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ok&quot;</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div></p>
+<hr />
+<h2 id="hetadb-chat">HetaDB — Chat</h2>
+<h3 id="post-apiv1hetadbchat">POST /api/v1/hetadb/chat</h3>
+<p>Query a knowledge base with LLM-synthesised answer and source citations.</p>
+<p>The server auto-resolves the <code>process_mode</code> from each dataset's metadata and validates that <code>query_mode</code> is compatible. All responses use HTTP 200; check <code>success</code> and <code>code</code>.</p>
+<p><strong>Request body</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th style="text-align: center;">Required</th>
+<th>Default</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>query</code></td>
+<td>string</td>
+<td style="text-align: center;">✓</td>
+<td>—</td>
+<td>Max 4 096 chars</td>
+<td>Natural language question</td>
+</tr>
+<tr>
+<td><code>kb_id</code></td>
+<td>string</td>
+<td style="text-align: center;">✓</td>
+<td>—</td>
+<td>Non-empty</td>
+<td>Knowledge base identifier</td>
+</tr>
+<tr>
+<td><code>user_id</code></td>
+<td>string</td>
+<td style="text-align: center;">✓</td>
+<td>—</td>
+<td>Non-empty</td>
+<td>Caller identifier</td>
+</tr>
+<tr>
+<td><code>query_mode</code></td>
+<td>string</td>
+<td style="text-align: center;"></td>
+<td><code>"naive"</code></td>
+<td>See table below</td>
+<td>Retrieval strategy</td>
+</tr>
+<tr>
+<td><code>max_results</code></td>
+<td>integer</td>
+<td style="text-align: center;"></td>
+<td><code>20</code></td>
+<td>≥ 1</td>
+<td>Max chunks in <code>data[]</code></td>
+</tr>
+<tr>
+<td><code>top_k</code></td>
+<td>integer</td>
+<td style="text-align: center;"></td>
+<td><em>(config)</em></td>
+<td>≥ 1</td>
+<td>Vector candidate pool size</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Query modes</strong></p>
+<table>
+<thead>
+<tr>
+<th><code>query_mode</code></th>
+<th>Strategy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>naive</code></td>
+<td>Parallel vector + KG retrieval, weighted scoring. Fastest; good default.</td>
+</tr>
+<tr>
+<td><code>rerank</code></td>
+<td>BM25 + vector RRF fusion, followed by cross-encoder reranking. Highest precision.</td>
+</tr>
+<tr>
+<td><code>rewriter</code></td>
+<td>LLM generates 3 query variations, runs parallel retrieval, aggregates results. Best for ambiguous queries.</td>
+</tr>
+<tr>
+<td><code>multihop</code></td>
+<td>ReAct reasoning loop (max 3 rounds). Use for multi-step questions.</td>
+</tr>
+<tr>
+<td><code>direct</code></td>
+<td>LLM answers from parametric knowledge only — no retrieval. <code>data[]</code> and <code>citations</code> will be empty.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response fields</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>success</code></td>
+<td>boolean</td>
+<td><code>true</code> on success</td>
+</tr>
+<tr>
+<td><code>code</code></td>
+<td>integer</td>
+<td><code>200</code> success · <code>400</code> bad request · <code>500</code> server error</td>
+</tr>
+<tr>
+<td><code>message</code></td>
+<td>string</td>
+<td>Status message</td>
+</tr>
+<tr>
+<td><code>response</code></td>
+<td>string|null</td>
+<td>LLM-synthesised answer</td>
+</tr>
+<tr>
+<td><code>data[]</code></td>
+<td>array</td>
+<td>Retrieved chunks (see below)</td>
+</tr>
+<tr>
+<td><code>total_count</code></td>
+<td>integer</td>
+<td>Number of chunks in <code>data[]</code></td>
+</tr>
+<tr>
+<td><code>citations[]</code></td>
+<td>array|null</td>
+<td>File-level source references (see below)</td>
+</tr>
+<tr>
+<td><code>query_info</code></td>
+<td>object</td>
+<td>Diagnostic timing and query metadata</td>
+</tr>
+<tr>
+<td><code>request_id</code></td>
+<td>string</td>
+<td>UUID for log tracing</td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>data[]</code> item</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>kb_id</code></td>
+<td>string</td>
+<td>Knowledge base ID</td>
+</tr>
+<tr>
+<td><code>kb_name</code></td>
+<td>string</td>
+<td>Source filename or dataset name</td>
+</tr>
+<tr>
+<td><code>score</code></td>
+<td>float</td>
+<td>Relevance score</td>
+</tr>
+<tr>
+<td><code>content</code></td>
+<td>string</td>
+<td>Chunk text</td>
+</tr>
+<tr>
+<td><code>source_id</code></td>
+<td>string[]</td>
+<td>Chunk ID(s)</td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>citations[]</code> item</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>index</code></td>
+<td>integer</td>
+<td>Citation number referenced in <code>response</code></td>
+</tr>
+<tr>
+<td><code>source_file</code></td>
+<td>string</td>
+<td>Original filename</td>
+</tr>
+<tr>
+<td><code>dataset</code></td>
+<td>string</td>
+<td>Dataset the file belongs to</td>
+</tr>
+<tr>
+<td><code>file_url</code></td>
+<td>string|null</td>
+<td>Presigned download URL; <code>null</code> if S3 is not configured</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Errors</strong></p>
+<table>
+<thead>
+<tr>
+<th><code>code</code></th>
+<th>Cause</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>400</code></td>
+<td>Empty <code>query</code>, missing <code>kb_id</code> / <code>user_id</code>, or <code>query_mode</code> not supported for this KB's pipeline</td>
+</tr>
+<tr>
+<td><code>500</code></td>
+<td>Retrieval or LLM error</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://&lt;host&gt;:8000/api/v1/hetadb/chat<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;query&quot;: &quot;什么是知识图谱？&quot;, &quot;kb_id&quot;: &quot;tech-kb&quot;, &quot;user_id&quot;: &quot;agent&quot;}&#39;</span>
+</code></pre></div>
+<hr />
+<h2 id="hetadb-datasets">HetaDB — Datasets</h2>
+<h3 id="get-apiv1hetadbfilesraw-filesdatasets">GET /api/v1/hetadb/files/raw-files/datasets</h3>
+<p>List all dataset names.</p>
+<p><strong>Response</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;dataset-a&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;dataset-b&quot;</span><span class="p">]</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div></p>
+<hr />
+<h3 id="post-apiv1hetadbfilesraw-filesdatasets">POST /api/v1/hetadb/files/raw-files/datasets</h3>
+<p>Create an empty dataset.</p>
+<p><strong>Request body</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th style="text-align: center;">Required</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td style="text-align: center;">✓</td>
+<td><code>^[A-Za-z0-9_\-]+$</code>, max 64 chars</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Errors</strong> — <code>409</code> if the dataset already exists.</p>
+<hr />
+<h3 id="get-apiv1hetadbfilesraw-filesdatasetsdatasetfiles">GET /api/v1/hetadb/files/raw-files/datasets/{dataset}/files</h3>
+<p>List all files in a dataset. Hidden directories (<code>.uploads/</code>) are excluded.</p>
+<p><strong>Response</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p">{</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">&quot;dataset&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;my-dataset&quot;</span><span class="p">,</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">  </span><span class="nt">&quot;files&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;report.pdf&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">204800</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;modified_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-03-24T10:00:00&quot;</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">  </span><span class="p">]</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Errors</strong> — <code>404</code> if dataset not found.</p>
+<hr />
+<h3 id="post-apiv1hetadbfilesraw-filesdatasetsdatasetfiles">POST /api/v1/hetadb/files/raw-files/datasets/{dataset}/files</h3>
+<p>Upload one or more files via <code>multipart/form-data</code>. For development and small files. Use the <a href="#post-apiv1hetadbfilesraw-filesdatasetsdatasetuploadinit">chunked upload</a> flow for production or large files.</p>
+<p><strong>Form fields</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th style="text-align: center;">Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>files</code></td>
+<td>file[]</td>
+<td style="text-align: center;">✓</td>
+<td>One or more files</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p">{</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2 file(s) uploaded&quot;</span><span class="p">,</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">  </span><span class="nt">&quot;dataset&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;my-dataset&quot;</span><span class="p">,</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">  </span><span class="nt">&quot;files&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w"> </span><span class="nt">&quot;filename&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;report.pdf&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">204800</span><span class="w"> </span><span class="p">}]</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="p">}</span>
+</code></pre></div></p>
+<blockquote>
+<p>Files with duplicate names are renamed automatically (<code>file.pdf</code> → <code>file_1.pdf</code>).
+If S3 is configured, the file is also uploaded to object storage. On S3 failure the local file is deleted and HTTP 500 is returned.</p>
+</blockquote>
+<hr />
+<h3 id="delete-apiv1hetadbfilesraw-filesdatasetsdatasetfilesfilename">DELETE /api/v1/hetadb/files/raw-files/datasets/{dataset}/files/{filename}</h3>
+<p>Delete a file. The local file is removed first; S3 deletion follows as a best-effort operation (failure logged as warning, does not fail the request).</p>
+<p><strong>Errors</strong> — <code>404</code> if file not found.</p>
+<hr />
+<h3 id="delete-apiv1hetadbfilesraw-filesdatasetsdataset">DELETE /api/v1/hetadb/files/raw-files/datasets/{dataset}</h3>
+<p>Delete a dataset and all its files. Bulk-deletes S3 objects under <code>{dataset}/</code> prefix if S3 is configured.</p>
+<p><strong>Errors</strong> — <code>404</code> if not found · <code>409</code> if active parse tasks exist (cancel them first).</p>
+<hr />
+<h3 id="chunked-upload">Chunked Upload</h3>
+<p>Use for large files. Three-step flow: <strong>init → upload chunks (parallel) → complete</strong>.</p>
+<h4 id="post-apiv1hetadbfilesraw-filesdatasetsdatasetuploadinit">POST /api/v1/hetadb/files/raw-files/datasets/{dataset}/upload/init</h4>
+<p>Create an upload session.</p>
+<p><strong>Request body</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th style="text-align: center;">Required</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>filename</code></td>
+<td>string</td>
+<td style="text-align: center;">✓</td>
+<td>Max 255 chars</td>
+<td>Target filename</td>
+</tr>
+<tr>
+<td><code>total_chunks</code></td>
+<td>integer</td>
+<td style="text-align: center;">✓</td>
+<td>1 – 10 000</td>
+<td>Number of chunks</td>
+</tr>
+<tr>
+<td><code>total_size</code></td>
+<td>integer</td>
+<td style="text-align: center;">✓</td>
+<td>≥ 1</td>
+<td>Total file size in bytes</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">&quot;upload_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;550e8400-e29b-41d4-a716-446655440000&quot;</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Errors</strong> — <code>404</code> if dataset not found.</p>
+<hr />
+<h4 id="post-apiv1hetadbfilesraw-filesdatasetsdatasetuploadupload_idchunk">POST /api/v1/hetadb/files/raw-files/datasets/{dataset}/upload/{upload_id}/chunk</h4>
+<p>Upload a single raw-binary chunk. Send the file slice as the raw request body (not multipart). Chunks may be uploaded in parallel.</p>
+<p><strong>Query parameters</strong></p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th style="text-align: center;">Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>chunk_index</code></td>
+<td>integer</td>
+<td style="text-align: center;">✓</td>
+<td>Zero-based chunk index</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">&quot;received&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Errors</strong> — <code>400</code> empty body or index out of range · <code>404</code> session not found.</p>
+<hr />
+<h4 id="post-apiv1hetadbfilesraw-filesdatasetsdatasetuploadupload_idcomplete">POST /api/v1/hetadb/files/raw-files/datasets/{dataset}/upload/{upload_id}/complete</h4>
+<p>Verify all chunks are present, merge them into the final file, clean up the session.</p>
+<p><strong>Response</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Upload complete&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;filename&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;video.mp4&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1073741824</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Errors</strong> — <code>400</code> missing chunks · <code>404</code> session not found.</p>
+<hr />
+<h4 id="delete-apiv1hetadbfilesraw-filesdatasetsdatasetuploadupload_id">DELETE /api/v1/hetadb/files/raw-files/datasets/{dataset}/upload/{upload_id}</h4>
+<p>Abort an in-progress upload and delete all temporary chunk files.</p>
+<hr />
+<h2 id="hetadb-knowledge-bases">HetaDB — Knowledge Bases</h2>
+<h3 id="get-apiv1hetadbfilesknowledge-bases">GET /api/v1/hetadb/files/knowledge-bases</h3>
+<p>List all knowledge bases.</p>
+<p><strong>Response</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="p">{</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tech-kb&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-03-01T10:00:00Z&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ready&quot;</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">  </span><span class="p">]</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="p">}</span>
+</code></pre></div></p>
+<blockquote>
+<p><code>status</code> is either <code>"ready"</code> (queryable) or <code>"deleting"</code> (skip — async deletion in progress). There is no processing/pending status at the KB level; dataset parse progress is tracked via tasks.</p>
+</blockquote>
+<hr />
+<h3 id="post-apiv1hetadbfilesknowledge-bases">POST /api/v1/hetadb/files/knowledge-bases</h3>
+<p>Create an empty knowledge base.</p>
+<p><strong>Request body</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th style="text-align: center;">Required</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td style="text-align: center;">✓</td>
+<td><code>^[A-Za-z0-9_\-]+$</code>, max 64 chars</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Errors</strong> — <code>409</code> if already exists.</p>
+<hr />
+<h3 id="get-apiv1hetadbfilesknowledge-baseskb_name">GET /api/v1/hetadb/files/knowledge-bases/{kb_name}</h3>
+<p>Get KB detail including dataset parse statuses and available query modes.</p>
+<p><strong>Response</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="p">{</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tech-kb&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">  </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-03-01T10:00:00Z&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ready&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="w">  </span><span class="nt">&quot;datasets&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ai-papers&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;parsed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;process_mode&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;parsed_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-03-02T12:00:00Z&quot;</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="w">  </span><span class="p">],</span>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="w">  </span><span class="nt">&quot;available_query_modes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;naive&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Naive&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;desc&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Vector + KG retrieval&quot;</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="w">  </span><span class="p">]</span>
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Errors</strong> — <code>404</code> if not found.</p>
+<hr />
+<h3 id="get-apiv1hetadbfilesknowledge-baseskb_nameoverview">GET /api/v1/hetadb/files/knowledge-bases/{kb_name}/overview</h3>
+<p>Generate a structured KB overview used internally by HetaGen tree generation. Returns both a data object and a pre-formatted LLM prompt string.</p>
+<p><strong>Query parameters</strong></p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>top_nodes</code></td>
+<td>integer</td>
+<td><code>20</code></td>
+<td>Top entity nodes to include</td>
+</tr>
+<tr>
+<td><code>sample_relations</code></td>
+<td>integer</td>
+<td><code>15</code></td>
+<td>Sample relations to include</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="p">{</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">  </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">  </span><span class="nt">&quot;overview&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;datasets&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span><span class="w"> </span><span class="nt">&quot;top_entities&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span><span class="w"> </span><span class="nt">&quot;sample_relations&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">]</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">  </span><span class="nt">&quot;prompt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Knowledge Base Overview:\n...&quot;</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="p">}</span>
+</code></pre></div></p>
+<hr />
+<h3 id="delete-apiv1hetadbfilesknowledge-baseskb_name">DELETE /api/v1/hetadb/files/knowledge-bases/{kb_name}</h3>
+<p>Initiate asynchronous KB deletion. Returns <strong>202</strong> immediately. A daemon thread cancels active tasks, waits for termination, purges Milvus collections and PostgreSQL tables, then removes the filesystem directory.</p>
+<p><strong>Query parameters</strong></p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>purge_db</code></td>
+<td>boolean</td>
+<td><code>true</code></td>
+<td>Also purge Milvus and PostgreSQL data</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response</strong> — <code>202 Accepted</code>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Knowledge base &#39;tech-kb&#39; deletion started&quot;</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div></p>
+<blockquote>
+<p>Poll <code>GET /knowledge-bases/{kb_name}</code> until 404 to confirm deletion is complete.
+If <code>status</code> is already <code>"deleting"</code>, returns 200 without starting a duplicate thread.</p>
+</blockquote>
+<hr />
+<h3 id="delete-apiv1hetadbfilesknowledge-baseskb_namedatasetsdataset_name">DELETE /api/v1/hetadb/files/knowledge-bases/{kb_name}/datasets/{dataset_name}</h3>
+<p>Remove a single parsed dataset from a KB. Purges Milvus and PostgreSQL data for that dataset. Raw files under <code>raw_files/{dataset}/</code> are <strong>not</strong> touched.</p>
+<p><strong>Errors</strong> — <code>404</code> KB or dataset not found · <code>409</code> active parse task exists.</p>
+<hr />
+<h3 id="post-apiv1hetadbfilesknowledge-baseskb_nameparse">POST /api/v1/hetadb/files/knowledge-bases/{kb_name}/parse</h3>
+<p>Trigger document processing for one or more datasets into a KB. Each dataset becomes an independent background task.</p>
+<p><strong>Request body</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th style="text-align: center;">Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>datasets</code></td>
+<td>string[]</td>
+<td style="text-align: center;">✓</td>
+<td>—</td>
+<td>Dataset names from <code>raw_files/</code> to parse</td>
+</tr>
+<tr>
+<td><code>mode</code></td>
+<td>integer</td>
+<td style="text-align: center;"></td>
+<td><code>0</code></td>
+<td>Processing pipeline mode (must be consistent across all datasets in the KB)</td>
+</tr>
+<tr>
+<td><code>schema_name</code></td>
+<td>string|null</td>
+<td style="text-align: center;"></td>
+<td><code>null</code></td>
+<td>Custom entity schema (from <code>/api/v1/hetadb/schemas</code>)</td>
+</tr>
+<tr>
+<td><code>force</code></td>
+<td>boolean</td>
+<td style="text-align: center;"></td>
+<td><code>false</code></td>
+<td>Overwrite already-parsed datasets. When <code>false</code>, returns 409 if any dataset was previously parsed.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="p">{</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">  </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Processing started for 2 dataset(s)&quot;</span><span class="p">,</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">    </span><span class="nt">&quot;tasks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;task_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid-1&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;dataset&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ai-papers&quot;</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;task_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid-2&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;dataset&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;textbooks&quot;</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="w">    </span><span class="p">],</span>
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="w">    </span><span class="nt">&quot;mode&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a><span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Errors</strong> — <code>404</code> KB or dataset not found · <code>409</code> already parsed (use <code>force=true</code>) or active task in progress.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://&lt;host&gt;:8000/api/v1/hetadb/files/knowledge-bases/tech-kb/parse<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;datasets&quot;: [&quot;ai-papers&quot;], &quot;mode&quot;: 0}&#39;</span>
+</code></pre></div>
+<hr />
+<h2 id="hetadb-processing-tasks">HetaDB — Processing Tasks</h2>
+<h3 id="get-apiv1hetadbfilesprocessingtasks">GET /api/v1/hetadb/files/processing/tasks</h3>
+<p>List <code>file_processing</code> tasks.</p>
+<p><strong>Query parameters</strong></p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>status</code></td>
+<td>string|null</td>
+<td><code>null</code></td>
+<td>Filter by status: <code>pending</code>, <code>running</code>, <code>completed</code>, <code>failed</code>, <code>cancelling</code>, <code>cancelled</code></td>
+</tr>
+<tr>
+<td><code>limit</code></td>
+<td>integer</td>
+<td><code>50</code></td>
+<td>Max results</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response</strong> — array of task objects (see below).</p>
+<hr />
+<h3 id="get-apiv1hetadbfilesprocessingtaskstask_id">GET /api/v1/hetadb/files/processing/tasks/{task_id}</h3>
+<p>Get a single task by ID.</p>
+<p><strong>Task object</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>task_id</code></td>
+<td>string</td>
+<td>UUID</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>string</td>
+<td><code>pending</code> · <code>running</code> · <code>completed</code> · <code>failed</code> · <code>cancelling</code> · <code>cancelled</code></td>
+</tr>
+<tr>
+<td><code>task_type</code></td>
+<td>string</td>
+<td><code>"file_processing"</code></td>
+</tr>
+<tr>
+<td><code>metadata</code></td>
+<td>object</td>
+<td><code>{ kb_name, dataset, mode, schema_name }</code></td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>string</td>
+<td>ISO 8601</td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>string</td>
+<td>ISO 8601</td>
+</tr>
+<tr>
+<td><code>error</code></td>
+<td>string|null</td>
+<td>Error message on failure</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Errors</strong> — <code>404</code> if not found.</p>
+<hr />
+<h3 id="post-apiv1hetadbfilesprocessingtaskstask_idcancel">POST /api/v1/hetadb/files/processing/tasks/{task_id}/cancel</h3>
+<p>Cancel a task.</p>
+<ul>
+<li><strong>PENDING</strong> → cancelled immediately.</li>
+<li><strong>RUNNING</strong> → transitions to <code>cancelling</code>; the pipeline stops at the next stage boundary, rolls back partial data, then transitions to <code>cancelled</code>.</li>
+<li>Terminal states (<code>completed</code>, <code>failed</code>, <code>cancelled</code>) → HTTP 400.</li>
+</ul>
+<p><strong>Response</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Task cancellation requested — will stop at next stage boundary&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;task_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;cancelling&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div></p>
+<hr />
+<h3 id="get-apiv1hetadbfilesprocessingconfig">GET /api/v1/hetadb/files/processing/config</h3>
+<p>Get the current processing configuration (LLM, embedding, graph extraction parameters).</p>
+<p><strong>Response</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="p">{</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="w">  </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Config retrieved&quot;</span><span class="p">,</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="w">    </span><span class="nt">&quot;llm&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;qwen-max&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;max_concurrent&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;timeout&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">120</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="w">    </span><span class="nt">&quot;embedding&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;text-embedding-v3&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;dim&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1024</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;batch_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">32</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="w">    </span><span class="nt">&quot;graph&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;chunk_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1024</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;overlap&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">128</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;batch_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;max_workers&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="p">}</span>
+</code></pre></div></p>
+<hr />
+<h2 id="hetadb-config">HetaDB — Config</h2>
+<h3 id="get-apiv1hetadbconfig">GET /api/v1/hetadb/config</h3>
+<p>Get the full merged configuration from <code>config.yaml</code> and <code>db_config.yaml</code>.</p>
+<p><strong>Response</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Config retrieved successfully&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div></p>
+<hr />
+<h3 id="get-apiv1hetadbconfigsection">GET /api/v1/hetadb/config/{section}</h3>
+<p>Get a single configuration section (e.g., <code>llm</code>, <code>postgresql</code>, <code>chunk_config</code>).</p>
+<p><strong>Errors</strong> — HTTP <code>404</code> if section not found.</p>
+<hr />
+<h3 id="post-apiv1hetadbconfigreload">POST /api/v1/hetadb/config/reload</h3>
+<p>Reload configuration from disk. Use after manually editing config files to refresh cached values.</p>
+<p><strong>Response</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Config reloaded successfully&quot;</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div></p>
+<hr />
+<h2 id="hetadb-schemas">HetaDB — Schemas</h2>
+<p>Custom entity schemas control which entity types and attributes are extracted during KB parsing. Schemas are referenced by name in the <a href="#post-apiv1hetadbfilesknowledge-baseskb_nameparse">parse endpoint</a>.</p>
+<h3 id="post-apiv1hetadbschemas">POST /api/v1/hetadb/schemas</h3>
+<p>Create an entity schema. Returns HTTP <strong>201</strong> on success.</p>
+<p><strong>Request body</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th style="text-align: center;">Required</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td style="text-align: center;">✓</td>
+<td><code>^[A-Za-z0-9_\-]+$</code></td>
+<td>Schema name</td>
+</tr>
+<tr>
+<td><code>entities</code></td>
+<td>EntityDefinition[]</td>
+<td style="text-align: center;">✓</td>
+<td>Min 1 item</td>
+<td>Entity definitions</td>
+</tr>
+</tbody>
+</table>
+<p><strong>EntityDefinition</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th style="text-align: center;">Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>type</code></td>
+<td>string</td>
+<td style="text-align: center;">✓</td>
+<td>Top-level type. Must be one of: <code>客观实体</code>, <code>抽象实体</code>, <code>事件实体</code>, <code>文献实体</code></td>
+</tr>
+<tr>
+<td><code>subtype</code></td>
+<td>string</td>
+<td style="text-align: center;">✓</td>
+<td>SubType name recognised by the KG extraction prompt</td>
+</tr>
+<tr>
+<td><code>attributes</code></td>
+<td>string[]</td>
+<td style="text-align: center;"></td>
+<td>Attribute names to extract for this SubType</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Errors</strong> — <code>409</code> if schema already exists · <code>422</code> if <code>type</code> is invalid.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="p">{</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;medical-schema&quot;</span><span class="p">,</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="w">  </span><span class="nt">&quot;entities&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;客观实体&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;subtype&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;疾病&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;attributes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;症状&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;治疗方法&quot;</span><span class="p">]</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;事件实体&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;subtype&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;临床试验&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;attributes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;时间&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;地点&quot;</span><span class="p">]</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="w">  </span><span class="p">]</span>
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="p">}</span>
+</code></pre></div>
+<hr />
+<h3 id="get-apiv1hetadbschemas">GET /api/v1/hetadb/schemas</h3>
+<p>List all schemas (name, created_at, entity_count).</p>
+<hr />
+<h3 id="get-apiv1hetadbschemasname">GET /api/v1/hetadb/schemas/{name}</h3>
+<p>Get schema detail including all entity definitions and a <code>prompt_preview</code> string showing how the schema will be injected into the extraction prompt.</p>
+<p><strong>Errors</strong> — HTTP <code>404</code> if not found.</p>
+<hr />
+<h3 id="delete-apiv1hetadbschemasname">DELETE /api/v1/hetadb/schemas/{name}</h3>
+<p>Delete a schema. Does not affect KBs already parsed with it.</p>
+<p><strong>Errors</strong> — HTTP <code>404</code> if not found.</p>
+<hr />
+<h2 id="hetagen-table-generation">HetaGen — Table Generation</h2>
+<h3 id="post-apiv1hetagenpipelinesubmit">POST /api/v1/hetagen/pipeline/submit</h3>
+<p>Submit a text-to-table + text-to-SQL task. Returns immediately with a <code>task_id</code>; poll status for results.</p>
+<p><strong>Request body</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th style="text-align: center;">Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>question</code></td>
+<td>string</td>
+<td style="text-align: center;">✓</td>
+<td>—</td>
+<td>Natural language table question (e.g., "List the top 10 NASDAQ companies by market cap")</td>
+</tr>
+<tr>
+<td><code>sql_question</code></td>
+<td>string|null</td>
+<td style="text-align: center;"></td>
+<td><code>null</code></td>
+<td>Override SQL question if different from <code>question</code></td>
+</tr>
+<tr>
+<td><code>top_k</code></td>
+<td>integer</td>
+<td style="text-align: center;"></td>
+<td><code>5</code></td>
+<td>Vector search candidate pool per query</td>
+</tr>
+<tr>
+<td><code>threshold</code></td>
+<td>float</td>
+<td style="text-align: center;"></td>
+<td><code>0.5</code></td>
+<td>Minimum similarity score for retrieval</td>
+</tr>
+<tr>
+<td><code>max_workers</code></td>
+<td>integer</td>
+<td style="text-align: center;"></td>
+<td><code>16</code></td>
+<td>Max concurrent retrieval threads</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">&quot;task_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;abc123&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;pending&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Task submitted&quot;</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div></p>
+<hr />
+<h3 id="get-apiv1hetagenpipelinestatustask_id">GET /api/v1/hetagen/pipeline/status/{task_id}</h3>
+<p>Poll task status. Returns result when completed.</p>
+<p><strong>Response — completed</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="p">{</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="w">  </span><span class="nt">&quot;task_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;abc123&quot;</span><span class="p">,</span>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;completed&quot;</span><span class="p">,</span>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="w">  </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="w">    </span><span class="nt">&quot;table_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nasdaq_top10&quot;</span><span class="p">,</span>
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="w">    </span><span class="nt">&quot;schema&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;entities&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span><span class="w"> </span><span class="nt">&quot;columns&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">]</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="w">    </span><span class="nt">&quot;csv_data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w"> </span><span class="nt">&quot;公司&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Apple&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;市值（美元）&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;3.2万亿&quot;</span><span class="w"> </span><span class="p">}],</span>
+<a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="w">    </span><span class="nt">&quot;sql&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SELECT * FROM nasdaq_top10 ORDER BY 市值 DESC LIMIT 10&quot;</span><span class="p">,</span>
+<a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a><span class="w">    </span><span class="nt">&quot;query_results&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">]</span>
+<a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a><span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Response — failed</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">&quot;task_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;abc123&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;failed&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Errors</strong> — HTTP <code>404</code> if task not found.</p>
+<hr />
+<h3 id="ws-apiv1hetagenpipelinestream">WS /api/v1/hetagen/pipeline/stream</h3>
+<p>Stream pipeline execution with real-time progress updates via WebSocket.</p>
+<p><strong>Client → Server</strong> (JSON after connection):
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">&quot;question&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;sql_question&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;top_k&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;threshold&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;max_workers&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">16</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Server → Client</strong> messages:</p>
+<table>
+<thead>
+<tr>
+<th><code>type</code></th>
+<th>Payload</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>progress</code></td>
+<td><code>{ "step": 2 }</code></td>
+<td>Pipeline step number</td>
+</tr>
+<tr>
+<td><code>result</code></td>
+<td><code>{ "data": { table_name, schema, csv_data, sql, query_results } }</code></td>
+<td>Final result</td>
+</tr>
+<tr>
+<td><code>error</code></td>
+<td><code>{ "message": "..." }</code></td>
+<td>Execution error</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="hetagen-tag-tree">HetaGen — Tag Tree</h2>
+<h3 id="post-apiv1hetagentag-treegenerate">POST /api/v1/hetagen/tag-tree/generate</h3>
+<p>Submit a knowledge tree generation task. Returns immediately; poll <code>/status/{task_id}</code>.</p>
+<p><strong>Request body</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th style="text-align: center;">Required</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>topic</code></td>
+<td>string</td>
+<td style="text-align: center;">✓</td>
+<td>Non-empty</td>
+<td>Domain topic (e.g., <code>"糖尿病诊疗"</code>)</td>
+</tr>
+<tr>
+<td><code>mode</code></td>
+<td>string</td>
+<td style="text-align: center;">✓</td>
+<td><code>"kb"</code> or <code>"pure_llm"</code></td>
+<td>Generation strategy</td>
+</tr>
+<tr>
+<td><code>kb_name</code></td>
+<td>string|null</td>
+<td style="text-align: center;">✓ when <code>mode="kb"</code></td>
+<td>—</td>
+<td>HetaDB knowledge base to use as grounding context</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Modes</strong></p>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>kb</code></td>
+<td>Grounds the tree in real KB entities. Requires <code>kb_name</code>. Produces more accurate domain descriptions.</td>
+</tr>
+<tr>
+<td><code>pure_llm</code></td>
+<td>Uses LLM world knowledge only. No KB dependency; faster.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">&quot;task_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;xyz789&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;pending&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Tree generation started (mode=kb)&quot;</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div></p>
+<hr />
+<h3 id="post-apiv1hetagentag-treesubmit-legacy">POST /api/v1/hetagen/tag-tree/submit <em>(legacy)</em></h3>
+<p>Upload an Excel file and parse its hierarchical path structure into a tag tree. Each row represents a leaf node; column values form the hierarchy path.</p>
+<p><strong>Form fields</strong> (<code>multipart/form-data</code>)</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th style="text-align: center;">Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>file</code></td>
+<td>file</td>
+<td style="text-align: center;">✓</td>
+<td>—</td>
+<td><code>.xlsx</code> or <code>.xls</code> file</td>
+</tr>
+<tr>
+<td><code>tree_name</code></td>
+<td>string</td>
+<td style="text-align: center;"></td>
+<td><code>"tag_tree"</code></td>
+<td>Tree name</td>
+</tr>
+<tr>
+<td><code>tree_description</code></td>
+<td>string</td>
+<td style="text-align: center;"></td>
+<td><code>""</code></td>
+<td>Tree description</td>
+</tr>
+<tr>
+<td><code>sheet_name</code></td>
+<td>string</td>
+<td style="text-align: center;"></td>
+<td><code>"0"</code></td>
+<td>Sheet name or zero-based index</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">&quot;task_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;pending&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Task submitted&quot;</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div></p>
+<hr />
+<h3 id="get-apiv1hetagentag-treestatustask_id">GET /api/v1/hetagen/tag-tree/status/{task_id}</h3>
+<p>Poll task status. Falls back to disk if the task is no longer in memory (e.g., after server restart).</p>
+<p><strong>Response — completed</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="p">{</span>
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="w">  </span><span class="nt">&quot;task_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;xyz789&quot;</span><span class="p">,</span>
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;completed&quot;</span><span class="p">,</span>
+<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a><span class="w">  </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a><span class="w">    </span><span class="nt">&quot;tree_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;糖尿病诊疗&quot;</span><span class="p">,</span>
+<a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a><span class="w">    </span><span class="nt">&quot;tree_description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;基于知识库生成的领域知识树&quot;</span><span class="p">,</span>
+<a id="__codelineno-27-7" name="__codelineno-27-7" href="#__codelineno-27-7"></a><span class="w">    </span><span class="nt">&quot;node_count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="p">,</span>
+<a id="__codelineno-27-8" name="__codelineno-27-8" href="#__codelineno-27-8"></a><span class="w">    </span><span class="nt">&quot;nodes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-27-9" name="__codelineno-27-9" href="#__codelineno-27-9"></a><span class="w">      </span><span class="p">{</span>
+<a id="__codelineno-27-10" name="__codelineno-27-10" href="#__codelineno-27-10"></a><span class="w">        </span><span class="nt">&quot;node_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;预防管理&quot;</span><span class="p">,</span>
+<a id="__codelineno-27-11" name="__codelineno-27-11" href="#__codelineno-27-11"></a><span class="w">        </span><span class="nt">&quot;category&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;糖尿病诊疗 -&gt; 预防管理&quot;</span><span class="p">,</span>
+<a id="__codelineno-27-12" name="__codelineno-27-12" href="#__codelineno-27-12"></a><span class="w">        </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;预防糖尿病发生发展的各项措施...&quot;</span><span class="p">,</span>
+<a id="__codelineno-27-13" name="__codelineno-27-13" href="#__codelineno-27-13"></a><span class="w">        </span><span class="nt">&quot;children&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">]</span>
+<a id="__codelineno-27-14" name="__codelineno-27-14" href="#__codelineno-27-14"></a><span class="w">      </span><span class="p">}</span>
+<a id="__codelineno-27-15" name="__codelineno-27-15" href="#__codelineno-27-15"></a><span class="w">    </span><span class="p">]</span>
+<a id="__codelineno-27-16" name="__codelineno-27-16" href="#__codelineno-27-16"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-27-17" name="__codelineno-27-17" href="#__codelineno-27-17"></a><span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Errors</strong> — HTTP <code>404</code> if task not found and no on-disk result exists.</p>
+<hr />
+<h2 id="hetamem-memorykb">HetaMem — MemoryKB</h2>
+<p>Agent-owned knowledge graph backed by LightRAG with local file storage (NanoVectorDB + NetworkX). Separate from HetaDB's Milvus/PostgreSQL infrastructure.</p>
+<h3 id="post-apiv1hetamemkbinsert">POST /api/v1/hetamem/kb/insert</h3>
+<p>Queue a memory entry for insertion. Returns <strong>202</strong> immediately. LightRAG entity extraction and graph construction run in the background.</p>
+<blockquote>
+<p>Content typically takes <strong>10–60 seconds</strong> to become searchable after insert. Do not query immediately after inserting.</p>
+</blockquote>
+<p><strong>Request</strong> (<code>multipart/form-data</code>)</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th style="text-align: center;">Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>query</code></td>
+<td>string</td>
+<td style="text-align: center;">✓</td>
+<td>Text content to insert</td>
+</tr>
+<tr>
+<td><code>video</code></td>
+<td>file|null</td>
+<td style="text-align: center;"></td>
+<td>Video file; transcribed via DashScope and merged into text</td>
+</tr>
+<tr>
+<td><code>audio</code></td>
+<td>file|null</td>
+<td style="text-align: center;"></td>
+<td>Audio file; transcribed via speech-to-text</td>
+</tr>
+<tr>
+<td><code>image</code></td>
+<td>file|null</td>
+<td style="text-align: center;"></td>
+<td>Image file; captioned via OCR</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response</strong> — <code>202 Accepted</code>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="p">{</span>
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;job-uuid&quot;</span><span class="p">,</span>
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="w">  </span><span class="nt">&quot;query&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Transformers revolutionized NLP...&quot;</span><span class="p">,</span>
+<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;accepted&quot;</span><span class="p">,</span>
+<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a><span class="w">  </span><span class="nt">&quot;videocaption&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a><span class="w">  </span><span class="nt">&quot;audiocaption&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a><span class="w">  </span><span class="nt">&quot;imagecaption&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span>
+<a id="__codelineno-28-8" name="__codelineno-28-8" href="#__codelineno-28-8"></a><span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Errors</strong> — HTTP <code>400</code> if <code>query</code> is empty.</p>
+<hr />
+<h3 id="post-apiv1hetamemkbquery">POST /api/v1/hetamem/kb/query</h3>
+<p>Query the knowledge graph and receive a synthesised answer.</p>
+<p><strong>Request body</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th style="text-align: center;">Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>query</code></td>
+<td>string</td>
+<td style="text-align: center;">✓</td>
+<td>—</td>
+<td>Natural language question</td>
+</tr>
+<tr>
+<td><code>mode</code></td>
+<td>string</td>
+<td style="text-align: center;"></td>
+<td><code>"hybrid"</code></td>
+<td>Retrieval strategy (see table below)</td>
+</tr>
+<tr>
+<td><code>use_pm</code></td>
+<td>boolean</td>
+<td style="text-align: center;"></td>
+<td><code>false</code></td>
+<td>Query parametric memory model first; skip RAG if relevant</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Retrieval modes</strong></p>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>hybrid</code></td>
+<td>Combines local entity recall + global community summaries. Default.</td>
+</tr>
+<tr>
+<td><code>local</code></td>
+<td>Entity neighbourhood + 1-hop relations. Best for specific entity queries.</td>
+</tr>
+<tr>
+<td><code>global</code></td>
+<td>Community summaries across full graph. Best for thematic/high-level questions.</td>
+</tr>
+<tr>
+<td><code>naive</code></td>
+<td>Simple chunk similarity. Fastest.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="p">{</span>
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="w">  </span><span class="nt">&quot;query&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;What are Transformers?&quot;</span><span class="p">,</span>
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a><span class="w">  </span><span class="nt">&quot;mode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;hybrid&quot;</span><span class="p">,</span>
+<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a><span class="w">  </span><span class="nt">&quot;pm_used&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a><span class="w">  </span><span class="nt">&quot;pm_memory&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a><span class="w">  </span><span class="nt">&quot;pm_relevant&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a><span class="w">  </span><span class="nt">&quot;rag_memory&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;[Entity: Transformer]\nDescription: ...\n[Relations]: ...&quot;</span><span class="p">,</span>
+<a id="__codelineno-29-8" name="__codelineno-29-8" href="#__codelineno-29-8"></a><span class="w">  </span><span class="nt">&quot;final_answer&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Transformers are neural network architectures...&quot;</span>
+<a id="__codelineno-29-9" name="__codelineno-29-9" href="#__codelineno-29-9"></a><span class="p">}</span>
+</code></pre></div></p>
+<blockquote>
+<p>Read <code>final_answer</code>. If <code>rag_memory</code> is empty or <code>final_answer</code> expresses uncertainty, the knowledge base may not yet contain relevant content (allow more time after recent inserts).</p>
+</blockquote>
+<p><strong>Errors</strong> — HTTP <code>400</code> empty query · HTTP <code>500</code> retrieval failure.</p>
+<hr />
+<h2 id="hetamem-memoryvg">HetaMem — MemoryVG</h2>
+<p>Personal episodic memory backed by Milvus (vector store), optional Neo4j (graph store), and SQLite (modification history). All operations are scoped to at least one of <code>user_id</code>, <code>agent_id</code>, or <code>run_id</code>. In single-agent deployments, use <code>agent_id: "agent"</code> consistently.</p>
+<h3 id="post-apiv1hetamemvgadd">POST /api/v1/hetamem/vg/add</h3>
+<p>Extract facts from a conversation and store them. The LLM automatically extracts structured facts, compares them against existing memories, and decides to ADD, UPDATE, or DELETE each one.</p>
+<p><strong>Request body</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th style="text-align: center;">Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>messages</code></td>
+<td>Message[]</td>
+<td style="text-align: center;">✓</td>
+<td>Conversation turns. At least one scope ID required.</td>
+</tr>
+<tr>
+<td><code>agent_id</code></td>
+<td>string|null</td>
+<td style="text-align: center;">✓†</td>
+<td>Scope identifier</td>
+</tr>
+<tr>
+<td><code>user_id</code></td>
+<td>string|null</td>
+<td style="text-align: center;">✓†</td>
+<td>Scope identifier</td>
+</tr>
+<tr>
+<td><code>run_id</code></td>
+<td>string|null</td>
+<td style="text-align: center;">✓†</td>
+<td>Scope identifier</td>
+</tr>
+<tr>
+<td><code>metadata</code></td>
+<td>object|null</td>
+<td style="text-align: center;"></td>
+<td>Additional key-value tags stored with each memory</td>
+</tr>
+</tbody>
+</table>
+<p>† At least one of <code>agent_id</code>, <code>user_id</code>, <code>run_id</code> must be provided.</p>
+<p><strong>Message object</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>role</code></td>
+<td>string</td>
+<td><code>"user"</code> or <code>"assistant"</code></td>
+</tr>
+<tr>
+<td><code>content</code></td>
+<td>string</td>
+<td>Message text</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="p">{</span>
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="w">  </span><span class="nt">&quot;results&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid1&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;memory&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Agent prefers concise answers&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;event&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ADD&quot;</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid2&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;memory&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Agent uses Python&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;event&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;UPDATE&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;previous_memory&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Agent codes&quot;</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a><span class="w">  </span><span class="p">],</span>
+<a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a><span class="w">  </span><span class="nt">&quot;relations&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;added_entities&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span><span class="w"> </span><span class="nt">&quot;deleted_entities&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">]</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-30-7" name="__codelineno-30-7" href="#__codelineno-30-7"></a><span class="p">}</span>
+</code></pre></div></p>
+<p>Memories are available for search <strong>immediately</strong> after add.</p>
+<p><strong>Errors</strong> — HTTP <code>422</code> if no scope ID provided · HTTP <code>500</code> on failure.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://&lt;host&gt;:8000/api/v1/hetamem/vg/add<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
+<a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a><span class="s1">    &quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;I prefer concise answers&quot;}],</span>
+<a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a><span class="s1">    &quot;agent_id&quot;: &quot;agent&quot;</span>
+<a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a><span class="s1">  }&#39;</span>
+</code></pre></div>
+<hr />
+<h3 id="post-apiv1hetamemvgsearch">POST /api/v1/hetamem/vg/search</h3>
+<p>Search memories by semantic similarity.</p>
+<p><strong>Request body</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th style="text-align: center;">Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>query</code></td>
+<td>string</td>
+<td style="text-align: center;">✓</td>
+<td>—</td>
+<td>Natural language query</td>
+</tr>
+<tr>
+<td><code>agent_id</code></td>
+<td>string|null</td>
+<td style="text-align: center;">✓†</td>
+<td>—</td>
+<td>Scope filter</td>
+</tr>
+<tr>
+<td><code>user_id</code></td>
+<td>string|null</td>
+<td style="text-align: center;">✓†</td>
+<td>—</td>
+<td>Scope filter</td>
+</tr>
+<tr>
+<td><code>run_id</code></td>
+<td>string|null</td>
+<td style="text-align: center;">✓†</td>
+<td>—</td>
+<td>Scope filter</td>
+</tr>
+<tr>
+<td><code>limit</code></td>
+<td>integer</td>
+<td style="text-align: center;"></td>
+<td><code>10</code></td>
+<td>Max results</td>
+</tr>
+<tr>
+<td><code>threshold</code></td>
+<td>float|null</td>
+<td style="text-align: center;"></td>
+<td><code>null</code></td>
+<td>Minimum similarity score (0–1). <code>null</code> = no filter.</td>
+</tr>
+</tbody>
+</table>
+<p>† At least one required.</p>
+<p><strong>Response</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="p">{</span>
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="w">  </span><span class="nt">&quot;results&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid1&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;memory&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Agent prefers concise answers&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;score&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.92</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;agent_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;agent&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a><span class="w">  </span><span class="p">],</span>
+<a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a><span class="w">  </span><span class="nt">&quot;relations&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">]</span>
+<a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a><span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Errors</strong> — HTTP <code>400</code> empty query · HTTP <code>422</code> no scope ID.</p>
+<hr />
+<h3 id="get-apiv1hetamemvg">GET /api/v1/hetamem/vg</h3>
+<p>List all memories matching the scope filter.</p>
+<p><strong>Query parameters</strong></p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>agent_id</code></td>
+<td>string|null</td>
+<td><code>null</code></td>
+<td>Scope filter</td>
+</tr>
+<tr>
+<td><code>user_id</code></td>
+<td>string|null</td>
+<td><code>null</code></td>
+<td>Scope filter</td>
+</tr>
+<tr>
+<td><code>run_id</code></td>
+<td>string|null</td>
+<td><code>null</code></td>
+<td>Scope filter</td>
+</tr>
+<tr>
+<td><code>limit</code></td>
+<td>integer</td>
+<td><code>100</code></td>
+<td>Max results</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">&quot;results&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w"> </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;memory&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;agent_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;agent&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="w"> </span><span class="p">}]</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div></p>
+<hr />
+<h3 id="get-apiv1hetamemvgmemory_id">GET /api/v1/hetamem/vg/{memory_id}</h3>
+<p>Retrieve a single memory entry.</p>
+<p><strong>Response</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid1&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;memory&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Agent prefers concise answers&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;hash&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;agent_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;agent&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Errors</strong> — HTTP <code>404</code> if not found.</p>
+<hr />
+<h3 id="get-apiv1hetamemvgmemory_idhistory">GET /api/v1/hetamem/vg/{memory_id}/history</h3>
+<p>Return the full modification history (ADD / UPDATE / DELETE events) for a memory.</p>
+<p><strong>Response</strong> — array of history records:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="p">[</span>
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;hist-1&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;memory_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid1&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;event&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ADD&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;old_memory&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;new_memory&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Agent prefers concise answers&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;is_deleted&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a><span class="p">]</span>
+</code></pre></div></p>
+<hr />
+<h3 id="put-apiv1hetamemvgmemory_id">PUT /api/v1/hetamem/vg/{memory_id}</h3>
+<p>Update the text content of a memory. Re-embeds with the new text.</p>
+<p><strong>Request body</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th style="text-align: center;">Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>data</code></td>
+<td>string</td>
+<td style="text-align: center;">✓</td>
+<td>New memory text (non-empty)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Memory updated successfully!&quot;</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Errors</strong> — HTTP <code>400</code> empty <code>data</code>.</p>
+<hr />
+<h3 id="delete-apiv1hetamemvgmemory_id">DELETE /api/v1/hetamem/vg/{memory_id}</h3>
+<p>Delete a single memory entry. Logged in modification history.</p>
+<p><strong>Response</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Memory deleted successfully!&quot;</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div></p>
+<hr />
+<h3 id="delete-apiv1hetamemvg">DELETE /api/v1/hetamem/vg</h3>
+<p>Delete all memories matching the scope filter.</p>
+<p><strong>Query parameters</strong></p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>agent_id</code></td>
+<td>string|null</td>
+<td>Scope filter</td>
+</tr>
+<tr>
+<td><code>user_id</code></td>
+<td>string|null</td>
+<td>Scope filter</td>
+</tr>
+<tr>
+<td><code>run_id</code></td>
+<td>string|null</td>
+<td>Scope filter</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Memories deleted successfully!&quot;</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../../hetagen/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Overview">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Overview
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../config/" class="md-footer__link md-footer__link--next" aria-label="Next: Configuration">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Configuration
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.tabs.link", "content.code.annotate", "content.code.copy", "navigation.expand", "navigation.footer", "navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.top", "navigation.tracking", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
