@@ -24,7 +24,7 @@
         
       
       
-      <link rel="icon" href="../../assets/images/favicon.png">
+      <link rel="icon" href="../../images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
@@ -54,6 +54,8 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
     
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -96,7 +98,7 @@
   <nav class="md-header__inner md-grid" aria-label="页眉">
     <a href="../" title="Heta" class="md-header__button md-logo" aria-label="Heta" data-md-component="logo">
       
-  <img src="../../images/banner.png" alt="logo">
+  <img src="../../images/logo.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -439,7 +441,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href="../" title="Heta" class="md-nav__button md-logo" aria-label="Heta" data-md-component="logo">
       
-  <img src="../../images/banner.png" alt="logo">
+  <img src="../../images/logo.png" alt="logo">
 
     </a>
     Heta
@@ -1334,19 +1336,19 @@
 </tr>
 <tr>
 <td>电子表格</td>
-<td><code>.xlsx</code>、<code>.xls</code></td>
+<td><code>.xlsx</code>、<code>.xls</code>、<code>.csv</code>、<code>.ods</code></td>
 </tr>
 <tr>
 <td>图片</td>
-<td><code>.png</code>、<code>.jpg</code>、<code>.jpeg</code>、<code>.bmp</code>、<code>.tiff</code></td>
+<td><code>.png</code>、<code>.jpg</code>、<code>.jpeg</code>、<code>.gif</code>、<code>.webp</code>、<code>.bmp</code>、<code>.tiff</code></td>
 </tr>
 <tr>
-<td>网页 / 标记语言</td>
-<td><code>.html</code>、<code>.htm</code>、<code>.md</code></td>
+<td>纯文本 / 标记语言</td>
+<td><code>.txt</code>、<code>.text</code>、<code>.md</code>、<code>.markdown</code>、<code>.html</code></td>
 </tr>
 <tr>
 <td>压缩包</td>
-<td><code>.zip</code>（内容递归处理）</td>
+<td><code>.zip</code>、<code>.7z</code>、<code>.rar</code>、<code>.tar</code>、<code>.tar.gz</code>、<code>.tar.xz</code>、<code>.tar.bz2</code></td>
 </tr>
 </tbody>
 </table>
@@ -1365,36 +1367,36 @@
 <tr>
 <td>1</td>
 <td><strong>文件解析</strong></td>
-<td>将原始字节转换为结构化文本/表格；对图片和扫描版 PDF 执行 OCR</td>
+<td>四类解析器并发运行：<code>doc_parser</code> 处理 PDF/DOC/DOCX/PPT/PPTX（提取文本、表格及嵌入图片）；<code>html_parser</code> 处理 HTML；<code>text_parser</code> 处理 TXT/MD；<code>sheet_parser</code> 处理 CSV/XLS/XLSX（LLM 生成表格 Schema 与描述，表格描述同步写入文本流）。第二阶段串行：<code>image_parser</code> 用 VLM 为独立图片及文档中的嵌入图片生成文字描述。压缩包（ZIP/7Z/RAR/TAR）在解析前自动递归解压</td>
 </tr>
 <tr>
 <td>2</td>
 <td><strong>文本分块</strong></td>
-<td>按嵌入模型的最优尺寸将文本切分为有重叠的文本块</td>
+<td>将文本切分为有重叠的 token 块；LLM 辅助合并语义相似块，中间块向量存入 Milvus；<strong>Rechunk</strong>：将 merge 后的 chunk 按原始文档分组，把同一文档的所有 chunk token 拼接还原后重新切分，每个新 chunk 记录 <code>source_chunk</code> 溯源字段；最终 rechunked chunk 写入 PostgreSQL</td>
 </tr>
 <tr>
 <td>3</td>
 <td><strong>图谱抽取</strong></td>
-<td>LLM 识别实体与关系；通过 Union-Find 合并去重</td>
+<td>LLM 并发地从第二阶段产出的 rechunked chunk 中提取实体与关系；原始结果写入 <code>kg_file/rechunked/</code> 下的 JSONL 文件（此阶段不做合并）</td>
 </tr>
 <tr>
 <td>4</td>
 <td><strong>节点处理</strong></td>
-<td>对实体描述进行嵌入，并持久化到 Neo4j</td>
+<td>LLM 去重 → 嵌入 → 向量相似度聚类合并 → Milvus 语义去重；最终节点存入 Milvus（向量）和 PostgreSQL（元数据）</td>
 </tr>
 <tr>
 <td>5</td>
 <td><strong>关系处理</strong></td>
-<td>对关系摘要进行嵌入，并持久化到 Neo4j</td>
+<td>应用节点 ID 映射；LLM 去重 → 嵌入 → 聚类合并 → Milvus 语义去重；最终关系存入 Milvus（向量）和 PostgreSQL（元数据及关系-chunk 溯源）</td>
 </tr>
 <tr>
 <td>6</td>
 <td><strong>表格嵌入</strong></td>
-<td>对表格文本块进行嵌入并存入 Milvus，支持混合检索</td>
+<td>LLM 处理 CSV 文件生成表格 Schema 与节点描述；原始数据导入 PostgreSQL；节点嵌入写入 Milvus 实体集合；支持自然语言转 SQL 查询</td>
 </tr>
 </tbody>
 </table>
-<p>处理任务完全异步。请持续轮询 <code>/api/v1/hetadb/files/parse/status</code>，直到 <code>status</code> 返回 <code>"completed"</code> 后再发起查询。</p>
+<p>处理任务完全异步。请使用解析调用返回的 <code>task_id</code>，轮询 <code>GET /api/v1/hetadb/files/processing/tasks/{task_id}</code>，直到 <code>status</code> 返回 <code>"completed"</code> 后再发起查询。</p>
 <hr />
 <h2 id="_3">查询模式</h2>
 <table>
@@ -1541,6 +1543,8 @@
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@11/dist/mermaid.min.js"></script>
       
     
   </body>

@@ -24,7 +24,7 @@
         
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
@@ -54,6 +54,8 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
     
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -96,7 +98,7 @@
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href=".." title="Heta" class="md-header__button md-logo" aria-label="Heta" data-md-component="logo">
       
-  <img src="../images/banner.png" alt="logo">
+  <img src="../images/logo.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -439,7 +441,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href=".." title="Heta" class="md-nav__button md-logo" aria-label="Heta" data-md-component="logo">
       
-  <img src="../images/banner.png" alt="logo">
+  <img src="../images/logo.png" alt="logo">
 
     </a>
     Heta
@@ -1181,24 +1183,6 @@
         
       
       
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    FAQ
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -1215,58 +1199,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#general" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        General
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#setup" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Setup
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#mcp-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        MCP Integration
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
       
     </li>
   
@@ -1319,47 +1251,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#general" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        General
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#setup" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Setup
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#mcp-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        MCP Integration
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -1379,67 +1270,8 @@
 
 
 <h1 id="faq">FAQ</h1>
-<h2 id="general">General</h2>
 <p><strong>What is the difference between HetaDB and HetaMem?</strong></p>
 <p>HetaDB stores and retrieves knowledge from <strong>human-uploaded documents</strong> (PDFs, spreadsheets, etc.). HetaMem stores <strong>agent-generated observations</strong> — facts extracted from conversations (MemoryVG) and accumulated knowledge over time (MemoryKB). Think of HetaDB as your document library and HetaMem as the agent's personal memory.</p>
-<p><strong>Which query mode should I use?</strong></p>
-<table>
-<thead>
-<tr>
-<th>Use case</th>
-<th>Recommended mode</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>General questions, fast response</td>
-<td><code>naive</code></td>
-</tr>
-<tr>
-<td>Highest precision, precise lookup</td>
-<td><code>rerank</code></td>
-</tr>
-<tr>
-<td>Vague or ambiguous questions</td>
-<td><code>rewriter</code></td>
-</tr>
-<tr>
-<td>Multi-step reasoning, complex analysis</td>
-<td><code>multihop</code></td>
-</tr>
-<tr>
-<td>Direct LLM answer, no documents needed</td>
-<td><code>direct</code></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Does Heta support languages other than Chinese and English?</strong></p>
-<p>HetaDB uses MinerU for document parsing, which supports 109 languages. The LLM-based components (graph extraction, query synthesis) depend on your configured LLM provider's language support.</p>
-<hr />
-<h2 id="setup">Setup</h2>
-<p><strong>Docker Compose fails with "unhealthy" services. What should I check?</strong></p>
-<ol>
-<li>Verify API keys are set in <code>config.yaml</code> — missing keys cause silent startup failures.</li>
-<li>Wait a bit longer — Milvus and Neo4j can take 30–60 seconds to become healthy on first run.</li>
-<li>Check logs: <code>docker-compose logs milvus</code> or <code>docker-compose logs neo4j</code>.</li>
-<li>Port conflicts: ensure ports 5432, 19530, 7474, 7687, 9000, 9001 are free.</li>
-</ol>
-<p><strong>How do I use international models (OpenAI / Gemini) instead of DashScope?</strong></p>
-<p>In <code>config.yaml</code>, replace <code>&lt;&lt;: *dashscope</code> with <code>&lt;&lt;: *openai</code> in the relevant sections (hetadb.llm, hetamem.memorykb.llm, etc.), fill in your OpenAI key, and update the model names. See the <a href="../reference/config/">Configuration Reference</a> for details.</p>
-<p><strong>Can I run only one module (e.g., HetaDB only)?</strong></p>
-<p>Yes — run <code>python src/hetadb/api/main.py</code> directly. See <a href="../quick-start/manual/">Manual Setup</a> for per-module port assignments.</p>
-<hr />
-<h2 id="mcp-integration">MCP Integration</h2>
-<p><strong>The MCP server is unreachable from Claude Desktop. What should I check?</strong></p>
-<ol>
-<li>Confirm the Heta stack is running: <code>docker-compose ps</code> or check the process if running manually.</li>
-<li>Verify the URL in <code>~/.claude.json</code> is correct — <code>http://localhost:8011/mcp/</code> for HetaMem, <code>http://localhost:8012/mcp/</code> for HetaDB.</li>
-<li>Check if the port is blocked by a firewall: <code>curl http://localhost:8012/health</code>.</li>
-</ol>
-<p><strong>What is the querying skill and do I need it?</strong></p>
-<p>The querying skill (<code>skills/querying-knowledge-and-memory/SKILL.md</code>) is a prompt that teaches the agent the correct three-step retrieval order: search MemoryVG first, fall back to HetaDB, then store results back. It is not required, but significantly improves agent retrieval behaviour. Claude Code picks it up automatically; for other clients copy its content into the system prompt. See <a href="../hetamem/querying-skill/">Querying Skill</a>.</p>
-<p><strong>What is the difference between HetaMem MCP and HetaDB MCP?</strong></p>
-<p>HetaMem MCP exposes memory operations (store and recall agent observations). HetaDB MCP exposes knowledge base queries (retrieve from uploaded documents). Register both so the agent can use the full three-layer retrieval pattern.</p>
 
 
 
@@ -1541,6 +1373,8 @@
     
     
       <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@11/dist/mermaid.min.js"></script>
       
     
   </body>

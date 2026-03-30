@@ -24,7 +24,7 @@
         
       
       
-      <link rel="icon" href="../../assets/images/favicon.png">
+      <link rel="icon" href="../../images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
@@ -54,6 +54,8 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
     
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -96,7 +98,7 @@
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../.." title="Heta" class="md-header__button md-logo" aria-label="Heta" data-md-component="logo">
       
-  <img src="../../images/banner.png" alt="logo">
+  <img src="../../images/logo.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -439,7 +441,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href="../.." title="Heta" class="md-nav__button md-logo" aria-label="Heta" data-md-component="logo">
       
-  <img src="../../images/banner.png" alt="logo">
+  <img src="../../images/logo.png" alt="logo">
 
     </a>
     Heta
@@ -1427,16 +1429,16 @@
 
 <h1 id="memorykb">MemoryKB</h1>
 <p>MemoryKB is HetaMem's long-term knowledge graph layer, built on <strong>LightRAG</strong>
-and <strong>Neo4j</strong>. Unlike MemoryVG which stores individual facts, MemoryKB builds a
-rich graph of entities and relations that grows as the agent accumulates
-knowledge across sessions.</p>
+(NanoVectorDB + NetworkX). Unlike MemoryVG which stores individual facts,
+MemoryKB builds a rich graph of entities and relations that grows as the agent
+accumulates knowledge across sessions.</p>
 <hr />
 <h2 id="how-it-works">How It Works</h2>
 <ol>
 <li><strong>Insert</strong> — submit text describing knowledge the agent wants to retain
    (e.g., a synthesised answer, a research finding, or a domain explanation).
    LightRAG extracts entities and relations, merges them into the existing graph,
-   and stores everything in Neo4j.</li>
+   and persists everything to local storage.</li>
 <li><strong>Index</strong> — graph construction is <strong>asynchronous</strong> and takes approximately
    200 seconds. The endpoint returns immediately; the knowledge becomes
    queryable after indexing completes.</li>
@@ -1446,10 +1448,17 @@ knowledge across sessions.</p>
 <hr />
 <h2 id="inserting-knowledge">Inserting Knowledge</h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/api/v1/hetamem/kb/insert<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span>-F<span class="w"> </span><span class="s2">&quot;query=Transformer models use self-attention to process sequences in parallel.&quot;</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span>-F<span class="w"> </span><span class="s2">&quot;query=Alice likes football&quot;</span>
 </code></pre></div>
-<p><strong>Response</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Insert accepted&quot;</span><span class="w"> </span><span class="p">}</span>
+<p><strong>Response</strong> (HTTP 202)</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;a1b2c3d4-...&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">&quot;query&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Alice likes football&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;accepted&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="nt">&quot;videocaption&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="nt">&quot;audiocaption&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span><span class="nt">&quot;imagecaption&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="p">}</span>
 </code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">Async indexing delay</p>
@@ -1462,12 +1471,18 @@ completes.</p>
 <h2 id="querying-the-knowledge-graph">Querying the Knowledge Graph</h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/api/v1/hetamem/kb/query<span class="w"> </span><span class="se">\</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;query&quot;: &quot;How do transformers handle long-range dependencies?&quot;, &quot;mode&quot;: &quot;hybrid&quot;}&#39;</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;query&quot;: &quot;What does Alice like?&quot;, &quot;mode&quot;: &quot;hybrid&quot;}&#39;</span>
 </code></pre></div>
 <p><strong>Response</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">&quot;final_answer&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Transformers handle long-range dependencies through self-attention, which computes pairwise relationships between all positions in a sequence simultaneously ...&quot;</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="p">}</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">&quot;query&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;What does Alice like?&quot;</span><span class="p">,</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nt">&quot;mode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;hybrid&quot;</span><span class="p">,</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nt">&quot;pm_used&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="nt">&quot;pm_memory&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="nt">&quot;pm_relevant&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">  </span><span class="nt">&quot;rag_memory&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Based on the knowledge graph, Alice is associated with football ...&quot;</span><span class="p">,</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">  </span><span class="nt">&quot;final_answer&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;According to memory, Alice likes football.&quot;</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="p">}</span>
 </code></pre></div>
 <hr />
 <h2 id="retrieval-modes">Retrieval Modes</h2>
@@ -1492,20 +1507,26 @@ completes.</p>
 </tr>
 <tr>
 <td><code>global</code></td>
-<td>Searches high-level community summaries across the whole graph</td>
-<td>Broad thematic or summarisation questions</td>
+<td>Searches the relationship vector store with high-level concept keywords, then resolves entities from matched relations</td>
+<td>Broad thematic or relational questions</td>
+</tr>
+<tr>
+<td><code>naive</code></td>
+<td>Plain vector search without graph structure</td>
+<td>Quick baseline comparison</td>
 </tr>
 </tbody>
 </table>
+<p>The query endpoint also accepts a <code>use_pm</code> parameter (default <code>false</code>). This is an experimental feature that queries a separately-deployed parametric memory service before falling back to RAG retrieval. Disabled by default; no configuration required for normal use.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Local mode — detailed entity-level answer</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/api/v1/hetamem/kb/query<span class="w"> </span><span class="se">\</span>
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;query&quot;: &quot;What does the attention mechanism compute?&quot;, &quot;mode&quot;: &quot;local&quot;}&#39;</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;query&quot;: &quot;What sport does Alice like?&quot;, &quot;mode&quot;: &quot;local&quot;}&#39;</span>
 <a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
 <a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="c1"># Global mode — broad thematic answer</span>
 <a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/api/v1/hetamem/kb/query<span class="w"> </span><span class="se">\</span>
 <a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;query&quot;: &quot;What are the main themes in my knowledge base?&quot;, &quot;mode&quot;: &quot;global&quot;}&#39;</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;query&quot;: &quot;What people are mentioned in the knowledge base?&quot;, &quot;mode&quot;: &quot;global&quot;}&#39;</span>
 </code></pre></div>
 <hr />
 <h2 id="when-to-use-memorykb">When to Use MemoryKB</h2>
@@ -1640,6 +1661,8 @@ indefinitely.</p>
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@11/dist/mermaid.min.js"></script>
       
     
   </body>

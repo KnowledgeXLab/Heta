@@ -24,7 +24,7 @@
         
       
       
-      <link rel="icon" href="../../assets/images/favicon.png">
+      <link rel="icon" href="../../images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
@@ -54,6 +54,8 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
     
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -96,7 +98,7 @@
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../.." title="Heta" class="md-header__button md-logo" aria-label="Heta" data-md-component="logo">
       
-  <img src="../../images/banner.png" alt="logo">
+  <img src="../../images/logo.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -439,7 +441,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href="../.." title="Heta" class="md-nav__button md-logo" aria-label="Heta" data-md-component="logo">
       
-  <img src="../../images/banner.png" alt="logo">
+  <img src="../../images/logo.png" alt="logo">
 
     </a>
     Heta
@@ -629,10 +631,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#setup" class="md-nav__link">
+  <a href="#1-clone-and-copy-config" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Setup
+        1. Clone and copy config
       
     </span>
   </a>
@@ -640,10 +642,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#start" class="md-nav__link">
+  <a href="#2-fill-in-api-keys" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Start
+        2. Fill in API keys
       
     </span>
   </a>
@@ -651,10 +653,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#verify" class="md-nav__link">
+  <a href="#3-start" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Verify
+        3. Start
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Verify
       
     </span>
   </a>
@@ -1373,10 +1386,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#setup" class="md-nav__link">
+  <a href="#1-clone-and-copy-config" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Setup
+        1. Clone and copy config
       
     </span>
   </a>
@@ -1384,10 +1397,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#start" class="md-nav__link">
+  <a href="#2-fill-in-api-keys" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Start
+        2. Fill in API keys
       
     </span>
   </a>
@@ -1395,10 +1408,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#verify" class="md-nav__link">
+  <a href="#3-start" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Verify
+        3. Start
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Verify
       
     </span>
   </a>
@@ -1453,32 +1477,68 @@
 <ul>
 <li>Docker ≥ 24.0</li>
 <li>Docker Compose ≥ 2.20</li>
-<li>DashScope and SiliconFlow API keys</li>
+<li>At least one LLM provider account</li>
 </ul>
-<h2 id="setup">Setup</h2>
+<h2 id="1-clone-and-copy-config">1. Clone and copy config</h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/HetaTeam/Heta.git
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">cd</span><span class="w"> </span>Heta
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>cp<span class="w"> </span>config.example.yaml<span class="w"> </span>config.yaml
 </code></pre></div>
-<p>Open <code>config.yaml</code> and fill in your API keys:</p>
+<h2 id="2-fill-in-api-keys">2. Fill in API keys</h2>
+<p>The <code>providers</code> block in <code>config.yaml</code> holds connection details for each provider. Modules reference them via YAML anchors (<code>&lt;&lt;: *provider_name</code>). The example config uses Alibaba Cloud DashScope and SiliconFlow by default, but <strong>any OpenAI-compatible API or self-hosted model works</strong> — just update <code>api_key</code>, <code>base_url</code>, and the model name for the relevant provider.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Domestic (DashScope + SiliconFlow)</label><label for="__tabbed_1_2">International (all four providers)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>The default config already points to these providers. Add your API keys:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">providers</span><span class="p">:</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">dashscope</span><span class="p">:</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="nt">api_key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;YOUR_DASHSCOPE_KEY&quot;</span><span class="w">    </span><span class="c1"># required</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="nt">siliconflow</span><span class="p">:</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="nt">api_key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;YOUR_SILICONFLOW_KEY&quot;</span><span class="w">  </span><span class="c1"># required</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="nt">api_key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;YOUR_DASHSCOPE_API_KEY&quot;</span><span class="w">   </span><span class="c1"># https://dashscope.aliyun.com</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">siliconflow</span><span class="p">:</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="nt">api_key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;YOUR_SILICONFLOW_API_KEY&quot;</span><span class="w"> </span><span class="c1"># https://siliconflow.cn</span>
 </code></pre></div>
-<div class="admonition tip">
-<p class="admonition-title">International setup (OpenAI / Gemini)</p>
-<p>Uncomment the <code>openai</code> and <code>gemini</code> blocks and replace the three <code># Domestic alternative</code> sections in <code>config.yaml</code>.</p>
+<p>Then switch MemoryKB and HetaGen to domestic models:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">hetamem</span><span class="p">:</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">memorykb</span><span class="p">:</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="nt">llm</span><span class="p">:</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">      </span><span class="nt">&lt;&lt;</span><span class="p">:</span><span class="w"> </span><span class="nv">*dashscope</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;qwen-plus&quot;</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="nt">embedding</span><span class="p">:</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">      </span><span class="nt">&lt;&lt;</span><span class="p">:</span><span class="w"> </span><span class="nv">*dashscope</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;text-embedding-v4&quot;</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">      </span><span class="nt">dim</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1536</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="nt">hetagen</span><span class="p">:</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">  </span><span class="nt">llm</span><span class="p">:</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">    </span><span class="nt">&lt;&lt;</span><span class="p">:</span><span class="w"> </span><span class="nv">*dashscope</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;qwen3-32b&quot;</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">    </span><span class="nt">max_concurrent_requests</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">    </span><span class="nt">max_retries</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">    </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">120</span>
+</code></pre></div>
 </div>
-<h2 id="start">Start</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>docker-compose<span class="w"> </span>up<span class="w"> </span>-d
+<div class="tabbed-block">
+<p>This is the default best-practice config from <code>config.example.yaml</code>. Fill in all four API keys — no module config changes needed:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">providers</span><span class="p">:</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">dashscope</span><span class="p">:</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="nt">api_key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;YOUR_DASHSCOPE_API_KEY&quot;</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nt">siliconflow</span><span class="p">:</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="nt">api_key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;YOUR_SILICONFLOW_API_KEY&quot;</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="nt">openai</span><span class="p">:</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span><span class="nt">api_key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;YOUR_OPENAI_API_KEY&quot;</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">  </span><span class="nt">gemini</span><span class="p">:</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">    </span><span class="nt">api_key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;YOUR_GEMINI_API_KEY&quot;</span>
+</code></pre></div>
+<p>Default assignment: DashScope handles HetaDB LLM/VLM and MemoryVG LLM; SiliconFlow handles HetaDB embedding and HetaGen VLM/embedding; OpenAI handles MemoryKB and MemoryVG embedder; Gemini handles HetaGen LLM.</p>
+</div>
+</div>
+</div>
+<h2 id="3-start">3. Start</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>docker-compose<span class="w"> </span>up<span class="w"> </span>-d
 </code></pre></div>
 <p>First run pulls images and builds the stack (~10–20 min).</p>
-<h2 id="verify">Verify</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>docker-compose<span class="w"> </span>ps<span class="w">           </span><span class="c1"># all services: healthy</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>curl<span class="w"> </span>localhost:8000/health
+<h2 id="4-verify">4. Verify</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>docker-compose<span class="w"> </span>ps<span class="w">           </span><span class="c1"># all services should show: healthy</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>curl<span class="w"> </span>localhost:8000/health
 </code></pre></div>
 <h2 id="service-urls">Service URLs</h2>
 <table>
@@ -1508,8 +1568,8 @@
 </tbody>
 </table>
 <h2 id="stop">Stop</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>docker-compose<span class="w"> </span>down<span class="w">         </span><span class="c1"># stop, keep data</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>docker-compose<span class="w"> </span>down<span class="w"> </span>-v<span class="w">      </span><span class="c1"># stop and delete all volumes</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>docker-compose<span class="w"> </span>down<span class="w">         </span><span class="c1"># stop, keep data</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>docker-compose<span class="w"> </span>down<span class="w"> </span>-v<span class="w">      </span><span class="c1"># stop and delete all volumes</span>
 </code></pre></div>
 
 
@@ -1612,6 +1672,8 @@
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@11/dist/mermaid.min.js"></script>
       
     
   </body>

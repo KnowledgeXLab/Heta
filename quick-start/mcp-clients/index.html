@@ -24,7 +24,7 @@
         
       
       
-      <link rel="icon" href="../../assets/images/favicon.png">
+      <link rel="icon" href="../../images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
@@ -54,6 +54,8 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
     
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -96,7 +98,7 @@
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../.." title="Heta" class="md-header__button md-logo" aria-label="Heta" data-md-component="logo">
       
-  <img src="../../images/banner.png" alt="logo">
+  <img src="../../images/logo.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -439,7 +441,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href="../.." title="Heta" class="md-nav__button md-logo" aria-label="Heta" data-md-component="logo">
       
-  <img src="../../images/banner.png" alt="logo">
+  <img src="../../images/logo.png" alt="logo">
 
     </a>
     Heta
@@ -1440,16 +1442,13 @@
 <p>Refer to your client's MCP configuration documentation. Use the URLs above.</p>
 <hr />
 <h2 id="recommended-agent-setup">Recommended Agent Setup</h2>
-<p>The fastest way to give an AI agent full access to Heta:</p>
 <p><strong>1. Start the stack</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>docker-compose<span class="w"> </span>up<span class="w"> </span>-d
 </code></pre></div>
-<p><strong>2. Register both MCP servers</strong> in your client (see above).</p>
-<p><strong>3. Load the querying skill</strong></p>
-<p>Claude Code picks it up automatically from the <code>skills/</code> directory. For other clients, copy the skill content into your agent's system prompt:</p>
+<p><strong>2. Load the skill into your agent</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>skills/querying-knowledge-and-memory/SKILL.md
 </code></pre></div>
-<p>The skill teaches the agent which system to use for each query type and the correct three-step retrieval order (MemoryVG → HetaDB → store back). See <a href="../../hetamem/querying-skill/">Querying Skill</a> for the full guide.</p>
+<p>See <a href="../../hetamem/querying-skill/">Querying Skill</a> for details.</p>
 
 
 
@@ -1551,6 +1550,8 @@
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@11/dist/mermaid.min.js"></script>
       
     
   </body>

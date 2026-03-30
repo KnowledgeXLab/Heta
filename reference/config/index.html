@@ -24,7 +24,7 @@
         
       
       
-      <link rel="icon" href="../../assets/images/favicon.png">
+      <link rel="icon" href="../../images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
@@ -54,6 +54,8 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
     
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -96,7 +98,7 @@
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../.." title="Heta" class="md-header__button md-logo" aria-label="Heta" data-md-component="logo">
       
-  <img src="../../images/banner.png" alt="logo">
+  <img src="../../images/logo.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -439,7 +441,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href="../.." title="Heta" class="md-nav__button md-logo" aria-label="Heta" data-md-component="logo">
       
-  <img src="../../images/banner.png" alt="logo">
+  <img src="../../images/logo.png" alt="logo">
 
     </a>
     Heta
@@ -1257,28 +1259,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#hetadbfastapi" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        hetadb.fastapi
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#hetadbworkspace" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        hetadb.workspace
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#hetadbllm" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1327,6 +1307,17 @@
     <span class="md-ellipsis">
       
         hetadb.query_defaults
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hetadbsearch_params" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        hetadb.search_params
       
     </span>
   </a>
@@ -1675,28 +1666,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#hetadbfastapi" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        hetadb.fastapi
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#hetadbworkspace" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        hetadb.workspace
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#hetadbllm" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1745,6 +1714,17 @@
     <span class="md-ellipsis">
       
         hetadb.query_defaults
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hetadbsearch_params" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        hetadb.search_params
       
     </span>
   </a>
@@ -1904,55 +1884,70 @@
 
 
 <h1 id="configuration-reference">Configuration Reference</h1>
-<p>This page documents all configuration keys for Heta. Two files are involved:</p>
+<p>Two files control Heta's behaviour:</p>
 <ul>
-<li><strong><code>config.yaml</code></strong> (project root) — API keys, database connections, and per-module model selections. Copy from <code>config.example.yaml</code> and fill in your credentials.</li>
-<li><strong><code>hetadb/config/db_config.yaml</code></strong> — Processing pipeline tuning parameters (batch sizes, worker counts, chunk settings).</li>
+<li><strong><code>config.yaml</code></strong> (project root) — API keys, database connections, and model selections per module. Copy from <code>config.example.yaml</code> and fill in your credentials.</li>
+<li><strong><code>src/hetadb/config/db_config.yaml</code></strong> — Processing pipeline tuning (batch sizes, worker counts, chunking). Rarely needs to change.</li>
 </ul>
-<blockquote>
-<p><strong>Domestic vs international models</strong> — Several sections list both an international default and a domestic (China-hosted) alternative in comments. Either works; choose based on your network environment and compliance requirements.</p>
-</blockquote>
+<p><strong>Required vs optional</strong> — Keys marked <strong>Required</strong> must be set before starting. Everything else has a working default.</p>
 <hr />
 <h2 id="configyaml">config.yaml</h2>
 <h3 id="providers"><code>providers</code></h3>
-<p>LLM and embedding API provider credentials. At least one provider must be configured.</p>
+<p>Credential blocks shared across modules via YAML anchors. Define the providers you use; unused ones can be left empty or removed.</p>
 <table>
 <thead>
 <tr>
 <th>Key</th>
+<th>Required</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>providers.dashscope.api_key</code></td>
+<td>Required (domestic)</td>
 <td>Alibaba Cloud DashScope API key</td>
 </tr>
 <tr>
 <td><code>providers.dashscope.base_url</code></td>
-<td>DashScope OpenAI-compatible endpoint</td>
+<td>—</td>
+<td>DashScope OpenAI-compatible endpoint (pre-filled)</td>
 </tr>
 <tr>
 <td><code>providers.siliconflow.api_key</code></td>
-<td>SiliconFlow API key</td>
+<td>Required</td>
+<td>SiliconFlow API key (used for embeddings)</td>
 </tr>
 <tr>
 <td><code>providers.siliconflow.base_url</code></td>
-<td>SiliconFlow endpoint</td>
+<td>—</td>
+<td>SiliconFlow endpoint (pre-filled)</td>
 </tr>
 <tr>
 <td><code>providers.openai.api_key</code></td>
-<td>OpenAI API key (optional)</td>
+<td>Required (international)</td>
+<td>OpenAI API key</td>
+</tr>
+<tr>
+<td><code>providers.openai.base_url</code></td>
+<td>—</td>
+<td>OpenAI endpoint (pre-filled)</td>
 </tr>
 <tr>
 <td><code>providers.gemini.api_key</code></td>
-<td>Google Gemini API key (optional)</td>
+<td>Required (international)</td>
+<td>Google Gemini API key</td>
+</tr>
+<tr>
+<td><code>providers.gemini.base_url</code></td>
+<td>—</td>
+<td>Gemini OpenAI-compatible endpoint (pre-filled)</td>
 </tr>
 </tbody>
 </table>
 <hr />
 <h3 id="persistence"><code>persistence</code></h3>
-<p>External service connection strings. All three stores must be reachable for full functionality.</p>
+<p>Connection strings for the three backing stores. When using Docker Compose the defaults are pre-configured and require no changes.</p>
 <h4 id="postgresql">PostgreSQL</h4>
 <table>
 <thead>
@@ -1965,27 +1960,27 @@
 <tbody>
 <tr>
 <td><code>persistence.postgresql.host</code></td>
-<td><code>localhost</code></td>
-<td>Database host</td>
+<td><code>postgres</code></td>
+<td>Host name (use <code>localhost</code> outside Docker)</td>
 </tr>
 <tr>
 <td><code>persistence.postgresql.port</code></td>
 <td><code>5432</code></td>
-<td>Database port</td>
+<td>Port</td>
 </tr>
 <tr>
 <td><code>persistence.postgresql.user</code></td>
-<td>—</td>
+<td><code>postgres</code></td>
 <td>Username</td>
 </tr>
 <tr>
 <td><code>persistence.postgresql.password</code></td>
-<td>—</td>
+<td><code>postgres</code></td>
 <td>Password</td>
 </tr>
 <tr>
 <td><code>persistence.postgresql.database</code></td>
-<td>—</td>
+<td><code>postgres</code></td>
 <td>Database name</td>
 </tr>
 </tbody>
@@ -2002,22 +1997,23 @@
 <tbody>
 <tr>
 <td><code>persistence.milvus.host</code></td>
-<td><code>localhost</code></td>
-<td>Milvus host</td>
+<td><code>milvus</code></td>
+<td>Host name</td>
 </tr>
 <tr>
 <td><code>persistence.milvus.port</code></td>
 <td><code>19530</code></td>
-<td>Milvus gRPC port</td>
+<td>gRPC port</td>
 </tr>
 <tr>
 <td><code>persistence.milvus.url</code></td>
-<td>—</td>
-<td>Alternative full URI (overrides host/port if set)</td>
+<td><code>http://milvus:19530</code></td>
+<td>Full URI — overrides host/port when set</td>
 </tr>
 </tbody>
 </table>
 <h4 id="neo4j">Neo4j</h4>
+<p>Used by HetaMem MemoryVG only.</p>
 <table>
 <thead>
 <tr>
@@ -2029,7 +2025,7 @@
 <tbody>
 <tr>
 <td><code>persistence.neo4j.url</code></td>
-<td><code>bolt://localhost:7687</code></td>
+<td><code>bolt://neo4j:7687</code></td>
 <td>Bolt connection URL</td>
 </tr>
 <tr>
@@ -2039,7 +2035,7 @@
 </tr>
 <tr>
 <td><code>persistence.neo4j.password</code></td>
-<td>—</td>
+<td><code>heta_password</code></td>
 <td>Password</td>
 </tr>
 <tr>
@@ -2051,48 +2047,13 @@
 </table>
 <hr />
 <h3 id="hetadb"><code>hetadb</code></h3>
-<p>Settings for the HetaDB document-processing and retrieval service.</p>
-<h4 id="hetadbfastapi"><code>hetadb.fastapi</code></h4>
-<table>
-<thead>
-<tr>
-<th>Key</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>hetadb.fastapi.host</code></td>
-<td>Bind host for the HetaDB FastAPI server</td>
-</tr>
-<tr>
-<td><code>hetadb.fastapi.port</code></td>
-<td>Bind port (default <code>8000</code>)</td>
-</tr>
-</tbody>
-</table>
-<h4 id="hetadbworkspace"><code>hetadb.workspace</code></h4>
-<table>
-<thead>
-<tr>
-<th>Key</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>hetadb.workspace</code></td>
-<td>Absolute path to the directory where HetaDB stores knowledge base files</td>
-</tr>
-</tbody>
-</table>
 <h4 id="hetadbllm"><code>hetadb.llm</code></h4>
-<p>LLM used for graph extraction and answer synthesis.</p>
+<p>LLM for graph entity/relation extraction and answer synthesis.</p>
 <table>
 <thead>
 <tr>
 <th>Key</th>
-<th>Example value</th>
+<th>Default</th>
 <th>Description</th>
 </tr>
 </thead>
@@ -2100,45 +2061,65 @@
 <tr>
 <td><code>hetadb.llm.model</code></td>
 <td><code>qwen3-32b</code></td>
-<td>Model name passed to the provider API</td>
+<td>Model name</td>
 </tr>
 <tr>
-<td><code>hetadb.llm.provider</code></td>
-<td><code>dashscope</code></td>
-<td>Must match a key under <code>providers</code></td>
+<td><code>hetadb.llm.max_concurrent_requests</code></td>
+<td><code>10</code></td>
+<td>Max parallel LLM calls</td>
+</tr>
+<tr>
+<td><code>hetadb.llm.max_retries</code></td>
+<td><code>3</code></td>
+<td>Retry attempts on failure</td>
+</tr>
+<tr>
+<td><code>hetadb.llm.timeout</code></td>
+<td><code>120</code></td>
+<td>Request timeout in seconds</td>
 </tr>
 </tbody>
 </table>
 <h4 id="hetadbvlm"><code>hetadb.vlm</code></h4>
-<p>Vision-language model used for image and PDF page understanding.</p>
+<p>Vision-language model for PDF page and image understanding.</p>
 <table>
 <thead>
 <tr>
 <th>Key</th>
-<th>Example value</th>
+<th>Default</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>hetadb.vlm.model</code></td>
-<td><code>qwen2.5-vl</code></td>
+<td><code>qwen2.5-vl-72b-instruct</code></td>
 <td>VLM model name</td>
 </tr>
 <tr>
-<td><code>hetadb.vlm.provider</code></td>
-<td><code>dashscope</code></td>
-<td>Must match a key under <code>providers</code></td>
+<td><code>hetadb.vlm.max_concurrent_requests</code></td>
+<td><code>10</code></td>
+<td>Max parallel VLM calls</td>
+</tr>
+<tr>
+<td><code>hetadb.vlm.max_retries</code></td>
+<td><code>5</code></td>
+<td>Retry attempts on failure</td>
+</tr>
+<tr>
+<td><code>hetadb.vlm.timeout</code></td>
+<td><code>120</code></td>
+<td>Request timeout in seconds</td>
 </tr>
 </tbody>
 </table>
 <h4 id="hetadbembedding_api"><code>hetadb.embedding_api</code></h4>
-<p>Embedding model for vector indexing.</p>
+<p>Embedding model for chunk and node vector indexing.</p>
 <table>
 <thead>
 <tr>
 <th>Key</th>
-<th>Example value</th>
+<th>Default</th>
 <th>Description</th>
 </tr>
 </thead>
@@ -2151,33 +2132,59 @@
 <tr>
 <td><code>hetadb.embedding_api.dim</code></td>
 <td><code>1024</code></td>
-<td>Embedding dimension; must match the Milvus collection schema</td>
+<td>Vector dimension — must match Milvus collection schema</td>
 </tr>
 <tr>
-<td><code>hetadb.embedding_api.provider</code></td>
-<td><code>siliconflow</code></td>
-<td>Provider serving the embedding model</td>
+<td><code>hetadb.embedding_api.timeout</code></td>
+<td><code>30</code></td>
+<td>Request timeout in seconds</td>
+</tr>
+<tr>
+<td><code>hetadb.embedding_api.batch_size</code></td>
+<td><code>2000</code></td>
+<td>Records per embedding queue batch</td>
+</tr>
+<tr>
+<td><code>hetadb.embedding_api.num_threads</code></td>
+<td><code>8</code></td>
+<td>Parallel worker threads for embedding</td>
+</tr>
+<tr>
+<td><code>hetadb.embedding_api.max_retries</code></td>
+<td><code>5</code></td>
+<td>Retry attempts on failure</td>
+</tr>
+<tr>
+<td><code>hetadb.embedding_api.retry_delay</code></td>
+<td><code>2</code></td>
+<td>Initial retry delay in seconds (doubles each retry)</td>
 </tr>
 </tbody>
 </table>
 <h4 id="hetadbmilvus"><code>hetadb.milvus</code></h4>
-<p>Milvus collection settings for HetaDB.</p>
 <table>
 <thead>
 <tr>
 <th>Key</th>
+<th>Default</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>hetadb.milvus.collection_prefix</code></td>
-<td>Prefix prepended to all HetaDB Milvus collection names</td>
+<td><code>hetadb.milvus.db_name</code></td>
+<td><code>hetadb</code></td>
+<td>Milvus database name for HetaDB collections</td>
+</tr>
+<tr>
+<td><code>hetadb.milvus.sentence_mode</code></td>
+<td><code>false</code></td>
+<td>Use sentence-level chunking instead of paragraph-level</td>
 </tr>
 </tbody>
 </table>
 <h4 id="hetadbquery_defaults"><code>hetadb.query_defaults</code></h4>
-<p>Default retrieval parameters applied when the caller does not specify them explicitly.</p>
+<p>Default retrieval parameters when the caller does not specify them.</p>
 <table>
 <thead>
 <tr>
@@ -2193,6 +2200,11 @@
 <td>Vector candidate pool size per query</td>
 </tr>
 <tr>
+<td><code>hetadb.query_defaults.threshold</code></td>
+<td><code>0.0</code></td>
+<td>Minimum similarity score to include a result</td>
+</tr>
+<tr>
 <td><code>hetadb.query_defaults.similarity_weight</code></td>
 <td><code>1.5</code></td>
 <td>Weight multiplier for vector similarity scores</td>
@@ -2200,146 +2212,150 @@
 <tr>
 <td><code>hetadb.query_defaults.occur_weight</code></td>
 <td><code>1.0</code></td>
-<td>Weight multiplier for occurrence-based (KG) scores</td>
+<td>Weight multiplier for KG occurrence counts</td>
+</tr>
+<tr>
+<td><code>hetadb.query_defaults.reranker_url</code></td>
+<td><em>(unset)</em></td>
+<td>Base URL of a self-hosted cross-encoder reranker service. Required to enable full <code>rerank</code> mode; if unset, <code>rerank</code> falls back to RRF ordering without cross-encoder scoring. Expected API: <code>POST /rerank</code> with body <code>{"pairs": [["query", "doc"], ...]}</code> returning <code>{"scores": [...]}</code>. Recommended model: Qwen3-Reranker.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="hetadbsearch_params"><code>hetadb.search_params</code></h4>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>hetadb.search_params.ef_multiplier</code></td>
+<td><code>10</code></td>
+<td>HNSW ef = top_k × ef_multiplier; higher = more accurate but slower</td>
 </tr>
 </tbody>
 </table>
 <hr />
 <h3 id="hetamem"><code>hetamem</code></h3>
-<p>Settings for the HetaMem episodic and knowledge-graph memory service.</p>
 <h4 id="hetamemmemorykb"><code>hetamem.memorykb</code></h4>
-<p>MemoryKB is backed by LightRAG (NanoVectorDB + NetworkX). It uses lighter-weight models suitable for lower-latency personal memory.</p>
+<p>MemoryKB uses LightRAG (NanoVectorDB + NetworkX) — lightweight and low-latency.</p>
 <table>
 <thead>
 <tr>
 <th>Key</th>
-<th>Example value</th>
-<th>Description</th>
+<th>Default</th>
+<th>Domestic alternative</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>hetamem.memorykb.llm.model</code></td>
-<td><code>gpt-4o-mini</code></td>
-<td>LLM for entity extraction and synthesis. Domestic alternative: <code>qwen-turbo</code> via DashScope.</td>
-</tr>
-<tr>
-<td><code>hetamem.memorykb.llm.provider</code></td>
-<td><code>openai</code></td>
-<td>Provider for the LLM</td>
+<td><code>gpt-4o-mini-2024-07-18</code></td>
+<td><code>qwen-plus</code> via DashScope</td>
 </tr>
 <tr>
 <td><code>hetamem.memorykb.embedding.model</code></td>
 <td><code>text-embedding-3-small</code></td>
-<td>Embedding model. Domestic alternative: <code>text-embedding-v3</code> via DashScope.</td>
+<td><code>text-embedding-v4</code> via DashScope</td>
 </tr>
 <tr>
 <td><code>hetamem.memorykb.embedding.dim</code></td>
 <td><code>1536</code></td>
-<td>Embedding dimension</td>
-</tr>
-<tr>
-<td><code>hetamem.memorykb.embedding.provider</code></td>
-<td><code>openai</code></td>
-<td>Provider for the embedding model</td>
+<td><code>1536</code></td>
 </tr>
 </tbody>
 </table>
 <h4 id="hetamemmemoryvg"><code>hetamem.memoryvg</code></h4>
-<p>MemoryVG is backed by Milvus (vector store) and Neo4j (graph store), designed for structured fact extraction from multi-turn conversations.</p>
+<p>MemoryVG uses Milvus + Neo4j for structured fact storage across conversations.</p>
 <table>
 <thead>
 <tr>
 <th>Key</th>
-<th>Example value</th>
-<th>Description</th>
+<th>Default</th>
+<th>Domestic alternative</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>hetamem.memoryvg.llm.model</code></td>
+<td><code>hetamem.memoryvg.llm.config.model</code></td>
 <td><code>qwen3-32b</code></td>
-<td>LLM for fact extraction and memory reconciliation</td>
+<td>same</td>
 </tr>
 <tr>
-<td><code>hetamem.memoryvg.llm.provider</code></td>
-<td><code>dashscope</code></td>
-<td>Provider for the LLM</td>
-</tr>
-<tr>
-<td><code>hetamem.memoryvg.embedder.model</code></td>
+<td><code>hetamem.memoryvg.embedder.config.model</code></td>
 <td><code>text-embedding-3-large</code></td>
-<td>Embedding model for semantic memory search</td>
+<td><code>BAAI/bge-m3</code> via SiliconFlow</td>
 </tr>
 <tr>
-<td><code>hetamem.memoryvg.embedder.dim</code></td>
+<td><code>hetamem.memoryvg.embedder.config.embedding_dims</code></td>
 <td><code>1024</code></td>
-<td>Embedding dimension</td>
+<td><code>1024</code></td>
 </tr>
 <tr>
-<td><code>hetamem.memoryvg.embedder.provider</code></td>
-<td><code>openai</code></td>
-<td>Provider for the embedder. Domestic alternative: <code>text-embedding-v3</code> via DashScope.</td>
-</tr>
-<tr>
-<td><code>hetamem.memoryvg.vector_store.collection</code></td>
+<td><code>hetamem.memoryvg.vector_store.config.collection_name</code></td>
 <td><code>memoryvg</code></td>
 <td>Milvus collection name</td>
 </tr>
 <tr>
-<td><code>hetamem.memoryvg.graph_store</code></td>
-<td><em>(uses <code>persistence.neo4j</code>)</em></td>
-<td>Inherits Neo4j connection from the <code>persistence</code> block</td>
+<td><code>hetamem.memoryvg.vector_store.config.db_name</code></td>
+<td><code>hetamem</code></td>
+<td>Milvus database name</td>
 </tr>
 </tbody>
 </table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code>hetamem.memoryvg.graph_store</code> inherits Neo4j credentials from <code>persistence.neo4j</code> — no separate config needed.</p>
+</div>
 <hr />
 <h3 id="hetagen"><code>hetagen</code></h3>
-<p>Settings for the HetaGen table and knowledge-tree generation service.</p>
 <table>
 <thead>
 <tr>
 <th>Key</th>
-<th>Example value</th>
-<th>Description</th>
+<th>Default</th>
+<th>Domestic alternative</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>hetagen.llm.model</code></td>
 <td><code>gemini-3-flash-preview</code></td>
-<td>LLM for table schema and SQL generation</td>
+<td><code>qwen3-32b</code> via DashScope</td>
 </tr>
 <tr>
-<td><code>hetagen.llm.provider</code></td>
-<td><code>gemini</code></td>
-<td>Provider for the LLM</td>
+<td><code>hetagen.llm.max_concurrent_requests</code></td>
+<td><code>10</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>hetagen.llm.timeout</code></td>
+<td><code>120</code></td>
+<td>—</td>
 </tr>
 <tr>
 <td><code>hetagen.vlm.model</code></td>
-<td><code>Qwen3-VL-32B</code></td>
-<td>VLM for visual table understanding</td>
-</tr>
-<tr>
-<td><code>hetagen.vlm.provider</code></td>
-<td><code>dashscope</code></td>
-<td>Provider for the VLM</td>
+<td><code>Qwen/Qwen3-VL-32B-Instruct</code></td>
+<td>same</td>
 </tr>
 <tr>
 <td><code>hetagen.embedding_api.model</code></td>
 <td><code>BAAI/bge-m3</code></td>
-<td>Embedding model for retrieval</td>
+<td>same</td>
 </tr>
 <tr>
-<td><code>hetagen.embedding_api.provider</code></td>
-<td><code>siliconflow</code></td>
-<td>Provider for the embedding model</td>
+<td><code>hetagen.embedding_api.dim</code></td>
+<td><code>1024</code></td>
+<td>—</td>
 </tr>
 </tbody>
 </table>
 <hr />
 <h2 id="db_configyaml">db_config.yaml</h2>
-<p>Pipeline tuning parameters for HetaDB document processing. Located at <code>src/hetadb/config/db_config.yaml</code>. These values rarely need to change; adjust them when scaling to larger datasets or more powerful hardware.</p>
+<p>Located at <code>src/hetadb/config/db_config.yaml</code>. Controls document processing pipeline throughput. The defaults work well for most hardware; adjust when scaling to large datasets.</p>
 <h3 id="top-level">Top-level</h3>
 <table>
 <thead>
@@ -2358,12 +2374,11 @@
 <tr>
 <td><code>parse_max_workers</code></td>
 <td><code>2</code></td>
-<td>Maximum number of concurrent document parse tasks running at the same time</td>
+<td>Max concurrent document parse tasks</td>
 </tr>
 </tbody>
 </table>
 <h3 id="parameterchunk_config"><code>parameter.chunk_config</code></h3>
-<p>Controls text chunking during document preprocessing.</p>
 <table>
 <thead>
 <tr>
@@ -2391,7 +2406,6 @@
 </tbody>
 </table>
 <h3 id="parametergraph_config"><code>parameter.graph_config</code></h3>
-<p>Controls knowledge graph extraction from chunks.</p>
 <table>
 <thead>
 <tr>
@@ -2404,17 +2418,16 @@
 <tr>
 <td><code>batch_size</code></td>
 <td><code>2000</code></td>
-<td>Number of chunks per graph extraction batch</td>
+<td>Chunks per graph extraction batch</td>
 </tr>
 <tr>
 <td><code>max_workers</code></td>
 <td><code>200</code></td>
-<td>Maximum concurrent LLM calls for entity/relation extraction</td>
+<td>Max concurrent LLM calls for entity/relation extraction</td>
 </tr>
 </tbody>
 </table>
 <h3 id="parametergraph_merge_config"><code>parameter.graph_merge_config</code></h3>
-<p>Controls deduplication and merging of extracted graph nodes and relations.</p>
 <table>
 <thead>
 <tr>
@@ -2427,7 +2440,7 @@
 <tr>
 <td><code>parallel_batches</code></td>
 <td><code>16</code></td>
-<td>Number of merge batches to process in parallel</td>
+<td>Merge batches to process in parallel</td>
 </tr>
 <tr>
 <td><code>batch_size</code></td>
@@ -2437,7 +2450,6 @@
 </tbody>
 </table>
 <h3 id="parametervector_config"><code>parameter.vector_config</code></h3>
-<p>Controls embedding and vector index population.</p>
 <table>
 <thead>
 <tr>
@@ -2560,6 +2572,8 @@
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@11/dist/mermaid.min.js"></script>
       
     
   </body>

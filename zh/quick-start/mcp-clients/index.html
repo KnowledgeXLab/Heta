@@ -24,7 +24,7 @@
         
       
       
-      <link rel="icon" href="../../../assets/images/favicon.png">
+      <link rel="icon" href="../../../images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
@@ -54,6 +54,8 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
     
     <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -96,7 +98,7 @@
   <nav class="md-header__inner md-grid" aria-label="页眉">
     <a href="../../" title="Heta" class="md-header__button md-logo" aria-label="Heta" data-md-component="logo">
       
-  <img src="../../../images/banner.png" alt="logo">
+  <img src="../../../images/logo.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -439,7 +441,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href="../../" title="Heta" class="md-nav__button md-logo" aria-label="Heta" data-md-component="logo">
       
-  <img src="../../../images/banner.png" alt="logo">
+  <img src="../../../images/logo.png" alt="logo">
 
     </a>
     Heta
@@ -1440,16 +1442,13 @@
 <p>请参考各客户端的 MCP 配置文档，使用上方地址进行注册。</p>
 <hr />
 <h2 id="_1">推荐的智能体配置</h2>
-<p>让 AI 智能体完整访问 Heta 的最快方式：</p>
 <p><strong>1. 启动服务栈</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>docker-compose<span class="w"> </span>up<span class="w"> </span>-d
 </code></pre></div>
-<p><strong>2. 在客户端中注册两个 MCP 服务器</strong>（参见上方）。</p>
-<p><strong>3. 加载查询技能</strong></p>
-<p>Claude Code 会自动从 <code>skills/</code> 目录加载技能。对于其他客户端，将技能内容复制到智能体的系统提示中：</p>
+<p><strong>2. 将技能加载给 Agent</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>skills/querying-knowledge-and-memory/SKILL.md
 </code></pre></div>
-<p>该技能会告诉智能体针对不同查询类型应使用哪个系统，以及正确的三步检索顺序（MemoryVG → HetaDB → 存回）。详见<a href="../../hetamem/querying-skill/">查询技能</a>。</p>
+<p>详见<a href="../../hetamem/querying-skill/">查询技能</a>。</p>
 
 
 
@@ -1551,6 +1550,8 @@
     
     
       <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@11/dist/mermaid.min.js"></script>
       
     
   </body>

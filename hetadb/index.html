@@ -24,7 +24,7 @@
         
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
@@ -54,6 +54,8 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
     
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -96,7 +98,7 @@
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href=".." title="Heta" class="md-header__button md-logo" aria-label="Heta" data-md-component="logo">
       
-  <img src="../images/banner.png" alt="logo">
+  <img src="../images/logo.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -439,7 +441,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href=".." title="Heta" class="md-nav__button md-logo" aria-label="Heta" data-md-component="logo">
       
-  <img src="../images/banner.png" alt="logo">
+  <img src="../images/logo.png" alt="logo">
 
     </a>
     Heta
@@ -1336,19 +1338,19 @@ questions with LLM-synthesised responses and inline citations.</p>
 </tr>
 <tr>
 <td>Spreadsheets</td>
-<td><code>.xlsx</code>, <code>.xls</code></td>
+<td><code>.xlsx</code>, <code>.xls</code>, <code>.csv</code>, <code>.ods</code></td>
 </tr>
 <tr>
 <td>Images</td>
-<td><code>.png</code>, <code>.jpg</code>, <code>.jpeg</code>, <code>.bmp</code>, <code>.tiff</code></td>
+<td><code>.png</code>, <code>.jpg</code>, <code>.jpeg</code>, <code>.gif</code>, <code>.webp</code>, <code>.bmp</code>, <code>.tiff</code></td>
 </tr>
 <tr>
-<td>Web / markup</td>
-<td><code>.html</code>, <code>.htm</code>, <code>.md</code></td>
+<td>Plain text / markup</td>
+<td><code>.txt</code>, <code>.text</code>, <code>.md</code>, <code>.markdown</code>, <code>.html</code></td>
 </tr>
 <tr>
 <td>Archives</td>
-<td><code>.zip</code> (contents processed recursively)</td>
+<td><code>.zip</code>, <code>.7z</code>, <code>.rar</code>, <code>.tar</code>, <code>.tar.gz</code>, <code>.tar.xz</code>, <code>.tar.bz2</code></td>
 </tr>
 </tbody>
 </table>
@@ -1367,37 +1369,37 @@ questions with LLM-synthesised responses and inline citations.</p>
 <tr>
 <td>1</td>
 <td><strong>File parsing</strong></td>
-<td>Convert raw bytes to structured text/tables; OCR for images and scanned PDFs</td>
+<td>Four parser types run concurrently: <code>doc_parser</code> for PDF/DOC/DOCX/PPT/PPTX (extracts text, tables, and embedded images); <code>html_parser</code> for HTML; <code>text_parser</code> for TXT/MD; <code>sheet_parser</code> for CSV/XLS/XLSX (LLM generates table schema and descriptions, piped into the text stream). Second phase (serial): <code>image_parser</code> uses VLM to generate text descriptions for standalone images and images embedded in documents. Archives (ZIP/7Z/RAR/TAR) are recursively extracted before parsing</td>
 </tr>
 <tr>
 <td>2</td>
 <td><strong>Text chunking</strong></td>
-<td>Split text into overlapping chunks sized for your embedding model</td>
+<td>Split text into overlapping token-based chunks; LLM-assisted merge of semantically similar chunks (intermediate chunk vectors stored in Milvus). <strong>Rechunk</strong>: post-merge chunks are grouped by source document, each document's chunk tokens are concatenated and re-split uniformly; every new chunk records a <code>source_chunk</code> provenance field. Final rechunked chunks written to PostgreSQL</td>
 </tr>
 <tr>
 <td>3</td>
 <td><strong>Graph extraction</strong></td>
-<td>LLM identifies entities and relations; Union-Find deduplication merges duplicates</td>
+<td>LLM concurrently extracts entities and relations from the rechunked chunks produced in stage 2; raw output written as JSONL to <code>kg_file/rechunked/</code> (no merging at this stage)</td>
 </tr>
 <tr>
 <td>4</td>
 <td><strong>Node processing</strong></td>
-<td>Embed entity descriptions; persist nodes to Neo4j</td>
+<td>LLM dedup → embedding → vector-similarity cluster merge → Milvus semantic dedup; final nodes stored in Milvus (embeddings) and PostgreSQL (metadata)</td>
 </tr>
 <tr>
 <td>5</td>
 <td><strong>Relation processing</strong></td>
-<td>Embed relation summaries; persist edges to Neo4j</td>
+<td>Node ID mapping applied; LLM dedup → embedding → cluster merge → Milvus semantic dedup; final relations stored in Milvus (embeddings) and PostgreSQL (metadata and relation-chunk provenance)</td>
 </tr>
 <tr>
 <td>6</td>
 <td><strong>Table embedding</strong></td>
-<td>Embed and store table chunks in Milvus for hybrid retrieval</td>
+<td>CSV files processed by LLM to generate table schema; raw data loaded into PostgreSQL; table node embeddings written to Milvus entity collection; enables natural-language-to-SQL queries</td>
 </tr>
 </tbody>
 </table>
-<p>The job is fully asynchronous. Poll <code>/api/v1/hetadb/files/parse/status</code> until
-<code>status</code> is <code>"completed"</code> before issuing chat queries.</p>
+<p>The job is fully asynchronous. Poll <code>GET /api/v1/hetadb/files/processing/tasks/{task_id}</code>
+(using the task ID returned by the parse call) until <code>status</code> is <code>"completed"</code> before issuing chat queries.</p>
 <hr />
 <h2 id="query-modes">Query Modes</h2>
 <table>
@@ -1544,6 +1546,8 @@ questions with LLM-synthesised responses and inline citations.</p>
     
     
       <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@11/dist/mermaid.min.js"></script>
       
     
   </body>

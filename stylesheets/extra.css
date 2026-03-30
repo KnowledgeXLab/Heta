@@ -1,0 +1,19 @@
+/* Align docs header color with Heta frontend brand orange (#c96a2e) */
+:root,
+[data-md-color-scheme="default"] {
+  --md-primary-fg-color:        #c96a2e;
+  --md-primary-fg-color--light: #d4845a;
+  --md-primary-fg-color--dark:  #b05a22;
+  --md-primary-bg-color:        #ffffff;
+  --md-primary-bg-color--light: rgba(255, 255, 255, 0.7);
+  --md-accent-fg-color:         #c96a2e;
+}
+
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color:        #c96a2e;
+  --md-primary-fg-color--light: #d4845a;
+  --md-primary-fg-color--dark:  #b05a22;
+  --md-primary-bg-color:        #ffffff;
+  --md-primary-bg-color--light: rgba(255, 255, 255, 0.7);
+  --md-accent-fg-color:         #c96a2e;
+}

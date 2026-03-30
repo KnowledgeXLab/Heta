@@ -24,7 +24,7 @@
         
       
       
-      <link rel="icon" href="../../assets/images/favicon.png">
+      <link rel="icon" href="../../images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
@@ -54,6 +54,8 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
     
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -96,7 +98,7 @@
   <nav class="md-header__inner md-grid" aria-label="页眉">
     <a href="../" title="Heta" class="md-header__button md-logo" aria-label="Heta" data-md-component="logo">
       
-  <img src="../../images/banner.png" alt="logo">
+  <img src="../../images/logo.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -439,7 +441,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href="../" title="Heta" class="md-nav__button md-logo" aria-label="Heta" data-md-component="logo">
       
-  <img src="../../images/banner.png" alt="logo">
+  <img src="../../images/logo.png" alt="logo">
 
     </a>
     Heta
@@ -1181,24 +1183,6 @@
         
       
       
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    FAQ
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -1215,58 +1199,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="目录">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      目录
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        基础问题
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        安装配置
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#mcp" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        MCP 集成
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
       
     </li>
   
@@ -1319,47 +1251,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      目录
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        基础问题
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        安装配置
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#mcp" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        MCP 集成
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -1379,67 +1270,8 @@
 
 
 <h1 id="_1">常见问题</h1>
-<h2 id="_2">基础问题</h2>
 <p><strong>HetaDB 和 HetaMem 有什么区别？</strong></p>
 <p>HetaDB 用于存储和检索<strong>人工上传文档</strong>（PDF、表格等）中的知识。HetaMem 用于存储<strong>智能体生成的观察记录</strong>——从对话中提取的事实（MemoryVG）以及随时间积累的长期知识（MemoryKB）。可以将 HetaDB 理解为文档资料库，将 HetaMem 理解为智能体的个人记忆。</p>
-<p><strong>应该使用哪种查询模式？</strong></p>
-<table>
-<thead>
-<tr>
-<th>使用场景</th>
-<th>推荐模式</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>一般问题、快速响应</td>
-<td><code>naive</code></td>
-</tr>
-<tr>
-<td>最高精度、精确查找</td>
-<td><code>rerank</code></td>
-</tr>
-<tr>
-<td>模糊或歧义问题</td>
-<td><code>rewriter</code></td>
-</tr>
-<tr>
-<td>多步推理、复杂分析</td>
-<td><code>multihop</code></td>
-</tr>
-<tr>
-<td>直接让 LLM 回答，无需检索</td>
-<td><code>direct</code></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Heta 支持中英文以外的语言吗？</strong></p>
-<p>HetaDB 使用 MinerU 进行文档解析，支持 109 种语言。基于 LLM 的组件（知识图谱提取、查询合成）的语言支持取决于所配置的 LLM 提供商。</p>
-<hr />
-<h2 id="_3">安装配置</h2>
-<p><strong>Docker Compose 提示服务 "unhealthy"，该怎么排查？</strong></p>
-<ol>
-<li>确认 <code>config.yaml</code> 中已填写 API 密钥——缺少密钥会导致服务静默失败。</li>
-<li>稍作等待——Milvus 和 Neo4j 首次启动可能需要 30–60 秒才能变为健康状态。</li>
-<li>查看日志：<code>docker-compose logs milvus</code> 或 <code>docker-compose logs neo4j</code>。</li>
-<li>检查端口冲突：确保 5432、19530、7474、7687、9000、9001 端口未被占用。</li>
-</ol>
-<p><strong>如何改用国际模型（OpenAI / Gemini）替代 DashScope？</strong></p>
-<p>在 <code>config.yaml</code> 中，将相关节（hetadb.llm、hetamem.memorykb.llm 等）的 <code>&lt;&lt;: *dashscope</code> 替换为 <code>&lt;&lt;: *openai</code>，填入 OpenAI 密钥并更新模型名称。详见<a href="../reference/config/">配置参考</a>。</p>
-<p><strong>能否只运行某一个模块（例如仅运行 HetaDB）？</strong></p>
-<p>可以——直接执行 <code>python src/hetadb/api/main.py</code>。各模块端口分配详见<a href="../quick-start/manual/">手动安装</a>。</p>
-<hr />
-<h2 id="mcp">MCP 集成</h2>
-<p><strong>从 Claude Desktop 无法连接 MCP 服务器，该怎么排查？</strong></p>
-<ol>
-<li>确认 Heta 服务栈正在运行：<code>docker-compose ps</code> 或检查手动启动的进程。</li>
-<li>确认 <code>~/.claude.json</code> 中的 URL 正确——HetaMem 为 <code>http://localhost:8011/mcp/</code>，HetaDB 为 <code>http://localhost:8012/mcp/</code>。</li>
-<li>检查端口是否被防火墙拦截：<code>curl http://localhost:8012/health</code>。</li>
-</ol>
-<p><strong>什么是查询技能？需要使用它吗？</strong></p>
-<p>查询技能（<code>skills/querying-knowledge-and-memory/SKILL.md</code>）是一个提示词，用于指导智能体按正确顺序执行三步检索：先搜索 MemoryVG，其次查询 HetaDB，最后将结果存回。不是必须使用，但能显著提升智能体的检索效果。Claude Code 会自动加载该技能；其他客户端可将其内容复制到系统提示中。详见<a href="../hetamem/querying-skill/">查询技能</a>。</p>
-<p><strong>HetaMem MCP 和 HetaDB MCP 有什么区别？</strong></p>
-<p>HetaMem MCP 提供记忆操作（存储和召回智能体观察记录）。HetaDB MCP 提供知识库查询（从上传的文档中检索）。同时注册两者，智能体才能使用完整的三层检索模式。</p>
 
 
 
@@ -1541,6 +1373,8 @@
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@11/dist/mermaid.min.js"></script>
       
     
   </body>
