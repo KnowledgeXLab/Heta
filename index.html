@@ -1401,26 +1401,25 @@
 <h2 id="key-features">Key Features</h2>
 <p><strong>HetaDB</strong></p>
 <ul>
-<li>Multi-format file parsing via MinerU and other tools (PDF · HTML · images · spreadsheets · Markdown · Office · archives, etc.)</li>
+<li>Multi-format file parsing via MinerU and other tools (PDF, HTML, images, sheets, Markdown, Office file formats, archives, etc.)</li>
 <li>Parsed knowledge is automatically distributed across the appropriate databases — no manual storage decisions required</li>
-<li>Multiple query strategies for different scenarios: <code>naive</code> (vector search) · <code>rerank</code> (BM25 + vector + cross-encoder) · <code>rewriter</code> · <code>multihop</code> (ReAct) · <code>direct</code></li>
+<li>Multiple query strategies for different scenarios: <code>naive</code> (vector search)， <code>rerank</code> (BM25 + vector + cross-encoder)， <code>rewriter</code> (query pptimization)， <code>multihop</code> (ReAct)， <code>direct</code> (direct query)</li>
 <li>Source document tracing to support agentic search workflows</li>
 </ul>
 <p><strong>HetaMem</strong></p>
 <ul>
 <li><strong>MemoryVG</strong> — Lightweight memory for high-frequency, fragmented information: quickly stores and retrieves conversation content, user preferences, and contextual facts; full CRUD + history audit</li>
-<li><strong>MemoryKB</strong> — Long-term knowledge graph built on LightRAG, continuously learning and evolving with the agent</li>
+<li><strong>MemoryKB</strong> — Empowers AI agents with continuous, multimodal memory by combining hierarchical knowledge graphs with fast parametric recall, enabling long-term context understanding and personalized, adaptive interactions.</li>
 </ul>
 <p><strong>HetaGen</strong> <em>(early stage)</em></p>
 <ul>
-<li>Generate structured table data from the knowledge base</li>
+<li>Generates structured tabular data from knowledge bases and supports Text-to-SQL queries on the generated tables</li>
 <li>Automatically construct hierarchical knowledge structures (tag trees) from topics</li>
-<li>Text-to-SQL queries over generated results</li>
 </ul>
 <div class="admonition tip">
 <p class="admonition-title">MCP Integration</p>
-<p>HetaDB and HetaMem expose optional MCP servers (ports 8012 / 8011) for direct integration with Claude Desktop, Cursor, and other MCP-compatible clients.</p>
 </div>
+<p>HetaDB and HetaMem expose optional MCP servers (ports 8012 / 8011) for direct integration with Claude Desktop, Cursor, and other MCP-compatible clients.</p>
 <hr />
 <h2 id="quick-links">Quick Links</h2>
 <ul>
