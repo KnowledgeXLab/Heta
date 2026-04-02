@@ -29,24 +29,23 @@ Heta is an all-in-one knowledge infrastructure for AI agents. It integrates mult
 
 **HetaDB**
 
-- Multi-format file parsing via MinerU and other tools (PDF · HTML · images · spreadsheets · Markdown · Office · archives, etc.)
+- Multi-format file parsing via MinerU and other tools (PDF, HTML, images, sheets, Markdown, Office file formats, archives, etc.)
 - Parsed knowledge is automatically distributed across the appropriate databases — no manual storage decisions required
-- Multiple query strategies for different scenarios: `naive` (vector search) · `rerank` (BM25 + vector + cross-encoder) · `rewriter` · `multihop` (ReAct) · `direct`
+- Multiple query strategies for different scenarios: `naive` (vector search)， `rerank` (BM25 + vector + cross-encoder)， `rewriter` (query pptimization)， `multihop` (ReAct)， `direct` (direct query)
 - Source document tracing to support agentic search workflows
 
 **HetaMem**
 
 - **MemoryVG** — Lightweight memory for high-frequency, fragmented information: quickly stores and retrieves conversation content, user preferences, and contextual facts; full CRUD + history audit
-- **MemoryKB** — Long-term knowledge graph built on LightRAG, continuously learning and evolving with the agent
+- **MemoryKB** — Empowers AI agents with continuous, multimodal memory by combining hierarchical knowledge graphs with fast parametric recall, enabling long-term context understanding and personalized, adaptive interactions.
 
-**HetaGen** *(early stage)*
+**HetaGen** _(early stage)_
 
-- Generate structured table data from the knowledge base
+- Generates structured tabular data from knowledge bases and supports Text-to-SQL queries on the generated tables
 - Automatically construct hierarchical knowledge structures (tag trees) from topics
-- Text-to-SQL queries over generated results
 
 !!! tip "MCP Integration"
-    HetaDB and HetaMem expose optional MCP servers (ports 8012 / 8011) for direct integration with Claude Desktop, Cursor, and other MCP-compatible clients.
+HetaDB and HetaMem expose optional MCP servers (ports 8012 / 8011) for direct integration with Claude Desktop, Cursor, and other MCP-compatible clients.
 
 ---
 
