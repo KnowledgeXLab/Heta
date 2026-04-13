@@ -77,11 +77,11 @@ services:
       - etcd
       - minio
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9091/healthz"]
+      test: ["CMD-SHELL", "curl -f http://localhost:9091/healthz && bash -c 'echo > /dev/tcp/localhost/19530'"]
       interval: 30s
       timeout: 20s
-      retries: 5
-      start_period: 60s
+      retries: 10
+      start_period: 90s
 
   neo4j:
     image: neo4j:5.15
