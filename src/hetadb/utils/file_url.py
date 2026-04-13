@@ -70,8 +70,15 @@ def _init_s3() -> None:
         try:
             _s3_client.head_bucket(Bucket=_s3_bucket)
         except Exception:
-            _s3_client.create_bucket(Bucket=_s3_bucket)
-            logger.info("S3 bucket created: %s", _s3_bucket)
+            try:
+                _s3_client.create_bucket(Bucket=_s3_bucket)
+                logger.info("S3 bucket created: %s", _s3_bucket)
+            except Exception:
+                logger.warning(
+                    "S3 bucket '%s' does not exist and auto-creation failed — "
+                    "uploads will fail until the bucket is created manually",
+                    _s3_bucket, exc_info=True,
+                )
 
     except ImportError:
         logger.warning("boto3 not installed — S3 support unavailable")
