@@ -120,8 +120,9 @@ def dedup_relations(
     input_path: Path,
     mapping_path: Path,
     output_path: Path,
-    workers: int = 8,
-    max_rounds: int = 10,
+    workers: int,
+    max_rounds: int,
+    llm_batch_size: int,
 ) -> None:
     """Multi-round LLM-based relation deduplication.
 
@@ -235,7 +236,6 @@ def dedup_relations(
         node1: str, node2: str, relations: list[dict[str, Any]],
     ) -> tuple[dict[str, Any], list[dict[str, Any]]]:
         """Iterative LLM-based merge: process relations in batches until fully merged."""
-        BATCH_SIZE = 70
         split_relations: list[dict[str, Any]] = []
 
         def _select_main_and_split(parsed_resp: Any) -> dict[str, Any]:
@@ -261,17 +261,17 @@ def dedup_relations(
             logger.error("Unhandled LLM response type: %s", type(parsed_resp))
             return {}
 
-        if len(relations) <= BATCH_SIZE:
+        if len(relations) <= llm_batch_size:
             resp_str = use_llm(prompt=build_prompt(node1, node2, relations))
             parsed = _parse_llm_response(resp_str, logger)
             main_relation = _select_main_and_split(parsed)
             return main_relation, split_relations
 
         accumulated_result = None
-        total_batches = (len(relations) + BATCH_SIZE - 1) // BATCH_SIZE
+        total_batches = (len(relations) + llm_batch_size - 1) // llm_batch_size
         for batch_idx in range(total_batches):
-            start_idx = batch_idx * BATCH_SIZE
-            end_idx = min(start_idx + BATCH_SIZE, len(relations))
+            start_idx = batch_idx * llm_batch_size
+            end_idx = min(start_idx + llm_batch_size, len(relations))
             batch_relations = relations[start_idx:end_idx]
 
             logger.info(
@@ -463,12 +463,12 @@ def embed_rels(
     embedding_timeout: int,
     rels_input_path: str,
     output_dir: str,
-    batch_size: int = 2000,
-    max_file_size_bytes: int = 3 * 1024 * 1024 * 1024,
-    num_threads: int = 8,
-    max_retries: int = 5,
-    retry_delay: int = 2,
-    embedding_dim: int = 1024,
+    batch_size: int,
+    max_file_size_bytes: int,
+    num_threads: int,
+    max_retries: int,
+    retry_delay: int,
+    embedding_dim: int,
 ) -> int:
     """Generate embeddings for deduplicated relations and write to JSONL files."""
     logger.info("Starting relation embedding process")
@@ -509,11 +509,12 @@ def run_rel_merge_pipeline(
     use_llm,
     emb_cfg,
     merge_rel_prompt,
-    batch_size: int = 1000,
-    n: int = 4,
-    sim_threshold: float = 0.85,
-    temperature: float = 0.1,
-    max_workers: int = 32,
+    batch_size: int,
+    n: int,
+    sim_threshold: float,
+    temperature: float,
+    max_workers: int,
+    llm_max_retries: int,
 ) -> None:
     """Batch clustering + LLM merge pipeline for deduplicated relation embeddings.
 
@@ -547,7 +548,7 @@ def run_rel_merge_pipeline(
         ]
 
     def llm_merge_rel_cluster(
-        cluster, temperature: float = 0.2,
+        cluster,
     ) -> tuple[list[dict[str, Any]], dict[str, list[str]]]:
         """Call LLM to merge/split a single cluster of similar relations."""
         if not cluster:
@@ -558,7 +559,7 @@ def run_rel_merge_pipeline(
         prompt = merge_rel_prompt.format(relations_json=relations_json)
 
         parsed = None
-        for _ in range(2):
+        for _ in range(llm_max_retries):
             resp = use_llm(
                 prompt=prompt,
                 response_format={"type": "json_object"},
@@ -877,10 +878,12 @@ def run_rel_milvus_dedup(
     merge_rel_prompt,
     dataset,
     emb_cfg,
-    top_k: int = 10,
-    sync_pg: bool = True,
-    batch_size: int = 100,
-    max_workers: int = 32,
+    top_k: int,
+    batch_size: int,
+    max_workers: int,
+    temperature: float,
+    llm_max_retries: int,
+    sync_pg: bool = True
 ) -> None:
     """Write KG relations to Milvus and deduplicate against existing records.
 
@@ -923,7 +926,7 @@ def run_rel_milvus_dedup(
         }
 
     def llm_merge_relations(
-        records: list[dict[str, Any]], temperature: float = 0.2,
+        records: list[dict[str, Any]],
     ) -> tuple[list[dict[str, Any]], dict[str, list[str]]]:
         """Use LLM to merge a list of relations and return (merged, mapping_table)."""
         if len(records) <= 1:
@@ -934,7 +937,7 @@ def run_rel_milvus_dedup(
         prompt = merge_rel_prompt.format(relations_json=relations_json)
 
         parsed = None
-        for _ in range(2):
+        for _ in range(llm_max_retries):
             resp = use_llm(
                 prompt=prompt,
                 response_format={"type": "json_object"},
@@ -1064,8 +1067,8 @@ def run_rel_milvus_dedup(
     def process_rel_batch_with_milvus(
         collection: Collection,
         batch_records: list[dict[str, Any]],
-        top_k: int = 10,
-        llm_max_workers: int = 32,
+        top_k: int,
+        llm_max_workers: int,
     ) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[str], dict[str, list[str]]]:
         """Process a batch of relation records with Milvus-based similarity dedup.
 

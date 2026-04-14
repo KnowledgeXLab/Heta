@@ -99,19 +99,29 @@ class DatabaseConfig:
 
 @dataclass
 class GraphConfig:
-    chunk_size: int = 1024
-    overlap: int = 50
-    max_batch_bytes: int = 3221225472
-    chunk_max_workers: int = 16
-    batch_size: int = 2000
-    max_workers: int = 16
-    max_file_size_bytes: int = 3221225472
+    chunk_size: int
+    overlap: int
+    max_batch_bytes: int
+    chunk_max_workers: int
+    batch_size: int
+    max_workers: int
+    max_file_size_bytes: int
+    merge_parallel_batches: int
+    merge_batch_size: int
+    merge_llm_batch_size: int
+    merge_max_rounds: int
+    merge_milvus_dedup_batch_size: int
+    merge_llm_max_retries: int
+    merge_node_top_k: int
+    merge_node_sim_threshold: float
+    merge_node_temperature: float
+    merge_rel_top_k: int
+    merge_rel_sim_threshold: float
+    merge_rel_temperature: float
     entity_schema_csv_path: str | None = None
     relation_schema_csv_path: str | None = None
     entity_schema_str: str = ""
     relation_schema_str: str = ""
-    merge_parallel_batches: int = 8
-    merge_batch_size: int = 200
 
 
 @dataclass
@@ -162,6 +172,16 @@ class ConfigManager:
             with open(path, encoding="utf-8") as f:
                 self._db_cfg = yaml.safe_load(f)
         return self._db_cfg
+
+    @staticmethod
+    def _require(d: dict, key: str, section: str):
+        """Retrieve a required field from a config dict, raising on absence."""
+        if key not in d:
+            path = PACKAGE_ROOT / "config" / "db_config.yaml"
+            raise ValueError(
+                f"Missing required field '{section}.{key}' in config file: {path}"
+            )
+        return d[key]
 
     def _load_prompt_config(self) -> dict:
         if self._prompt_cfg is None:
@@ -225,22 +245,35 @@ class ConfigManager:
 
     def get_graph_config(self) -> GraphConfig:
         db = self._load_db_config()
+        req = self._require
         param = db["parameter"]
-        chunk = param["chunk_config"]
-        graph = param["graph_config"]
-        merge = param.get("graph_merge_config", {})
+        chunk = req(param, "chunk_config", "parameter")
+        graph = req(param, "graph_config", "parameter")
+        merge = req(param, "graph_merge_config", "parameter")
+        node_merge = req(merge, "node_merge", "parameter.graph_merge_config")
+        rel_merge = req(merge, "rel_merge", "parameter.graph_merge_config")
         return GraphConfig(
-            chunk_size=chunk["chunk_size"],
-            overlap=chunk["overlap"],
-            max_batch_bytes=chunk.get("max_batch_bytes", 3221225472),
-            chunk_max_workers=chunk.get("max_workers", 16),
-            batch_size=graph["batch_size"],
-            max_workers=graph["max_workers"],
-            max_file_size_bytes=graph.get("max_file_size_bytes", 3221225472),
+            chunk_size=req(chunk, "chunk_size", "parameter.chunk_config"),
+            overlap=req(chunk, "overlap", "parameter.chunk_config"),
+            max_batch_bytes=req(chunk, "max_batch_bytes", "parameter.chunk_config"),
+            chunk_max_workers=req(chunk, "max_workers", "parameter.chunk_config"),
+            batch_size=req(graph, "batch_size", "parameter.graph_config"),
+            max_workers=req(graph, "max_workers", "parameter.graph_config"),
+            max_file_size_bytes=req(graph, "max_file_size_bytes", "parameter.graph_config"),
             entity_schema_csv_path=graph.get("entity_schema_csv_path") or None,
             relation_schema_csv_path=graph.get("relation_schema_csv_path") or None,
-            merge_parallel_batches=merge.get("parallel_batches", 8),
-            merge_batch_size=merge.get("batch_size", 200),
+            merge_parallel_batches=req(merge, "parallel_batches", "parameter.graph_merge_config"),
+            merge_batch_size=req(merge, "batch_size", "parameter.graph_merge_config"),
+            merge_llm_batch_size=req(merge, "llm_batch_size", "parameter.graph_merge_config"),
+            merge_max_rounds=req(merge, "max_rounds", "parameter.graph_merge_config"),
+            merge_milvus_dedup_batch_size=req(merge, "milvus_dedup_batch_size", "parameter.graph_merge_config"),
+            merge_llm_max_retries=req(merge, "llm_max_retries", "parameter.graph_merge_config"),
+            merge_node_top_k=req(node_merge, "top_k", "parameter.graph_merge_config.node_merge"),
+            merge_node_sim_threshold=req(node_merge, "sim_threshold", "parameter.graph_merge_config.node_merge"),
+            merge_node_temperature=req(node_merge, "temperature", "parameter.graph_merge_config.node_merge"),
+            merge_rel_top_k=req(rel_merge, "top_k", "parameter.graph_merge_config.rel_merge"),
+            merge_rel_sim_threshold=req(rel_merge, "sim_threshold", "parameter.graph_merge_config.rel_merge"),
+            merge_rel_temperature=req(rel_merge, "temperature", "parameter.graph_merge_config.rel_merge"),
         )
 
     def get_parse_max_workers(self) -> int:
@@ -573,6 +606,8 @@ def run_node_processing(paths: DatasetPaths, config: ProcessorConfig) -> None:
         input_path=paths.original_kg_node_input_path,
         output_path=paths.dedup_kg_node_output_path,
         workers=config.llm_config.max_concurrent_requests,
+        max_rounds=config.graph_config.merge_max_rounds,
+        llm_batch_size=config.graph_config.merge_llm_batch_size,
     )
     logger.info("Node dedup done in %.1fs", time.time() - start)
 
@@ -601,7 +636,10 @@ def run_node_processing(paths: DatasetPaths, config: ProcessorConfig) -> None:
         merge_cluster_prompt=config.prompt_config.merge_cluster_prompt,
         batch_size=config.graph_config.merge_batch_size,
         n=config.graph_config.merge_parallel_batches,
+        sim_threshold=config.graph_config.merge_node_sim_threshold,
+        temperature=config.graph_config.merge_node_temperature,
         max_workers=config.llm_config.max_concurrent_requests,
+        llm_max_retries=config.graph_config.merge_llm_max_retries,
     )
     run_milvus_dedup(
         input_data_dir=str(paths.batch_kg_node_merge_output_path),
@@ -610,7 +648,11 @@ def run_node_processing(paths: DatasetPaths, config: ProcessorConfig) -> None:
         merge_cluster_prompt=config.prompt_config.merge_cluster_prompt,
         dataset=f"{paths.kb_name}__{paths.dataset}",
         emb_cfg=config.embedding_cfg,
+        top_k=config.graph_config.merge_node_top_k,
+        batch_size=config.graph_config.merge_milvus_dedup_batch_size,
         max_workers=config.llm_config.max_concurrent_requests,
+        temperature=config.graph_config.merge_node_temperature,
+        llm_max_retries=config.graph_config.merge_llm_max_retries,
     )
     merge_mappings_adaptive(
         batch_merge_dir=str(paths.batch_kg_node_merge_output_path),
@@ -636,6 +678,8 @@ def run_relation_processing(paths: DatasetPaths, config: ProcessorConfig) -> Non
         mapping_path=paths.mapping_path,
         output_path=paths.dedup_kg_rel_output_path,
         workers=config.llm_config.max_concurrent_requests,
+        max_rounds=config.graph_config.merge_max_rounds,
+        llm_batch_size=config.graph_config.merge_llm_batch_size,
     )
     logger.info("Relation dedup done in %.1fs", time.time() - start)
 
@@ -664,7 +708,10 @@ def run_relation_processing(paths: DatasetPaths, config: ProcessorConfig) -> Non
         merge_rel_prompt=config.prompt_config.merge_rel_prompt,
         batch_size=config.graph_config.merge_batch_size,
         n=config.graph_config.merge_parallel_batches,
+        sim_threshold=config.graph_config.merge_rel_sim_threshold,
+        temperature=config.graph_config.merge_rel_temperature,
         max_workers=config.llm_config.max_concurrent_requests,
+        llm_max_retries=config.graph_config.merge_llm_max_retries,
     )
     run_rel_milvus_dedup(
         input_data_dir=str(paths.batch_kg_rel_merge_output_path),
@@ -673,7 +720,11 @@ def run_relation_processing(paths: DatasetPaths, config: ProcessorConfig) -> Non
         merge_rel_prompt=config.prompt_config.merge_rel_prompt,
         dataset=f"{paths.kb_name}__{paths.dataset}",
         emb_cfg=config.embedding_cfg,
+        top_k=config.graph_config.merge_rel_top_k,
+        batch_size=config.graph_config.merge_milvus_dedup_batch_size,
         max_workers=config.llm_config.max_concurrent_requests,
+        temperature=config.graph_config.merge_rel_temperature,
+        llm_max_retries=config.graph_config.merge_llm_max_retries,
     )
     logger.info("Relation merge done in %.1fs", time.time() - start)
 
