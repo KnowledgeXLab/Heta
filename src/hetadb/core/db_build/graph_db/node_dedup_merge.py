@@ -131,9 +131,9 @@ def build_prompt(node_name: str, entities: list[dict[str, Any]], prompt_template
 
 def dedup_by_llm(
     use_llm, node_name: str, entities: list[dict[str, Any]], dedup_template: str,
+    llm_batch_size: int,
 ) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     """Iterative LLM-based dedup: process entities in batches until fully merged."""
-    BATCH_SIZE = 70
 
     split_entities: list[dict[str, Any]] = []
 
@@ -164,18 +164,18 @@ def dedup_by_llm(
         logger.error("Unhandled LLM response type: %s", type(parsed_resp))
         return {}
 
-    if len(entities) <= BATCH_SIZE:
+    if len(entities) <= llm_batch_size:
         resp_str = use_llm(prompt=build_prompt(node_name, entities, dedup_template))
         parsed = _parse_llm_response(resp_str, logger)
         main_entity = _select_main_and_split(parsed)
         return main_entity, split_entities
 
     accumulated_result = None
-    total_batches = (len(entities) + BATCH_SIZE - 1) // BATCH_SIZE
+    total_batches = (len(entities) + llm_batch_size - 1) // llm_batch_size
 
     for batch_idx in range(total_batches):
-        start_idx = batch_idx * BATCH_SIZE
-        end_idx = min(start_idx + BATCH_SIZE, len(entities))
+        start_idx = batch_idx * llm_batch_size
+        end_idx = min(start_idx + llm_batch_size, len(entities))
         batch_entities = entities[start_idx:end_idx]
 
         logger.info(
@@ -206,8 +206,9 @@ def dedup_nodes(
     dedup_template: str,
     input_path: Path,
     output_path: Path,
-    workers: int = 8,
-    max_rounds: int = 10,
+    workers: int,
+    max_rounds: int,
+    llm_batch_size: int,
 ) -> None:
     """Multi-round LLM-based entity node deduplication.
 
@@ -239,7 +240,7 @@ def dedup_nodes(
 
     def _merge_task(node_name: str, records: list[dict[str, Any]], dedup_template: str) -> tuple[str, dict[str, Any], list[dict[str, Any]]]:
         """Dedup-merge a single group of same-name entities."""
-        merged, split_entities = dedup_by_llm(use_llm, node_name, records, dedup_template)
+        merged, split_entities = dedup_by_llm(use_llm, node_name, records, dedup_template, llm_batch_size=llm_batch_size)
 
         chunk_ids: set = set()
 
@@ -357,12 +358,12 @@ def embed_nodes(
     embedding_timeout: int,
     nodes_input_path: str,
     output_dir: str,
-    batch_size: int = 2000,
-    max_file_size_bytes: int = 3 * 1024 * 1024 * 1024,
-    num_threads: int = 8,
-    max_retries: int = 5,
-    retry_delay: int = 2,
-    embedding_dim: int = 1024,
+    batch_size: int,
+    max_file_size_bytes: int,
+    num_threads: int,
+    max_retries: int,
+    retry_delay: int,
+    embedding_dim: int,
 ) -> int:
     """Generate embeddings for deduplicated nodes and write to JSONL files."""
     logger.info("Starting node embedding process")
@@ -406,11 +407,12 @@ def run_merge_pipeline(
     use_llm,
     emb_cfg,
     merge_cluster_prompt,
-    batch_size: int = 1000,
-    n: int = 4,
-    sim_threshold: float = 0.85,
-    temperature: float = 0.1,
-    max_workers: int = 32,
+    batch_size: int,
+    n: int,
+    sim_threshold: float,
+    temperature: float,
+    max_workers: int,
+    llm_max_retries: int,
 ):
     """Batch clustering + LLM merge pipeline for deduplicated node embeddings.
 
@@ -457,11 +459,11 @@ def run_merge_pipeline(
         prompt = merge_cluster_prompt.format(entity_list_json=entity_list_json)
 
         parsed = None
-        for _ in range(2):
+        for _ in range(llm_max_retries):
             resp = use_llm(
                 prompt=prompt,
                 response_format={"type": "json_object"},
-                temperature=0.1,
+                temperature=temperature,
             )
             if not resp or resp == "Error":
                 continue
@@ -792,9 +794,12 @@ def run_milvus_dedup(
     merge_cluster_prompt,
     dataset,
     emb_cfg,
-    top_k: int = 10,
+    top_k: int,
+    batch_size: int,
+    max_workers: int,
+    temperature: float,
+    llm_max_retries: int,
     sync_pg: bool = True,
-    max_workers: int = 32,
 ) -> None:
     """Write KG entities to Milvus and deduplicate against existing records.
 
@@ -952,11 +957,11 @@ def run_milvus_dedup(
         prompt = merge_cluster_prompt.format(entity_list_json=entity_list_json)
 
         parsed = None
-        for attempt in range(3):
+        for attempt in range(llm_max_retries):
             resp = use_llm(
                 prompt=prompt,
                 response_format={"type": "json_object"},
-                temperature=0.1,
+                temperature=temperature,
             )
             if not resp or resp == "Error":
                 continue
@@ -1038,9 +1043,8 @@ def run_milvus_dedup(
 
     def process_batch_with_milvus(
         batch_records: list[dict[str, Any]],
-        top_k: int = 10,
-        llm_max_workers: int = 32,
-        kb_id: int = 1,
+        top_k: int,
+        llm_max_workers: int,
     ) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[str], dict[str, list[str]]]:
         """Process a batch of entity records with Milvus-based similarity dedup.
 
@@ -1236,35 +1240,44 @@ def run_milvus_dedup(
         records = read_jsonl_file(round_file)
         logger.info("Read %d records", len(records))
 
-        merged, no_merge, ids_to_delete, mapping_agg = process_batch_with_milvus(
-            records, top_k, llm_max_workers=max_workers,
-        )
+        all_final_records: list[dict[str, Any]] = []
+        mapping_agg_all: dict[str, list[str]] = {}
+        all_ids_to_delete: set[str] = set()
 
-        ids_to_delete = list(set(ids_to_delete))
+        for i in range(0, len(records), batch_size):
+            batch = records[i : i + batch_size]
+            merged, no_merge, ids_to_delete, mapping_agg = process_batch_with_milvus(
+                batch, top_k, llm_max_workers=max_workers,
+            )
+            all_final_records.extend(merged)
+            all_final_records.extend(no_merge)
+            all_ids_to_delete.update(ids_to_delete)
+            for k, v in mapping_agg.items():
+                if k in mapping_agg_all:
+                    exist = set(mapping_agg_all[k])
+                    for oid in v:
+                        if oid not in exist:
+                            mapping_agg_all[k].append(oid)
+                else:
+                    mapping_agg_all[k] = v
 
-        if ids_to_delete:
-            logger.info("Deleting %d old records", len(ids_to_delete))
-            delete_nodes_records_from_milvus(collection, ids_to_delete)
+        ids_to_delete_list = list(all_ids_to_delete)
+
+        if ids_to_delete_list:
+            logger.info("Deleting %d old records", len(ids_to_delete_list))
+            delete_nodes_records_from_milvus(collection, ids_to_delete_list)
             if sync_pg:
-                delete_entities_from_pg(ids_to_delete, dataset)
-                delete_cluster_chunk_relations_by_cluster_ids(ids_to_delete, dataset)
+                delete_entities_from_pg(ids_to_delete_list, dataset)
+                delete_cluster_chunk_relations_by_cluster_ids(ids_to_delete_list, dataset)
 
-        if merged:
-            logger.info("Inserting %d merged records", len(merged))
-            insert_nodes_records_to_milvus(collection, merged)
+        if all_final_records:
+            logger.info("Inserting %d final records", len(all_final_records))
+            insert_nodes_records_to_milvus(collection, all_final_records)
             if sync_pg:
-                insert_entities_to_pg(merged, dataset)
-                save_cluster_chunk_relations(merged, "entity")
-
-        if no_merge:
-            logger.info("Inserting %d unmerged records", len(no_merge))
-            insert_nodes_records_to_milvus(collection, no_merge)
-            if sync_pg:
-                insert_entities_to_pg(no_merge, dataset)
-                save_cluster_chunk_relations(no_merge, "entity")
+                insert_entities_to_pg(all_final_records, dataset)
+                save_cluster_chunk_relations(all_final_records, "entity")
 
         output_file = output_data_dir / f"{round_file.stem}_dedup.jsonl"
-        all_final_records = merged + no_merge
         records_without_chunk_id = [{k: v for k, v in rec.items() if k != "chunk_id"} for rec in all_final_records]
         write_jsonl_file(records_without_chunk_id, output_file)
         logger.info("Results saved to %s", output_file)
@@ -1272,7 +1285,7 @@ def run_milvus_dedup(
         mapping_output_file = output_data_dir / f"{round_file.stem}_dedup_mapping.json"
         try:
             with mapping_output_file.open("w", encoding="utf-8") as f:
-                json.dump(mapping_agg, f, ensure_ascii=False, indent=2)
+                json.dump(mapping_agg_all, f, ensure_ascii=False, indent=2)
             logger.info("Mapping saved to %s", mapping_output_file)
         except Exception as e:
             logger.error("Failed to save mapping: %s", e)

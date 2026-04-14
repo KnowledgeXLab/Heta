@@ -14,6 +14,9 @@ logs/
 # User config (copy from config.example.yaml — never commit real API keys)
 config.yaml
 
+# DB config (internal defaults, user may customize)
+src/hetadb/config/db_config.yaml
+
 # MemoryKB runtime data (generated at runtime, not source code)
 src/hetamem/MemoryKB/Long_Term_Memory/Graph_Construction/MMKG/
 src/hetamem/MemoryKB/Long_Term_Memory/memory_chunks/
