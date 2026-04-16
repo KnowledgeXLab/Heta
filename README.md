@@ -103,7 +103,17 @@ docker-compose down -v      # stop and delete all volumes
 
 ### Option B — Manual Setup
 
-**Prerequisites:** Python 3.10 · PostgreSQL · Milvus · Neo4j
+**Prerequisites:** Python 3.10 · PostgreSQL · Milvus · Neo4j · LibreOffice
+
+> LibreOffice is required for HetaDB and HetaWiki to parse `.doc`, `.docx`, `.ppt`, and `.pptx` files.
+> Install it with your system package manager:
+> ```bash
+> # Ubuntu / Debian
+> sudo apt-get install -y libreoffice-writer libreoffice-impress libreoffice-calc
+>
+> # macOS
+> brew install --cask libreoffice
+> ```
 
 ```bash
 # 1. Install backend

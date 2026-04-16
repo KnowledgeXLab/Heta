@@ -1,4 +1,5 @@
 @import './tokens.css';
+@import './prose.css';
 
 *, *::before, *::after {
   box-sizing: border-box;

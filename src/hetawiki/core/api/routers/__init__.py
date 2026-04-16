@@ -1,0 +1,1 @@
+"""HetaWiki API router registry."""

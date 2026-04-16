@@ -1,0 +1,85 @@
+.graphArea {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.hint {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+/* ── SVG canvas ── */
+.svg {
+  width: 100%;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-lg);
+  display: block;
+}
+
+/* ── Edges ── */
+.edge {
+  stroke: var(--color-border);
+  stroke-width: 1.2;
+}
+
+.arrowHead {
+  fill: var(--color-border);
+}
+
+/* ── Nodes ── */
+.nodeGroup {
+  cursor: pointer;
+}
+
+.nodeCircle {
+  fill: var(--color-bg);
+  stroke: var(--color-border);
+  stroke-width: 1.5;
+  transition: fill 120ms ease, stroke 120ms ease, stroke-width 120ms ease;
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.06));
+}
+.nodeGroup:hover .nodeCircle {
+  fill: var(--color-accent-muted);
+  stroke: var(--color-accent);
+}
+.nodeSelected {
+  fill: var(--color-accent-muted) !important;
+  stroke: var(--color-accent) !important;
+  stroke-width: 2.5 !important;
+}
+.nodeSynthesis {
+  fill: #edf7f0;
+  stroke: var(--color-success);
+}
+
+.nodeLabel {
+  font-size: 10px;
+  font-weight: 600;
+  font-family: var(--font-body);
+  fill: var(--color-text);
+  pointer-events: none;
+  user-select: none;
+}
+
+.nodeSub {
+  font-size: 10px;
+  font-family: var(--font-body);
+  fill: var(--color-text-muted);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ── States ── */
+.errorMsg {
+  color: var(--color-error);
+  font-size: var(--text-sm);
+}
+
+.placeholder {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  padding: var(--space-8) 0;
+  margin: 0;
+}

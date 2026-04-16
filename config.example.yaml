@@ -264,3 +264,30 @@ hetagen:
     metric_type: "IP"
     nlist: 128
     batch_size: 100
+
+
+# ─────────────────────────────────────────────────────────────────────────
+hetawiki:
+  # Wiki workspace root — relative to project root, or absolute path.
+  # All raw uploads and generated wiki pages are stored here.
+  workspace: "workspace"
+
+  ingest:
+    # Concurrent ingest workers. Each worker makes LLM API calls.
+    # Increase only if your LLM API quota supports higher concurrency.
+    max_workers: 4
+    # Default ingest is single-page only. Reject overly long parsed documents
+    # instead of silently truncating or auto-splitting them.
+    max_input_chars: 80000
+    # Timeout in seconds for document parsing (MinerU).
+    # Large PDFs or scanned documents with OCR may take several minutes.
+    parse_timeout: 300
+
+  llm:
+    # LLM used for wiki page generation.
+    # Needs long-context support — documents can be tens of thousands of tokens.
+    # Timeout is intentionally high: large documents take time.
+    <<: *dashscope
+    model: "Qwen/Qwen3-32B"
+    timeout: 300
+    max_retries: 2
