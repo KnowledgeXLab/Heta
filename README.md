@@ -63,6 +63,9 @@ cp config.example.zh.yaml config.yaml
 
 # International API providers (OpenAI + Gemini)
 # cp config.example.yaml config.yaml
+
+# Processing parameters (chunk, graph, merge thresholds)
+cp db_config.example.yaml src/hetadb/config/db_config.yaml
 ```
 
 Open `config.yaml` and fill in your API keys:
