@@ -13,6 +13,12 @@ from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel, Field
 
+from common.config import load_config
+
+_tasks_cfg = load_config("tasks")
+_MAX_TASKS: int = int(_tasks_cfg.get("max_tasks", 500))
+_TTL_SECONDS: int = int(_tasks_cfg.get("ttl_seconds", 3600))
+
 
 class TaskStatus(str, Enum):
     PENDING    = "pending"
@@ -36,13 +42,38 @@ class TaskInfo(BaseModel):
     error: Optional[str] = None
 
 
+_TERMINAL = {TaskStatus.COMPLETED, TaskStatus.FAILED, TaskStatus.CANCELLED}
+
 # Module-level storage
 _tasks: Dict[str, TaskInfo] = {}
 _cancel_tokens: Dict[str, threading.Event] = {}
 
 
+def _cleanup() -> None:
+    now = datetime.now()
+    to_delete = [
+        tid for tid, t in _tasks.items()
+        if t.status in _TERMINAL
+        and t.completed_at
+        and (now - datetime.fromisoformat(t.completed_at)).total_seconds() > _TTL_SECONDS
+    ]
+    for tid in to_delete:
+        del _tasks[tid]
+        _cancel_tokens.pop(tid, None)
+
+    if len(_tasks) > _MAX_TASKS:
+        evictable = sorted(
+            [(tid, t) for tid, t in _tasks.items() if t.status in _TERMINAL],
+            key=lambda x: x[1].completed_at or x[1].created_at,
+        )
+        for tid, _ in evictable[: len(_tasks) - _MAX_TASKS]:
+            del _tasks[tid]
+            _cancel_tokens.pop(tid, None)
+
+
 def create_task(task_type: str, metadata: Dict[str, Any] = None) -> TaskInfo:
     """Create a new task and return its info."""
+    _cleanup()
     task_id = uuid.uuid4().hex[:12]
     task = TaskInfo(
         task_id=task_id,

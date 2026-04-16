@@ -1,0 +1,112 @@
+.layout { display: flex; flex: 1; min-height: 100vh; overflow: hidden; }
+.main   { flex: 1; min-width: 0; overflow: hidden; display: flex; flex-direction: column; }
+
+/* ── Centered content column ── */
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+  max-width: 560px;
+  width: 100%;
+  margin: 0 auto;
+  padding-top: var(--space-4);
+}
+
+/* ── Drop zone ── */
+.dropzone {
+  width: 100%;
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-10) var(--space-8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+  text-align: center;
+}
+.dropzone:hover       { border-color: var(--color-accent); background: var(--color-accent-muted); }
+.dropzoneOver         { border-color: var(--color-accent); background: var(--color-accent-muted); }
+.dropzoneHasFile      { border-style: solid; border-color: var(--color-accent); background: var(--color-accent-muted); }
+
+.dropIcon     { color: var(--color-accent); }
+.dropFilename { font-size: var(--text-sm); font-weight: 600; color: var(--color-text); }
+.dropText     { font-size: var(--text-sm); color: var(--color-text-muted); }
+.dropMeta     { font-size: var(--text-xs); color: var(--color-text-muted); }
+
+/* ── Mode cards ── */
+.modeGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  width: 100%;
+}
+
+.modeCard {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-5);
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-body);
+  transition: border-color var(--transition-fast), background var(--transition-fast), box-shadow var(--transition-fast);
+}
+.modeCard:hover:not(:disabled) {
+  border-color: var(--color-accent);
+  background: var(--color-accent-muted);
+}
+.modeCardActive {
+  border-color: var(--color-accent) !important;
+  background: var(--color-accent-muted) !important;
+  box-shadow: var(--shadow-sm);
+}
+.modeCard:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.modeIcon  { color: var(--color-accent); flex-shrink: 0; }
+.modeLabel { font-size: var(--text-sm); font-weight: 600; color: var(--color-text); }
+.modeDesc  { font-size: var(--text-xs); color: var(--color-text-muted); line-height: 1.5; }
+
+/* ── Submit button wrapper ── */
+.submitBtn {
+  width: 100%;
+}
+.submitBtn button {
+  width: 100%;
+  justify-content: center;
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-base);
+  font-weight: 600;
+  border-radius: var(--radius-lg);
+}
+
+/* ── Status ── */
+.statusMsg {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  width: 100%;
+  margin: 0;
+}
+.statusInfo  { background: var(--color-accent-muted); color: var(--color-accent); }
+.statusOk    { background: #edf7f0; color: var(--color-success); }
+.statusError { background: #fdf0f0; color: var(--color-error); }
+
+.spinner {
+  width: 14px; height: 14px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }

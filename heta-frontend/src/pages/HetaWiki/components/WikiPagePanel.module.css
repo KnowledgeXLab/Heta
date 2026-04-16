@@ -1,0 +1,131 @@
+/* ── Panel shell ── */
+.panel {
+  width: clamp(560px, 46vw, 800px);
+  height: 100vh;
+  background: var(--color-bg);
+  border-left: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: slideIn 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+
+/* ── Header ── */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-10);
+  border-bottom: 1px solid var(--color-border-light);
+  flex-shrink: 0;
+  gap: var(--space-3);
+  min-height: 52px;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  flex: 1;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.categoryBadge {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  background: #edf7f0;
+  color: #4a7c59;
+  border-radius: var(--radius-full);
+  border: 1px solid #b2d8be;
+  flex-shrink: 0;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  flex-shrink: 0;
+}
+
+.iconBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: none;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+.iconBtn:hover:not(:disabled) {
+  background: var(--color-surface-hover);
+  color: var(--color-text);
+}
+.iconBtn:disabled { opacity: 0.35; cursor: default; }
+
+/* ── Body ── */
+.body {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-8) var(--space-10);
+  scroll-behavior: smooth;
+}
+
+/* On very wide panels, center the text column so line length stays comfortable */
+@media (min-width: 1400px) {
+  .body {
+    padding-left: max(var(--space-10), calc((100% - 660px) / 2));
+    padding-right: max(var(--space-10), calc((100% - 660px) / 2));
+  }
+}
+
+/* ── Skeleton ── */
+.skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: var(--space-2);
+}
+.skLine {
+  border-radius: var(--radius-sm);
+  background: linear-gradient(90deg, var(--color-border-light) 25%, var(--color-surface-hover) 50%, var(--color-border-light) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+@keyframes shimmer { to { background-position: -200% 0; } }
+
+.skH1    { height: 22px; width: 55%; }
+.skH2    { height: 16px; width: 38%; }
+.skP     { height: 13px; width: 100%; }
+.skShort { width: 68%; }
+.skCode  { height: 80px; width: 100%; border-radius: var(--radius-md); }
+
+/* ── Error ── */
+.errorMsg {
+  color: var(--color-error);
+  font-size: var(--text-sm);
+  padding: var(--space-2) 0;
+  margin: 0;
+}
+
+/* prose 排版由全局 src/styles/prose.css 提供，此处不重复定义 */

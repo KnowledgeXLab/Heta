@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { Database, LibraryBig, MessageSquare, BrainCircuit, Sparkles, ListTodo, type LucideIcon } from 'lucide-react';
+import { Database, LibraryBig, MessageSquare, BrainCircuit, Sparkles, ListTodo, BookMarked, Search, type LucideIcon } from 'lucide-react';
 import styles from './Sidebar.module.css';
 
 interface NavItem {
@@ -33,6 +33,13 @@ const SECTIONS: Section[] = [
     label: 'HetaGen',
     items: [
       { to: '/hetagen', label: 'HetaGen', Icon: Sparkles },
+    ],
+  },
+  {
+    label: 'HetaWiki',
+    items: [
+      { to: '/hetawiki',       label: 'Wiki',  Icon: BookMarked },
+      { to: '/hetawiki/query', label: 'Query', Icon: Search     },
     ],
   },
 ];

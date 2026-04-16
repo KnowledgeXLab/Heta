@@ -21,6 +21,12 @@ from hetadb.core.db_build.vector_db.vector_db import ensure_milvus_databases
 from hetadb.api.routers import chat_router, files_router, config_router, schema_router
 from hetagen.api.routers import pipeline, tag_tree
 from hetamem.api.routers import kb_router, vg_router
+from hetawiki.core.api.routers import ingest as hetawiki_ingest
+from hetawiki.core.api.routers import lint as hetawiki_lint
+from hetawiki.core.api.routers import query as hetawiki_query
+from hetawiki.core.api.routers import tasks as hetawiki_tasks
+from hetawiki.core.api.routers import wiki as hetawiki_wiki
+from hetawiki.core.wiki import scheduler as hetawiki_scheduler
 from hetamem.memkb_manager import manager as kb_manager
 from hetamem.memvg_manager import manager as vg_manager
 from hetamem.utils.path import PACKAGE_ROOT as HETAMEM_ROOT
@@ -56,7 +62,12 @@ async def lifespan(app: FastAPI):
     _hetadb_mcp_proc = subprocess.Popen([sys.executable, str(_HETADB_MCP_SCRIPT)])
     logger.info("HetaDB MCP server started (pid=%s, port=8012)", _hetadb_mcp_proc.pid)
 
+    logger.info("Starting HetaWiki lint scheduler...")
+    hetawiki_scheduler.start()
+
     yield
+
+    hetawiki_scheduler.stop()
 
     if _hetamem_mcp_proc and _hetamem_mcp_proc.poll() is None:
         _hetamem_mcp_proc.terminate()
@@ -96,6 +107,13 @@ app.include_router(tag_tree.router)
 # HetaMem routers
 app.include_router(kb_router)
 app.include_router(vg_router)
+
+# HetaWiki routers
+app.include_router(hetawiki_ingest.router)
+app.include_router(hetawiki_lint.router)
+app.include_router(hetawiki_query.router)
+app.include_router(hetawiki_tasks.router)
+app.include_router(hetawiki_wiki.router)
 
 
 @app.get("/")

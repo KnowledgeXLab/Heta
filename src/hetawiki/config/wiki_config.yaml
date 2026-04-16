@@ -1,0 +1,26 @@
+supported_extensions:
+  - ".pdf"
+  - ".docx"
+  - ".doc"
+  - ".ppt"
+  - ".pptx"
+  - ".md"
+  - ".txt"
+  - ".markdown"
+
+merge:
+  max_steps: 15
+  max_seconds: 300
+  temperature: 0.2
+
+query:
+  max_steps: 10
+  max_seconds: 120
+  temperature: 0.2
+
+lint:
+  enabled: true
+  interval_hours: 24
+  max_steps: 20
+  max_seconds: 600
+  temperature: 0.2

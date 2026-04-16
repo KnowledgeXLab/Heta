@@ -29,4 +29,13 @@ export const API = {
     cancel: (id: string) => `${BASE}/processing/tasks/${id}/cancel`,
   },
   chat: '/api/v1/hetadb/chat',
+
+  wiki: {
+    ingest: '/api/v1/hetawiki/ingest',
+    query:  '/api/v1/hetawiki/query',
+    lint:   '/api/v1/hetawiki/lint',
+    graph:  '/api/v1/hetawiki/graph',
+    page:   (filename: string) => `/api/v1/hetawiki/pages/${encodeURIComponent(filename)}`,
+    task:   (id: string) => `/api/v1/hetawiki/tasks/${id}`,
+  },
 } as const;
