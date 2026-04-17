@@ -1,4 +1,14 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
+import {
+  forceSimulation,
+  forceManyBody,
+  forceLink,
+  forceCenter,
+  forceCollide,
+  type Simulation,
+  type SimulationNodeDatum,
+  type SimulationLinkDatum,
+} from 'd3-force';
 import { API } from '../../../api/endpoints';
 import styles from './GraphView.module.css';
 
@@ -7,73 +17,37 @@ import styles from './GraphView.module.css';
 interface RawNode { id: string; title: string; category?: string }
 interface RawEdge { source: string; target: string }
 
-interface SimNode extends RawNode {
-  x: number; y: number;
-  vx: number; vy: number;
+// D3 mutates nodes in-place, extending them with x/y/vx/vy
+interface SimNode extends RawNode, SimulationNodeDatum {
+  id: string;
+  x: number;
+  y: number;
 }
+type SimLink = SimulationLinkDatum<SimNode> & { _source: string; _target: string }
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
-/** Strip leading datetime prefixes like "2024-01-15_133525_" or "2024-01-15_" */
 function stripDatePrefix(name: string): string {
   return name
-    .replace(/^\d{4}-\d{2}-\d{2}[_-]\d{6}[_-]/, '') // YYYY-MM-DD_HHMMSS_
-    .replace(/^\d{4}-\d{2}-\d{2}[_-]/, '');           // YYYY-MM-DD_
+    .replace(/^\d{4}-\d{2}-\d{2}[_-]\d{6}[_-]/, '')
+    .replace(/^\d{4}-\d{2}-\d{2}[_-]/, '');
 }
 
 function truncate(s: string, n: number) {
   return s.length > n ? s.slice(0, n - 1) + '…' : s;
 }
 
-// ── Force simulation (runs outside React state for perf) ─────────────────────
-
-const REPEL   = 4500;
-const ATTRACT = 0.08;
-const GRAVITY = 0.04;
-const DAMPING = 0.82;
-const MIN_V   = 0.01;
-
-function tick(nodes: SimNode[], edges: RawEdge[], W: number, H: number) {
-  const cx = W / 2, cy = H / 2;
-
-  // Repulsion between all pairs
-  for (let i = 0; i < nodes.length; i++) {
-    for (let j = i + 1; j < nodes.length; j++) {
-      const dx = nodes[i].x - nodes[j].x;
-      const dy = nodes[i].y - nodes[j].y;
-      const dist2 = dx * dx + dy * dy + 0.01;
-      const force = REPEL / dist2;
-      const fx = (dx / Math.sqrt(dist2)) * force;
-      const fy = (dy / Math.sqrt(dist2)) * force;
-      nodes[i].vx += fx; nodes[i].vy += fy;
-      nodes[j].vx -= fx; nodes[j].vy -= fy;
-    }
-  }
-
-  // Edge attraction
-  const nodeById = Object.fromEntries(nodes.map(n => [n.id, n]));
-  for (const e of edges) {
-    const s = nodeById[e.source], t = nodeById[e.target];
-    if (!s || !t) continue;
-    const dx = t.x - s.x, dy = t.y - s.y;
-    s.vx += dx * ATTRACT; s.vy += dy * ATTRACT;
-    t.vx -= dx * ATTRACT; t.vy -= dy * ATTRACT;
-  }
-
-  // Gravity towards center + integrate
-  for (const n of nodes) {
-    n.vx += (cx - n.x) * GRAVITY;
-    n.vy += (cy - n.y) * GRAVITY;
-    n.vx *= DAMPING; n.vy *= DAMPING;
-    n.x += n.vx;     n.y += n.vy;
-    // Clamp inside canvas with padding
-    n.x = Math.max(30, Math.min(W - 30, n.x));
-    n.y = Math.max(30, Math.min(H - 30, n.y));
-  }
-}
-
-function isSettled(nodes: SimNode[]) {
-  return nodes.every(n => Math.abs(n.vx) < MIN_V && Math.abs(n.vy) < MIN_V);
+/** Quadratic bezier path between two nodes, shortened to circle edge */
+function curvedPath(sx: number, sy: number, tx: number, ty: number, r: number): string {
+  const dx = tx - sx, dy = ty - sy;
+  const len = Math.sqrt(dx * dx + dy * dy) || 1;
+  const x1 = sx + (dx / len) * r,  y1 = sy + (dy / len) * r;
+  const x2 = tx - (dx / len) * r,  y2 = ty - (dy / len) * r;
+  // Control point: perp offset from midpoint, 15% of edge length
+  const mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
+  const offset = len * 0.15;
+  const cx = mx - (dy / len) * offset, cy = my + (dx / len) * offset;
+  return `M ${x1} ${y1} Q ${cx} ${cy} ${x2} ${y2}`;
 }
 
 // ── Component ────────────────────────────────────────────────────────────────
@@ -87,31 +61,66 @@ interface Props {
 
 export default function GraphView({ selectedNodeId, onNodeSelect }: Props) {
   const [rawNodes, setRawNodes] = useState<RawNode[]>([]);
-  const [edges, setEdges]       = useState<RawEdge[]>([]);
+  const [rawEdges, setRawEdges] = useState<RawEdge[]>([]);
   const [loading, setLoading]   = useState(false);
   const [error, setError]       = useState('');
+  const [, setTick]             = useState(0);   // triggers re-render on each tick
 
-  const simRef = useRef<SimNode[]>([]);
-  const rafRef = useRef<number>(0);
-  const [frame, setFrame] = useState(0);
+  // D3 simulation lives outside React state
+  const simRef   = useRef<Simulation<SimNode, SimLink> | null>(null);
+  const nodesRef = useRef<SimNode[]>([]);
+  const linksRef = useRef<SimLink[]>([]);
 
   const load = useCallback(async () => {
     setLoading(true); setError('');
-    cancelAnimationFrame(rafRef.current);
+
+    // Stop any existing simulation
+    simRef.current?.stop();
+
     try {
       const res  = await fetch(API.wiki.graph);
       if (!res.ok) throw new Error(`${res.status}`);
       const data = await res.json() as { nodes: RawNode[]; edges: RawEdge[] };
-      setRawNodes(data.nodes);
-      setEdges(data.edges);
 
+      setRawNodes(data.nodes);
+      setRawEdges(data.edges);
+
+      // Seed positions on a circle so nodes don't start all at origin
       const r = Math.min(160, 40 + data.nodes.length * 14);
-      simRef.current = data.nodes.map((n, i) => ({
+      nodesRef.current = data.nodes.map((n, i) => ({
         ...n,
-        x: W / 2 + r * Math.cos((2 * Math.PI * i) / data.nodes.length) + (Math.random() - 0.5) * 20,
-        y: H / 2 + r * Math.sin((2 * Math.PI * i) / data.nodes.length) + (Math.random() - 0.5) * 20,
-        vx: 0, vy: 0,
+        x: W / 2 + r * Math.cos((2 * Math.PI * i) / data.nodes.length),
+        y: H / 2 + r * Math.sin((2 * Math.PI * i) / data.nodes.length),
       }));
+
+      // Build link objects referencing the node objects
+      const nodeById = Object.fromEntries(nodesRef.current.map(n => [n.id, n]));
+      linksRef.current = data.edges
+        .filter(e => nodeById[e.source] && nodeById[e.target])
+        .map(e => ({
+          source: nodeById[e.source],
+          target: nodeById[e.target],
+          _source: e.source,
+          _target: e.target,
+        }));
+
+      // Create D3 simulation
+      simRef.current = forceSimulation<SimNode, SimLink>(nodesRef.current)
+        .force('charge', forceManyBody<SimNode>().strength(-300))
+        .force('link',   forceLink<SimNode, SimLink>(linksRef.current).distance(120).strength(0.5))
+        .force('center', forceCenter<SimNode>(W / 2, H / 2).strength(0.1))
+        .force('collide', forceCollide<SimNode>(30))
+        .alphaDecay(0.03)      // slower cooling → smoother settling
+        .velocityDecay(0.4)    // D3 default — good friction
+        .on('tick', () => {
+          // Clamp nodes inside canvas
+          for (const n of nodesRef.current) {
+            n.x = Math.max(30, Math.min(W - 30, n.x ?? W / 2));
+            n.y = Math.max(40, Math.min(H - 50, n.y ?? H / 2));
+          }
+          setTick(t => t + 1);
+        });
+
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : String(e));
     } finally {
@@ -120,28 +129,17 @@ export default function GraphView({ selectedNodeId, onNodeSelect }: Props) {
   }, []);
 
   useEffect(() => {
-    if (simRef.current.length === 0) return;
-    let stopped = false;
-    function loop() {
-      if (stopped) return;
-      tick(simRef.current, edges, W, H);
-      setFrame(f => f + 1);
-      if (!isSettled(simRef.current)) rafRef.current = requestAnimationFrame(loop);
-    }
-    rafRef.current = requestAnimationFrame(loop);
-    return () => { stopped = true; cancelAnimationFrame(rafRef.current); };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [rawNodes, edges]);
+    load();
+    return () => { simRef.current?.stop(); };
+  }, [load]);
 
-  useEffect(() => { load(); }, [load]);
-
-  const nodes = simRef.current;
-  void frame;
+  const nodes = nodesRef.current;
+  const links = linksRef.current;
 
   return (
     <div className={styles.graphArea}>
       {rawNodes.length > 0 && (
-        <span className={styles.hint}>{rawNodes.length} pages · {edges.length} links</span>
+        <span className={styles.hint}>{rawNodes.length} pages · {rawEdges.length} links</span>
       )}
 
       {error && <p className={styles.errorMsg}>{error}</p>}
@@ -164,18 +162,14 @@ export default function GraphView({ selectedNodeId, onNodeSelect }: Props) {
             </marker>
           </defs>
 
-          {edges.map((e, i) => {
-            const s = nodes.find(n => n.id === e.source);
-            const t = nodes.find(n => n.id === e.target);
-            if (!s || !t) return null;
-            const dx = t.x - s.x, dy = t.y - s.y;
-            const len = Math.sqrt(dx * dx + dy * dy) || 1;
-            const nr = 22;
+          {links.map((lk, i) => {
+            const s = lk.source as SimNode;
+            const t = lk.target as SimNode;
+            if (s.x == null || t.x == null) return null;
             return (
-              <line
+              <path
                 key={i}
-                x1={s.x + (dx / len) * nr}  y1={s.y + (dy / len) * nr}
-                x2={t.x - (dx / len) * nr}  y2={t.y - (dy / len) * nr}
+                d={curvedPath(s.x, s.y, t.x, t.y, 23)}
                 className={styles.edge}
                 markerEnd="url(#wiki-arrow)"
               />
@@ -183,7 +177,8 @@ export default function GraphView({ selectedNodeId, onNodeSelect }: Props) {
           })}
 
           {nodes.map(n => {
-            const isSelected = n.id === selectedNodeId;
+            if (n.x == null) return null;
+            const isSelected  = n.id === selectedNodeId;
             const isSynthesis = n.category === 'synthesis';
             const circleClass = [
               styles.nodeCircle,
@@ -200,19 +195,11 @@ export default function GraphView({ selectedNodeId, onNodeSelect }: Props) {
               >
                 <circle cx={n.x} cy={n.y} r={22} className={circleClass} />
                 <text
-                  x={n.x} y={n.y + 1}
+                  x={n.x} y={n.y + 36}
                   className={styles.nodeLabel}
                   textAnchor="middle"
-                  dominantBaseline="middle"
                 >
-                  {truncate(displayTitle, 9)}
-                </text>
-                <text
-                  x={n.x} y={n.y + 36}
-                  className={styles.nodeSub}
-                  textAnchor="middle"
-                >
-                  {truncate(displayTitle, 16)}
+                  {truncate(displayTitle, 14)}
                 </text>
               </g>
             );
