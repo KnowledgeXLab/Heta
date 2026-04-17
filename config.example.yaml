@@ -221,6 +221,15 @@ hetamem:
 
 
 # ─────────────────────────────────────────────────────────────────────────
+tasks:
+  # Maximum number of tasks kept in memory across all modules.
+  # When exceeded, oldest terminal-state tasks (completed/failed/cancelled) are evicted first.
+  max_tasks: 500
+  # Seconds before a terminal-state task is eligible for cleanup.
+  ttl_seconds: 3600
+
+
+# ─────────────────────────────────────────────────────────────────────────
 hetagen:
   fastapi:
     host: "0.0.0.0"
