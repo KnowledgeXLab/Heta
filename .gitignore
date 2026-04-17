@@ -29,4 +29,8 @@ heta-frontend/dist/
 
 # Eval reports (generated output)
 tests/eval/report/
+tests/eval/hetawiki/report/
 site/
+
+# Editor / IDE
+.vscode/

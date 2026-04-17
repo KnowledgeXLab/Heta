@@ -1,0 +1,189 @@
+# HetaWiki Evaluation Ground Truth
+#
+# Ingest order (default mode):
+#   1. gradient_descent.md
+#   2. backpropagation.md
+# Ingest order (merge mode — tests linking):
+#   3. neural_network.md   → should link to gradient_descent + backpropagation
+#   4. overfitting.md      → should link to neural_network + regularization
+#   5. regularization.md   → should link to overfitting
+#
+# Eval types:
+#   ingest_content  — key facts must appear in the wiki page body
+#   query           — wiki query must return answer containing keywords
+#   graph_edge      — graph API must show an edge between two pages
+
+# ─────────────────────────────────────────────────────────────
+# ingest_content — gradient_descent
+# ─────────────────────────────────────────────────────────────
+
+- id: gd-01
+  file: gradient_descent.md
+  eval_type: ingest_content
+  description: "Adam default learning rate is 1e-3"
+  keywords: ["1e-3", "0.001", "Adam"]
+  difficulty: easy
+
+- id: gd-02
+  file: gradient_descent.md
+  eval_type: ingest_content
+  description: "Adam beta parameters"
+  keywords: ["0.9", "0.999", "Adam"]
+  difficulty: medium
+
+- id: gd-03
+  file: gradient_descent.md
+  eval_type: ingest_content
+  description: "Mini-batch size range"
+  keywords: ["32", "512", "mini-batch"]
+  difficulty: easy
+
+# ─────────────────────────────────────────────────────────────
+# ingest_content — backpropagation
+# ─────────────────────────────────────────────────────────────
+
+- id: bp-01
+  file: backpropagation.md
+  eval_type: ingest_content
+  description: "Backprop popularised by Rumelhart Hinton Williams 1986"
+  keywords: ["Rumelhart", "Hinton", "1986"]
+  difficulty: easy
+
+- id: bp-02
+  file: backpropagation.md
+  eval_type: ingest_content
+  description: "Backward pass is ~2x cost of forward pass"
+  keywords: ["2×", "2x", "forward pass"]
+  difficulty: medium
+
+# ─────────────────────────────────────────────────────────────
+# ingest_content — neural_network
+# ─────────────────────────────────────────────────────────────
+
+- id: nn-01
+  file: neural_network.md
+  eval_type: ingest_content
+  description: "Dropout introduced by Srivastava 2014"
+  keywords: ["Srivastava", "2014", "Dropout"]
+  difficulty: easy
+
+- id: nn-02
+  file: neural_network.md
+  eval_type: ingest_content
+  description: "ReLU is default activation"
+  keywords: ["ReLU", "default", "activation"]
+  difficulty: easy
+
+# ─────────────────────────────────────────────────────────────
+# ingest_content — overfitting
+# ─────────────────────────────────────────────────────────────
+
+- id: ov-01
+  file: overfitting.md
+  eval_type: ingest_content
+  description: "Dropout rate for FC layers is 0.5"
+  keywords: ["0.5", "dropout", "fully connected"]
+  difficulty: easy
+
+- id: ov-02
+  file: overfitting.md
+  eval_type: ingest_content
+  description: "L2 weight decay typical value"
+  keywords: ["1e-4", "weight decay", "L2"]
+  difficulty: medium
+
+# ─────────────────────────────────────────────────────────────
+# ingest_content — regularization
+# ─────────────────────────────────────────────────────────────
+
+- id: reg-01
+  file: regularization.md
+  eval_type: ingest_content
+  description: "L1 produces sparse weights"
+  keywords: ["sparse", "L1", "zero"]
+  difficulty: easy
+
+- id: reg-02
+  file: regularization.md
+  eval_type: ingest_content
+  description: "Batch normalisation by Ioffe and Szegedy 2015"
+  keywords: ["Ioffe", "Szegedy", "2015"]
+  difficulty: easy
+
+# ─────────────────────────────────────────────────────────────
+# query — cross-page questions
+# ─────────────────────────────────────────────────────────────
+
+- id: q-01
+  eval_type: query
+  question: "What is the relationship between backpropagation and gradient descent?"
+  expected: "Backpropagation computes the gradients; gradient descent uses them to update weights"
+  keywords: ["gradient", "backpropagation", "weights"]
+  difficulty: medium
+
+- id: q-02
+  eval_type: query
+  question: "What are the default hyperparameters of the Adam optimiser?"
+  expected: "learning rate 1e-3, beta1 0.9, beta2 0.999, epsilon 1e-8"
+  keywords: ["0.9", "0.999", "Adam"]
+  difficulty: medium
+
+- id: q-03
+  eval_type: query
+  question: "What techniques can prevent overfitting in neural networks?"
+  expected: "dropout, L2 regularisation, early stopping, data augmentation"
+  keywords: ["dropout", "regularisation", "early stopping"]
+  difficulty: medium
+
+- id: q-04
+  eval_type: query
+  question: "What dropout rate did Srivastava recommend for fully connected layers?"
+  expected: "0.5"
+  keywords: ["0.5", "dropout"]
+  difficulty: easy
+
+- id: q-05
+  eval_type: query
+  question: "What is the difference between L1 and L2 regularisation?"
+  expected: "L1 produces sparse weights; L2 shrinks all weights toward zero"
+  keywords: ["sparse", "L1", "L2"]
+  difficulty: medium
+
+- id: q-06
+  eval_type: query
+  question: "Who popularised backpropagation and in what year?"
+  expected: "Rumelhart, Hinton, and Williams in 1986"
+  keywords: ["Rumelhart", "Hinton", "1986"]
+  difficulty: easy
+
+# ─────────────────────────────────────────────────────────────
+# graph_edge — expected links after merge ingest
+# ─────────────────────────────────────────────────────────────
+
+- id: edge-01
+  eval_type: graph_edge
+  description: "neural_network should link to backpropagation"
+  page_a_title_contains: "neural"
+  page_b_title_contains: "backprop"
+  difficulty: medium
+
+- id: edge-02
+  eval_type: graph_edge
+  description: "neural_network should link to gradient descent"
+  page_a_title_contains: "neural"
+  page_b_title_contains: "gradient"
+  difficulty: medium
+
+- id: edge-03
+  eval_type: graph_edge
+  description: "overfitting should link to regularization"
+  page_a_title_contains: "overfit"
+  page_b_title_contains: "regulari"
+  difficulty: medium
+
+- id: edge-04
+  eval_type: graph_edge
+  description: "backpropagation should link to gradient descent"
+  page_a_title_contains: "backprop"
+  page_b_title_contains: "gradient"
+  difficulty: easy

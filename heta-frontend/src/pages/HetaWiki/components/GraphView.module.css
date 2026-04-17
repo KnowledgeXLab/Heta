@@ -18,14 +18,17 @@
   display: block;
 }
 
-/* ── Edges ── */
+/* ── Edges — curved, warm, light ── */
 .edge {
-  stroke: var(--color-border);
+  fill: none;
+  stroke: #c96a2e;       /* accent colour */
   stroke-width: 1.2;
+  stroke-opacity: 0.35;
 }
 
 .arrowHead {
-  fill: var(--color-border);
+  fill: #c96a2e;
+  opacity: 0.45;
 }
 
 /* ── Nodes ── */
@@ -37,38 +40,36 @@
   fill: var(--color-bg);
   stroke: var(--color-border);
   stroke-width: 1.5;
-  transition: fill 120ms ease, stroke 120ms ease, stroke-width 120ms ease;
-  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.06));
+  transition: fill 150ms ease, stroke 150ms ease, stroke-width 150ms ease;
+  filter: drop-shadow(0 1px 4px rgba(44, 40, 37, 0.10));
 }
 .nodeGroup:hover .nodeCircle {
   fill: var(--color-accent-muted);
   stroke: var(--color-accent);
+  filter: drop-shadow(0 2px 6px rgba(201, 106, 46, 0.20));
 }
 .nodeSelected {
   fill: var(--color-accent-muted) !important;
   stroke: var(--color-accent) !important;
   stroke-width: 2.5 !important;
+  filter: drop-shadow(0 2px 8px rgba(201, 106, 46, 0.25)) !important;
 }
 .nodeSynthesis {
   fill: #edf7f0;
   stroke: var(--color-success);
 }
 
+/* ── Node label — Lora italic, below circle ── */
 .nodeLabel {
-  font-size: 10px;
-  font-weight: 600;
-  font-family: var(--font-body);
+  font-size: 11px;
+  font-family: var(--font-display);
+  font-style: italic;
   fill: var(--color-text);
   pointer-events: none;
   user-select: none;
 }
-
-.nodeSub {
-  font-size: 10px;
-  font-family: var(--font-body);
-  fill: var(--color-text-muted);
-  pointer-events: none;
-  user-select: none;
+.nodeGroup:hover .nodeLabel {
+  fill: var(--color-accent);
 }
 
 /* ── States ── */
