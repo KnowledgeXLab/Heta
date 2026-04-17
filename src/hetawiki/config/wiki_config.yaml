@@ -9,8 +9,8 @@ supported_extensions:
   - ".markdown"
 
 merge:
-  max_steps: 15
-  max_seconds: 300
+  max_steps: 20
+  max_seconds: 600
   temperature: 0.2
 
 query:
