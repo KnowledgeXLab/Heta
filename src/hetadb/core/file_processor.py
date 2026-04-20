@@ -86,6 +86,9 @@ class EmbeddingConfig:
     batch_size: int = 2000
     num_threads: int = 8
     timeout: int = 30
+    max_file_size_bytes: int = 3221225472
+    max_retries: int = 5
+    retry_delay: int = 2
 
 
 @dataclass
@@ -228,6 +231,9 @@ class ConfigManager:
             batch_size=cfg.get("batch_size", 2000),
             num_threads=cfg.get("num_threads", 8),
             timeout=cfg.get("timeout", 30),
+            max_file_size_bytes=cfg.get("max_file_size_bytes", 3221225472),
+            max_retries=cfg.get("max_retries", 5),
+            retry_delay=cfg.get("retry_delay", 2),
         )
 
     def get_database_config(self) -> DatabaseConfig:
@@ -621,7 +627,10 @@ def run_node_processing(paths: DatasetPaths, config: ProcessorConfig) -> None:
         nodes_input_path=paths.dedup_kg_node_output_path,
         output_dir=paths.dedup_kg_node_embedding_output_path,
         batch_size=config.embedding_config.batch_size,
+        max_file_size_bytes=config.embedding_config.max_file_size_bytes,
         num_threads=config.embedding_config.num_threads,
+        max_retries=config.embedding_config.max_retries,
+        retry_delay=config.embedding_config.retry_delay,
         embedding_dim=config.embedding_config.dim,
     )
     logger.info("Node embedding done in %.1fs", time.time() - start)
@@ -693,7 +702,10 @@ def run_relation_processing(paths: DatasetPaths, config: ProcessorConfig) -> Non
         rels_input_path=paths.dedup_kg_rel_output_path,
         output_dir=paths.dedup_kg_rel_embedding_output_path,
         batch_size=config.embedding_config.batch_size,
+        max_file_size_bytes=config.embedding_config.max_file_size_bytes,
         num_threads=config.embedding_config.num_threads,
+        max_retries=config.embedding_config.max_retries,
+        retry_delay=config.embedding_config.retry_delay,
         embedding_dim=config.embedding_config.dim,
     )
     logger.info("Relation embedding done in %.1fs", time.time() - start)
