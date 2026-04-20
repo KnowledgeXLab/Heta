@@ -170,6 +170,36 @@ MemoryVG 基于 Milvus + Neo4j，用于多轮对话的结构化事实存储。
 
 ---
 
+### `hetawiki`
+
+HetaWiki 的配置块较小，主要控制 ingest 限制，以及 default ingest、merge ingest、query、lint 所使用的 LLM。
+
+#### `hetawiki.workspace`
+
+| 参数 | 当前值 | 说明 |
+|------|--------|------|
+| `hetawiki.workspace` | `"workspace"` | `config.yaml` 中的工作区根目录设置。注意：当前 HetaWiki 的路径层仍固定使用 `workspace/hetawiki/`，因此修改该字段暂时不会真正改变工作目录。 |
+
+#### `hetawiki.ingest`
+
+| 参数 | 当前值 | 说明 |
+|------|--------|------|
+| `hetawiki.ingest.max_workers` | `4` | ingest 并发工作线程数；query 路由当前也复用这一线程池规模。 |
+| `hetawiki.ingest.max_input_chars` | `80000` | `default ingest` 可接受的最大解析文本长度。超长文档会被直接拒绝，不做静默截断或自动拆页。 |
+| `hetawiki.ingest.parse_timeout` | `300` | 基于 MinerU 的文档解析超时时间（秒）。大 PDF 或 OCR 较重的文件可能需要几分钟。 |
+
+#### `hetawiki.llm`
+
+| 参数 | 当前值 | 说明 |
+|------|--------|------|
+| `hetawiki.llm.base_url` | 继承自 `*dashscope` | HetaWiki 使用的 OpenAI 兼容接口地址。必填。 |
+| `hetawiki.llm.api_key` | 继承自 `*dashscope` | 当前 provider 的 API Key。必填。 |
+| `hetawiki.llm.model` | `"qwen3.5-flash"` | 当前用于 default ingest、merge ingest、query 和 lint 的模型。 |
+| `hetawiki.llm.timeout` | `300` | 请求超时时间（秒）。merge 和长文档任务通常比普通对话请求更慢。 |
+| `hetawiki.llm.max_retries` | `2` | HetaWiki LLM 请求失败后的重试次数。 |
+
+---
+
 ## db_config.yaml
 
 位于 `src/hetadb/config/db_config.yaml`，控制文档处理管线的吞吐量参数。默认值适用于大多数硬件配置；仅在处理超大规模数据集时需要调整。

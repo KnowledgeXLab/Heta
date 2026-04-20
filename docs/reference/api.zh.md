@@ -12,6 +12,11 @@ Heta 所有模块的完整 REST API 参考文档。
 ## Table of Contents
 
 - [System](#system)
+- [HetaWiki — Ingest](#hetawiki--ingest)
+- [HetaWiki — Query](#hetawiki--query)
+- [HetaWiki — Lint](#hetawiki--lint)
+- [HetaWiki — Read](#hetawiki--read)
+- [HetaWiki — Tasks](#hetawiki--tasks)
 - [HetaDB — Chat](#hetadb--chat)
 - [HetaDB — Datasets](#hetadb--datasets)
 - [HetaDB — Knowledge Bases](#hetadb--knowledge-bases)
@@ -31,6 +36,18 @@ Heta 所有模块的完整 REST API 参考文档。
 |--------|------|-------------|
 | GET | `/` | Service info |
 | GET | `/health` | Health check |
+| **HetaWiki — Ingest** | | |
+| POST | `/api/v1/hetawiki/ingest` | 上传文件并启动 Wiki 摄入任务 |
+| **HetaWiki — Query** | | |
+| POST | `/api/v1/hetawiki/query` | 围绕 Wiki 提交问题 |
+| **HetaWiki — Lint** | | |
+| POST | `/api/v1/hetawiki/lint` | 更新 lint 调度配置 |
+| **HetaWiki — Read** | | |
+| GET | `/api/v1/hetawiki/index` | 读取 Wiki 目录 |
+| GET | `/api/v1/hetawiki/pages/{filename}` | 读取单个 Wiki 页面 |
+| GET | `/api/v1/hetawiki/graph` | 读取 Wiki 图谱节点与边 |
+| **HetaWiki — Tasks** | | |
+| GET | `/api/v1/hetawiki/tasks/{task_id}` | 查询 ingest/query 任务状态 |
 | **HetaDB — Chat** | | |
 | POST | `/api/v1/hetadb/chat` | Query a knowledge base |
 | **HetaDB — Datasets** | | |
@@ -93,7 +110,7 @@ Heta 所有模块的完整 REST API 参考文档。
 
 **Names** — Dataset and KB names must match `^[A-Za-z0-9_\-]+$`, max 64 characters.
 
-**Task states** — `pending` → `running` → `completed` | `failed`; cancel path: `running` → `cancelling` → `cancelled`.
+**Task states** — Heta 的异步接口通常遵循 `pending` → `running` → `completed` | `failed`。部分模块可能定义额外状态或取消接口；如需依赖这些行为，请以对应模块的接口说明为准。
 
 **Standard response envelope** (HetaDB endpoints):
 ```json
@@ -122,6 +139,155 @@ Returns service name and version.
 **Response**
 ```json
 { "status": "ok" }
+```
+
+---
+
+## HetaWiki — Ingest
+
+### POST /api/v1/hetawiki/ingest
+
+上传单个文件，并启动异步 Wiki ingest 任务。
+
+使用 `multipart/form-data`。
+
+**表单字段**
+
+| Field | Type | Required | Description |
+|-------|------|:---:|-------------|
+| `file` | file | ✓ | 要摄入的源文档 |
+| `merge` | boolean |  | `false` 表示新增页面；`true` 表示融合进现有 Wiki |
+
+**返回**
+
+```json
+{
+  "task_id": "abc123",
+  "status": "queued",
+  "filename": "2026-04-17_194500_deepseek-r1.pdf"
+}
+```
+
+---
+
+## HetaWiki — Query
+
+### POST /api/v1/hetawiki/query
+
+围绕当前 Wiki 提交一个问题。查询异步执行，并返回任务 ID。
+
+**请求体**
+
+| Field | Type | Required | Description |
+|-------|------|:---:|-------------|
+| `question` | string | ✓ | 围绕当前 Wiki 的自然语言问题 |
+
+**返回**
+
+```json
+{
+  "task_id": "abc123",
+  "status": "queued"
+}
+```
+
+立即返回只包含 `task_id` 和 `status`。
+
+如需获取最终结果，请轮询 `GET /api/v1/hetawiki/tasks/{task_id}`。任务完成后，`result` 中主要包括：
+
+- `answer`
+- `sources`
+- `archived`
+
+---
+
+## HetaWiki — Lint
+
+### POST /api/v1/hetawiki/lint
+
+更新 HetaWiki 的 lint 调度配置。
+
+**请求体**
+
+| Field | Type | Required | Description |
+|-------|------|:---:|-------------|
+| `enabled` | boolean\|null |  | 是否启用定时 lint |
+| `interval_hours` | integer\|null |  | lint 运行间隔（小时） |
+
+**返回**
+
+```json
+{
+  "interval_hours": 24,
+  "enabled": true,
+  "next_run": "2026-04-18T02:00:00"
+}
+```
+
+---
+
+## HetaWiki — Read
+
+### GET /api/v1/hetawiki/index
+
+读取当前 Wiki 目录。
+
+**返回**
+
+```json
+{
+  "content": "# Wiki Index\n..."
+}
+```
+
+### GET /api/v1/hetawiki/pages/{filename}
+
+按文件名读取单个 Wiki 页面。
+
+**返回**
+
+```json
+{
+  "path": "pages/DeepSeek-R1.md",
+  "content": "---\ntitle: DeepSeek-R1\n..."
+}
+```
+
+### GET /api/v1/hetawiki/graph
+
+将 Wiki 页面返回为图谱节点，将 `[[links]]` 返回为边。
+
+**返回**
+
+```json
+{
+  "nodes": [
+    { "id": "pages/DeepSeek-R1", "title": "DeepSeek-R1", "category": null }
+  ],
+  "edges": [
+    { "source": "pages/DeepSeek-R1", "target": "pages/GRPO" }
+  ]
+}
+```
+
+---
+
+## HetaWiki — Tasks
+
+### GET /api/v1/hetawiki/tasks/{task_id}
+
+读取 ingest 或 query 任务当前状态。
+
+**返回**
+
+```json
+{
+  "task_id": "abc123",
+  "status": "completed",
+  "message": "done",
+  "error": null,
+  "result": {}
+}
 ```
 
 ---

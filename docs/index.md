@@ -20,6 +20,7 @@
 Heta is an all-in-one knowledge infrastructure for AI agents. It integrates multiple underlying databases to help agents do three things: acquire external knowledge, accumulate their own memory, and reason and generate based on that knowledge.
 
 - **HetaDB** — Unified management across multiple databases for smarter external knowledge integration. No need to worry about what format the knowledge comes from or which database it should go into.
+- **HetaWiki** — Compiles uploaded documents into a versioned Markdown wiki that users and agents can browse, merge, and query directly.
 - **HetaMem** — Dual-mode memory: fast episodic recall via vector search (MemoryVG), and a long-term knowledge graph that evolves continuously with the agent (MemoryKB).
 - **HetaGen** — Synthesizes and expands upon existing knowledge bases to generate higher-value structured content.
 
@@ -33,6 +34,13 @@ Heta is an all-in-one knowledge infrastructure for AI agents. It integrates mult
 - Parsed knowledge is automatically distributed across the appropriate databases — no manual storage decisions required
 - Multiple query strategies for different scenarios: `naive` (vector search)， `rerank` (BM25 + vector + cross-encoder)， `rewriter` (query pptimization)， `multihop` (ReAct)， `direct` (direct query)
 - Source document tracing to support agentic search workflows
+
+**HetaWiki**
+
+- LLM-native wiki compilation from uploaded source files into versioned Markdown pages
+- Dual ingest modes: fast `default ingest` for new pages and agentic `merge ingest` for precise wiki integration
+- Direct wiki reading via index, page, and graph endpoints for both UI workflows and agent workflows
+- Independent wiki git history for content evolution and rollback
 
 **HetaMem**
 
@@ -54,4 +62,5 @@ HetaDB and HetaMem expose optional MCP servers (ports 8012 / 8011) for direct in
 - [Docker Compose Quick Start](quick-start/docker.md) — recommended, full stack in one command
 - [Manual Setup](quick-start/manual.md) — run modules independently
 - [Connect MCP Clients](quick-start/mcp-clients.md) — Claude Desktop, Cursor
+- [HetaWiki Overview](hetawiki/index.md)
 - [REST API Reference](reference/api.md)
