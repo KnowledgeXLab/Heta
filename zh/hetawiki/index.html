@@ -1,6 +1,6 @@
 
 <!doctype html>
-<html lang="en" class="no-js">
+<html lang="zh" class="no-js">
   <head>
     
       <meta charset="utf-8">
@@ -8,19 +8,19 @@
       
       
       
-        <link rel="canonical" href="https://knowledgexllab.github.io/Heta/quick-start/manual/">
+        <link rel="canonical" href="https://knowledgexllab.github.io/Heta/zh/hetawiki/">
       
       
-        <link rel="prev" href="../docker/">
+        <link rel="prev" href="../hetadb/query-modes/">
       
       
-        <link rel="next" href="../mcp-clients/">
+        <link rel="next" href="ingest/">
       
       
         
-          <link rel="alternate" href="./" hreflang="en">
+          <link rel="alternate" href="../../hetawiki/" hreflang="en">
         
-          <link rel="alternate" href="../../zh/quick-start/manual/" hreflang="zh">
+          <link rel="alternate" href="./" hreflang="zh">
         
       
       
@@ -29,7 +29,7 @@
     
     
       
-        <title>Manual Setup - Heta</title>
+        <title>Overview - Heta</title>
       
     
     
@@ -82,8 +82,8 @@
     <div data-md-component="skip">
       
         
-        <a href="#manual-setup" class="md-skip">
-          Skip to content
+        <a href="#hetawiki" class="md-skip">
+          跳转至
         </a>
       
     </div>
@@ -95,8 +95,8 @@
       
 
 <header class="md-header" data-md-component="header">
-  <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="Heta" class="md-header__button md-logo" aria-label="Heta" data-md-component="logo">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../" title="Heta" class="md-header__button md-logo" aria-label="Heta" data-md-component="logo">
       
   <img src="../../images/logo.png" alt="logo">
 
@@ -115,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Manual Setup
+              Overview
             
           </span>
         </div>
@@ -155,20 +155,20 @@
       <div class="md-header__option">
   <div class="md-select">
     
-    <button class="md-header__button md-icon" aria-label="Select language">
+    <button class="md-header__button md-icon" aria-label="选择当前语言">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
     </button>
     <div class="md-select__inner">
       <ul class="md-select__list">
         
           <li class="md-select__item">
-            <a href="./" hreflang="en" class="md-select__link">
+            <a href="../../hetawiki/" hreflang="en" class="md-select__link">
               English
             </a>
           </li>
         
           <li class="md-select__item">
-            <a href="../../zh/quick-start/manual/" hreflang="zh" class="md-select__link">
+            <a href="./" hreflang="zh" class="md-select__link">
               中文
             </a>
           </li>
@@ -189,16 +189,16 @@
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
     <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
       <label class="md-search__icon md-icon" for="__search">
         
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
         
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
       </label>
-      <nav class="md-search__options" aria-label="Search">
+      <nav class="md-search__options" aria-label="查找">
         
-        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
           
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
         </button>
@@ -211,7 +211,7 @@
       <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
         <div class="md-search-result" data-md-component="search-result">
           <div class="md-search-result__meta">
-            Initializing search
+            正在初始化搜索引擎
           </div>
           <ol class="md-search-result__list" role="presentation"></ol>
         </div>
@@ -223,7 +223,7 @@
     
     
       <div class="md-header__source">
-        <a href="https://github.com/KnowledgeXLab/Heta" title="Go to repository" class="md-source" data-md-component="source">
+        <a href="https://github.com/KnowledgeXLab/Heta" title="前往仓库" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
@@ -244,7 +244,7 @@
         
           
             
-<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
       
@@ -254,7 +254,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../.." class="md-tabs__link">
+      <a href="../" class="md-tabs__link">
         
   
   
@@ -271,13 +271,11 @@
   
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../docker/" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../quick-start/docker/" class="md-tabs__link">
           
   
   
@@ -299,7 +297,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../hetadb/" class="md-tabs__link">
+        <a href="../hetadb/" class="md-tabs__link">
           
   
   
@@ -317,11 +315,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../hetawiki/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
           
   
   
@@ -343,7 +343,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../hetamem/" class="md-tabs__link">
+        <a href="../hetamem/" class="md-tabs__link">
           
   
   
@@ -365,7 +365,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../hetagen/" class="md-tabs__link">
+        <a href="../hetagen/" class="md-tabs__link">
           
   
   
@@ -387,7 +387,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../reference/api/" class="md-tabs__link">
+        <a href="../reference/api/" class="md-tabs__link">
           
   
   
@@ -407,7 +407,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../faq/" class="md-tabs__link">
+      <a href="../faq/" class="md-tabs__link">
         
   
   
@@ -426,7 +426,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../demo/" class="md-tabs__link">
+      <a href="../demo/" class="md-tabs__link">
         
   
   
@@ -459,9 +459,9 @@
   
 
 
-<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="Heta" class="md-nav__button md-logo" aria-label="Heta" data-md-component="logo">
+    <a href="../" title="Heta" class="md-nav__button md-logo" aria-label="Heta" data-md-component="logo">
       
   <img src="../../images/logo.png" alt="logo">
 
@@ -470,7 +470,7 @@
   </label>
   
     <div class="md-nav__source">
-      <a href="https://github.com/KnowledgeXLab/Heta" title="Go to repository" class="md-source" data-md-component="source">
+      <a href="https://github.com/KnowledgeXLab/Heta" title="前往仓库" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
@@ -490,7 +490,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../.." class="md-nav__link">
+      <a href="../" class="md-nav__link">
         
   
   
@@ -514,10 +514,8 @@
       
   
   
-    
   
   
-  
     
     
       
@@ -531,22 +529,21 @@
     
     
       
-        
-        
-      
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
             
   
   
@@ -564,7 +561,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -582,7 +579,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../docker/" class="md-nav__link">
+      <a href="../quick-start/docker/" class="md-nav__link">
         
   
   
@@ -607,37 +604,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Manual Setup
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../quick-start/manual/" class="md-nav__link">
         
   
   
@@ -653,81 +623,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Prerequisites
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#install" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Install
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#run-unified-mode" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Run — Unified Mode
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#run-per-module-mode" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Run — Per-Module Mode
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#port-reference" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Port Reference
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -740,7 +635,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../mcp-clients/" class="md-nav__link">
+      <a href="../quick-start/mcp-clients/" class="md-nav__link">
         
   
   
@@ -804,7 +699,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../hetadb/" class="md-nav__link ">
+            <a href="../hetadb/" class="md-nav__link ">
               
   
   
@@ -848,7 +743,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../hetadb/ingest/" class="md-nav__link">
+      <a href="../hetadb/ingest/" class="md-nav__link">
         
   
   
@@ -876,7 +771,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../hetadb/query-modes/" class="md-nav__link">
+      <a href="../hetadb/query-modes/" class="md-nav__link">
         
   
   
@@ -908,6 +803,8 @@
       
   
   
+    
+  
   
   
     
@@ -925,22 +822,23 @@
     
     
       
+        
+        
+      
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../hetawiki/" class="md-nav__link ">
+            <a href="./" class="md-nav__link md-nav__link--active">
               
   
   
@@ -958,13 +856,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+              <label class="md-nav__link md-nav__link--active" for="__nav_4" id="__nav_4_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -984,7 +882,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../hetawiki/ingest/" class="md-nav__link">
+      <a href="ingest/" class="md-nav__link">
         
   
   
@@ -1012,7 +910,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../hetawiki/query/" class="md-nav__link">
+      <a href="query/" class="md-nav__link">
         
   
   
@@ -1078,7 +976,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../hetamem/" class="md-nav__link ">
+            <a href="../hetamem/" class="md-nav__link ">
               
   
   
@@ -1122,7 +1020,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../hetamem/memoryvg/" class="md-nav__link">
+      <a href="../hetamem/memoryvg/" class="md-nav__link">
         
   
   
@@ -1150,7 +1048,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../hetamem/memorykb/" class="md-nav__link">
+      <a href="../hetamem/memorykb/" class="md-nav__link">
         
   
   
@@ -1178,7 +1076,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../hetamem/querying-skill/" class="md-nav__link">
+      <a href="../hetamem/querying-skill/" class="md-nav__link">
         
   
   
@@ -1238,7 +1136,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../hetagen/" class="md-nav__link ">
+            <a href="../hetagen/" class="md-nav__link ">
               
   
   
@@ -1346,7 +1244,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/api/" class="md-nav__link">
+      <a href="../reference/api/" class="md-nav__link">
         
   
   
@@ -1374,7 +1272,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/config/" class="md-nav__link">
+      <a href="../reference/config/" class="md-nav__link">
         
   
   
@@ -1402,7 +1300,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/changelog/" class="md-nav__link">
+      <a href="../reference/changelog/" class="md-nav__link">
         
   
   
@@ -1437,7 +1335,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../faq/" class="md-nav__link">
+      <a href="../faq/" class="md-nav__link">
         
   
   
@@ -1464,7 +1362,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../demo/" class="md-nav__link">
+      <a href="../demo/" class="md-nav__link">
         
   
   
@@ -1497,7 +1395,7 @@
                   <div class="md-sidebar__inner">
                     
 
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+<nav class="md-nav md-nav--secondary" aria-label="目录">
   
   
   
@@ -1506,15 +1404,15 @@
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
-      Table of contents
+      目录
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
+  <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Prerequisites
+        支持格式
       
     </span>
   </a>
@@ -1522,10 +1420,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#install" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Install
+        核心概念
       
     </span>
   </a>
@@ -1533,10 +1431,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#run-unified-mode" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Run — Unified Mode
+        两种摄入模式
       
     </span>
   </a>
@@ -1544,10 +1442,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#run-per-module-mode" class="md-nav__link">
+  <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Run — Per-Module Mode
+        查询与导航
       
     </span>
   </a>
@@ -1555,10 +1453,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#port-reference" class="md-nav__link">
+  <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Port Reference
+        维护机制
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        相关页面
       
     </span>
   </a>
@@ -1585,98 +1494,116 @@
   
 
 
-<h1 id="manual-setup">Manual Setup</h1>
-<p>Run Heta without Docker — useful for development or when you already have the infrastructure services running.</p>
-<h2 id="prerequisites">Prerequisites</h2>
-<ul>
-<li>Python 3.10</li>
-<li>PostgreSQL (running)</li>
-<li>Milvus (running)</li>
-<li>Neo4j (running)</li>
-</ul>
-<h2 id="install">Install</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># 1. Create and activate environment</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>heta<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.10<span class="w"> </span>-y
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>conda<span class="w"> </span>activate<span class="w"> </span>heta
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1"># 2. Install backend</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c1"># 3. Build frontend</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="nb">cd</span><span class="w"> </span>heta-frontend<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>install<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>build<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>..
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="c1"># 4. Copy and fill in config</span>
-<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>cp<span class="w"> </span>config.example.yaml<span class="w"> </span>config.yaml
-<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="c1"># Edit config.yaml: set providers.dashscope.api_key etc.</span>
-</code></pre></div>
-<h2 id="run-unified-mode">Run — Unified Mode</h2>
-<p>Runs all modules (HetaDB, HetaMem, HetaGen) on a single port:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nv">PYTHONPATH</span><span class="o">=</span>src<span class="w"> </span>python<span class="w"> </span>src/main.py
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1"># → http://localhost:8000</span>
-</code></pre></div>
-<h2 id="run-per-module-mode">Run — Per-Module Mode</h2>
-<p>Each module runs independently on its own port:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">PYTHONPATH</span><span class="o">=</span>/path/to/Heta/src
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>python<span class="w"> </span>src/hetadb/api/main.py<span class="w">              </span><span class="c1"># HetaDB   → :8001</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>python<span class="w"> </span>src/hetagen/api/main.py<span class="w">             </span><span class="c1"># HetaGen  → :8002</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>python<span class="w"> </span>src/hetamem/api/main.py<span class="w">             </span><span class="c1"># HetaMem  → :8003</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># MCP servers (optional)</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="nv">HETAMEM_BASE_URL</span><span class="o">=</span>http://localhost:8000<span class="w"> </span>python<span class="w"> </span>src/hetamem/mcp/server.py<span class="w">  </span><span class="c1"># → :8011</span>
-<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="nv">HETADB_BASE_URL</span><span class="o">=</span>http://localhost:8000<span class="w">  </span>python<span class="w"> </span>src/hetadb/mcp/server.py<span class="w">   </span><span class="c1"># → :8012</span>
-</code></pre></div>
-<h2 id="port-reference">Port Reference</h2>
+<h1 id="hetawiki">HetaWiki</h1>
+<p>HetaWiki 是 Heta 的 LLM 原生 Wiki 层。它将用户上传的原始文档编译为可版本化的 Markdown 知识库，并支持用户与智能体直接浏览、融合和查询该 Wiki。</p>
+<hr />
+<h2 id="_1">支持格式</h2>
+<p>当前 HetaWiki 的摄入链路支持以下轻量文档格式：</p>
 <table>
 <thead>
 <tr>
-<th>Service</th>
-<th>Port</th>
+<th>格式</th>
+<th>扩展名</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Heta unified API</td>
-<td>8000</td>
+<td>纯文本 / 标记文本</td>
+<td><code>.md</code>, <code>.markdown</code>, <code>.txt</code></td>
 </tr>
 <tr>
-<td>HetaDB (standalone)</td>
-<td>8001</td>
+<td>PDF</td>
+<td><code>.pdf</code></td>
 </tr>
 <tr>
-<td>HetaGen (standalone)</td>
-<td>8002</td>
+<td>Word 文档</td>
+<td><code>.docx</code>, <code>.doc</code></td>
 </tr>
 <tr>
-<td>HetaMem (standalone)</td>
-<td>8003</td>
-</tr>
-<tr>
-<td>HetaMem MCP</td>
-<td>8011</td>
-</tr>
-<tr>
-<td>HetaDB MCP</td>
-<td>8012</td>
-</tr>
-<tr>
-<td>PostgreSQL</td>
-<td>5432</td>
-</tr>
-<tr>
-<td>Milvus</td>
-<td>19530</td>
-</tr>
-<tr>
-<td>Neo4j Browser / Bolt</td>
-<td>7474 / 7687</td>
-</tr>
-<tr>
-<td>MinIO S3 / Console</td>
-<td>9000 / 9001</td>
+<td>演示文稿</td>
+<td><code>.pptx</code>, <code>.ppt</code></td>
 </tr>
 </tbody>
 </table>
+<p>其中 <code>.doc</code>、<code>.ppt</code>、<code>.pptx</code> 需要先通过 LibreOffice 转为 PDF 再进行解析。</p>
+<hr />
+<h2 id="_2">核心概念</h2>
+<table>
+<thead>
+<tr>
+<th>组件</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>raw/</code></td>
+<td>用户上传后的原始文件，只进不改</td>
+</tr>
+<tr>
+<td><code>wiki/pages/</code></td>
+<td>Wiki 页面正文，作为后续阅读与查询的事实来源</td>
+</tr>
+<tr>
+<td><code>index.md</code></td>
+<td>全局目录，供前端与 LLM 共同使用</td>
+</tr>
+<tr>
+<td><code>log.md</code></td>
+<td>append-only 操作日志，记录 ingest、merge 与维护动作</td>
+</tr>
+<tr>
+<td>独立 git 仓库</td>
+<td>将 Wiki 内容演化与主项目代码历史分离管理</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_3">两种摄入模式</h2>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>行为</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>default ingest</code></td>
+<td>将一份源文档解析并整理为一篇新的 Wiki 页面</td>
+<td>快速新增文档</td>
+</tr>
+<tr>
+<td><code>merge ingest</code></td>
+<td>基于 Wiki 工作副本运行 agent loop，按需读取、更新已有页面或新增页面</td>
+<td>将新文档高质量融合进现有 Wiki</td>
+</tr>
+</tbody>
+</table>
+<p>两种模式都以异步任务执行。API 会先返回 <code>task_id</code>，调用方再通过任务接口轮询结果。</p>
+<hr />
+<h2 id="_4">查询与导航</h2>
+<p>HetaWiki 提供三类互补的访问方式：</p>
+<ul>
+<li><code>POST /api/v1/hetawiki/query</code> — 异步问答接口</li>
+<li><code>GET /api/v1/hetawiki/index</code> — 获取当前 Wiki 目录</li>
+<li><code>GET /api/v1/hetawiki/pages/{filename}</code> — 读取单个页面</li>
+<li><code>GET /api/v1/hetawiki/graph</code> — 将 Wiki 内部链接抽取为图谱节点与边</li>
+</ul>
+<p>因此，HetaWiki 既可以作为 Web UI 功能使用，也可以作为面向智能体的可读知识层使用。</p>
+<hr />
+<h2 id="_5">维护机制</h2>
+<p>HetaWiki 内置可配置的 lint 调度能力。Lint 会定期扫描整个 Wiki，用于发现结构不一致、缺失链接或可能过时的内容。</p>
+<p>调度入口为 <code>POST /api/v1/hetawiki/lint</code>。</p>
+<hr />
+<h2 id="_6">相关页面</h2>
+<ul>
+<li><a href="ingest/">文档摄入</a> — 面向用户的前端上传与模式选择说明</li>
+<li><a href="query/">查询 Wiki</a> — 提问、查看来源页面，并继续追问</li>
+<li><a href="../reference/api/">REST API 参考</a></li>
+<li><a href="../reference/config/">配置参考</a></li>
+</ul>
 
 
 
@@ -1702,7 +1629,7 @@
           <button type="button" class="md-top md-icon" data-md-component="top" hidden>
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
-  Back to top
+  回到页面顶部
 </button>
         
       </main>
@@ -1711,33 +1638,33 @@
   
     
       
-      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
         
           
-          <a href="../docker/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Docker Compose">
+          <a href="../hetadb/query-modes/" class="md-footer__link md-footer__link--prev" aria-label="上一页: Query Modes">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
             </div>
             <div class="md-footer__title">
               <span class="md-footer__direction">
-                Previous
+                上一页
               </span>
               <div class="md-ellipsis">
-                Docker Compose
+                Query Modes
               </div>
             </div>
           </a>
         
         
           
-          <a href="../mcp-clients/" class="md-footer__link md-footer__link--next" aria-label="Next: Connect MCP Clients">
+          <a href="ingest/" class="md-footer__link md-footer__link--next" aria-label="下一页: Ingest Documents">
             <div class="md-footer__title">
               <span class="md-footer__direction">
-                Next
+                下一页
               </span>
               <div class="md-ellipsis">
-                Connect MCP Clients
+                Ingest Documents
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -1774,7 +1701,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.tabs.link", "content.code.annotate", "content.code.copy", "navigation.expand", "navigation.footer", "navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.top", "navigation.tracking", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.tabs.link", "content.code.annotate", "content.code.copy", "navigation.expand", "navigation.footer", "navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.top", "navigation.tracking", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>

@@ -8,19 +8,19 @@
       
       
       
-        <link rel="canonical" href="https://knowledgexllab.github.io/Heta/quick-start/manual/">
+        <link rel="canonical" href="https://knowledgexllab.github.io/Heta/hetawiki/ingest/">
       
       
-        <link rel="prev" href="../docker/">
+        <link rel="prev" href="../">
       
       
-        <link rel="next" href="../mcp-clients/">
+        <link rel="next" href="../query/">
       
       
         
           <link rel="alternate" href="./" hreflang="en">
         
-          <link rel="alternate" href="../../zh/quick-start/manual/" hreflang="zh">
+          <link rel="alternate" href="../../zh/hetawiki/ingest/" hreflang="zh">
         
       
       
@@ -29,7 +29,7 @@
     
     
       
-        <title>Manual Setup - Heta</title>
+        <title>Ingest Documents - Heta</title>
       
     
     
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#manual-setup" class="md-skip">
+        <a href="#ingesting-documents" class="md-skip">
           Skip to content
         </a>
       
@@ -115,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Manual Setup
+              Ingest Documents
             
           </span>
         </div>
@@ -168,7 +168,7 @@
           </li>
         
           <li class="md-select__item">
-            <a href="../../zh/quick-start/manual/" hreflang="zh" class="md-select__link">
+            <a href="../../zh/hetawiki/ingest/" hreflang="zh" class="md-select__link">
               中文
             </a>
           </li>
@@ -271,13 +271,11 @@
   
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../docker/" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../quick-start/docker/" class="md-tabs__link">
           
   
   
@@ -317,11 +315,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../hetawiki/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
           
   
   
@@ -514,10 +514,8 @@
       
   
   
-    
   
   
-  
     
     
       
@@ -531,22 +529,21 @@
     
     
       
-        
-        
-      
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
             
   
   
@@ -564,7 +561,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -582,7 +579,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../docker/" class="md-nav__link">
+      <a href="../../quick-start/docker/" class="md-nav__link">
         
   
   
@@ -607,37 +604,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Manual Setup
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../quick-start/manual/" class="md-nav__link">
         
   
   
@@ -653,81 +623,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Prerequisites
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#install" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Install
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#run-unified-mode" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Run — Unified Mode
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#run-per-module-mode" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Run — Per-Module Mode
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#port-reference" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Port Reference
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -740,7 +635,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../mcp-clients/" class="md-nav__link">
+      <a href="../../quick-start/mcp-clients/" class="md-nav__link">
         
   
   
@@ -908,6 +803,8 @@
       
   
   
+    
+  
   
   
     
@@ -925,22 +822,23 @@
     
     
       
+        
+        
+      
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../hetawiki/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   
@@ -958,13 +856,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -981,10 +879,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../hetawiki/ingest/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ingest Documents
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1000,6 +925,81 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Modes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-to-use-each-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When to Use Each Mode
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-use-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to Use It
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1012,7 +1012,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../hetawiki/query/" class="md-nav__link">
+      <a href="../query/" class="md-nav__link">
         
   
   
@@ -1511,10 +1511,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
+  <a href="#modes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Prerequisites
+        Modes
       
     </span>
   </a>
@@ -1522,10 +1522,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#install" class="md-nav__link">
+  <a href="#when-to-use-each-mode" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Install
+        When to Use Each Mode
       
     </span>
   </a>
@@ -1533,10 +1533,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#run-unified-mode" class="md-nav__link">
+  <a href="#how-to-use-it" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Run — Unified Mode
+        How to Use It
       
     </span>
   </a>
@@ -1544,10 +1544,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#run-per-module-mode" class="md-nav__link">
+  <a href="#notes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Run — Per-Module Mode
+        Notes
       
     </span>
   </a>
@@ -1555,10 +1555,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#port-reference" class="md-nav__link">
+  <a href="#api" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Port Reference
+        API
       
     </span>
   </a>
@@ -1585,98 +1585,50 @@
   
 
 
-<h1 id="manual-setup">Manual Setup</h1>
-<p>Run Heta without Docker — useful for development or when you already have the infrastructure services running.</p>
-<h2 id="prerequisites">Prerequisites</h2>
+<h1 id="ingesting-documents">Ingesting Documents</h1>
+<p>Use Ingest to add documents into the current wiki.</p>
+<h2 id="modes">Modes</h2>
 <ul>
-<li>Python 3.10</li>
-<li>PostgreSQL (running)</li>
-<li>Milvus (running)</li>
-<li>Neo4j (running)</li>
+<li><strong>Add as New Page</strong>: create one new wiki page from the uploaded document.</li>
+<li><strong>Integrate with Wiki</strong>: merge the uploaded document into the current wiki and update related pages when needed.</li>
 </ul>
-<h2 id="install">Install</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># 1. Create and activate environment</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>heta<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.10<span class="w"> </span>-y
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>conda<span class="w"> </span>activate<span class="w"> </span>heta
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1"># 2. Install backend</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c1"># 3. Build frontend</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="nb">cd</span><span class="w"> </span>heta-frontend<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>install<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>build<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>..
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="c1"># 4. Copy and fill in config</span>
-<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>cp<span class="w"> </span>config.example.yaml<span class="w"> </span>config.yaml
-<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="c1"># Edit config.yaml: set providers.dashscope.api_key etc.</span>
+<h2 id="when-to-use-each-mode">When to Use Each Mode</h2>
+<p>Use <strong>Add as New Page</strong> when:</p>
+<ul>
+<li>the document is new</li>
+<li>one document should become one page</li>
+<li>existing pages should stay unchanged</li>
+</ul>
+<p>Use <strong>Integrate with Wiki</strong> when:</p>
+<ul>
+<li>the document overlaps with existing wiki topics</li>
+<li>existing pages may need updates</li>
+<li>the result should be integrated instead of simply appended</li>
+</ul>
+<h2 id="how-to-use-it">How to Use It</h2>
+<ol>
+<li>Open the HetaWiki page.</li>
+<li>Upload a file in the Ingest section.</li>
+<li>Choose a mode.</li>
+<li>Submit the task.</li>
+<li>Wait for the task to finish.</li>
+<li>Check the result in the page view, index, graph, or query page.</li>
+</ol>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>If you are unsure, start with <strong>Add as New Page</strong>.</li>
+<li>Very large documents may be rejected by <code>default ingest</code>.</li>
+<li><strong>Integrate with Wiki</strong> is slower because it updates the wiki more carefully.</li>
+</ul>
+<h2 id="api">API</h2>
+<p>Submit an ingest task:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/api/v1/hetawiki/ingest<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span>-F<span class="w"> </span><span class="s2">&quot;file=@deepseek-r1.pdf&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span>-F<span class="w"> </span><span class="s2">&quot;merge=false&quot;</span>
 </code></pre></div>
-<h2 id="run-unified-mode">Run — Unified Mode</h2>
-<p>Runs all modules (HetaDB, HetaMem, HetaGen) on a single port:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nv">PYTHONPATH</span><span class="o">=</span>src<span class="w"> </span>python<span class="w"> </span>src/main.py
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1"># → http://localhost:8000</span>
+<p>Check task status:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>curl<span class="w"> </span>http://localhost:8000/api/v1/hetawiki/tasks/abc123
 </code></pre></div>
-<h2 id="run-per-module-mode">Run — Per-Module Mode</h2>
-<p>Each module runs independently on its own port:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">PYTHONPATH</span><span class="o">=</span>/path/to/Heta/src
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>python<span class="w"> </span>src/hetadb/api/main.py<span class="w">              </span><span class="c1"># HetaDB   → :8001</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>python<span class="w"> </span>src/hetagen/api/main.py<span class="w">             </span><span class="c1"># HetaGen  → :8002</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>python<span class="w"> </span>src/hetamem/api/main.py<span class="w">             </span><span class="c1"># HetaMem  → :8003</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># MCP servers (optional)</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="nv">HETAMEM_BASE_URL</span><span class="o">=</span>http://localhost:8000<span class="w"> </span>python<span class="w"> </span>src/hetamem/mcp/server.py<span class="w">  </span><span class="c1"># → :8011</span>
-<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="nv">HETADB_BASE_URL</span><span class="o">=</span>http://localhost:8000<span class="w">  </span>python<span class="w"> </span>src/hetadb/mcp/server.py<span class="w">   </span><span class="c1"># → :8012</span>
-</code></pre></div>
-<h2 id="port-reference">Port Reference</h2>
-<table>
-<thead>
-<tr>
-<th>Service</th>
-<th>Port</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Heta unified API</td>
-<td>8000</td>
-</tr>
-<tr>
-<td>HetaDB (standalone)</td>
-<td>8001</td>
-</tr>
-<tr>
-<td>HetaGen (standalone)</td>
-<td>8002</td>
-</tr>
-<tr>
-<td>HetaMem (standalone)</td>
-<td>8003</td>
-</tr>
-<tr>
-<td>HetaMem MCP</td>
-<td>8011</td>
-</tr>
-<tr>
-<td>HetaDB MCP</td>
-<td>8012</td>
-</tr>
-<tr>
-<td>PostgreSQL</td>
-<td>5432</td>
-</tr>
-<tr>
-<td>Milvus</td>
-<td>19530</td>
-</tr>
-<tr>
-<td>Neo4j Browser / Bolt</td>
-<td>7474 / 7687</td>
-</tr>
-<tr>
-<td>MinIO S3 / Console</td>
-<td>9000 / 9001</td>
-</tr>
-</tbody>
-</table>
 
 
 
@@ -1714,7 +1666,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../docker/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Docker Compose">
+          <a href="../" class="md-footer__link md-footer__link--prev" aria-label="Previous: Overview">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1724,20 +1676,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Docker Compose
+                Overview
               </div>
             </div>
           </a>
         
         
           
-          <a href="../mcp-clients/" class="md-footer__link md-footer__link--next" aria-label="Next: Connect MCP Clients">
+          <a href="../query/" class="md-footer__link md-footer__link--next" aria-label="Next: Query the Wiki">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Connect MCP Clients
+                Query the Wiki
               </div>
             </div>
             <div class="md-footer__button md-icon">
