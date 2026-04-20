@@ -55,6 +55,10 @@ nav:
       - Overview: hetadb/index.md
       - Ingest Documents: hetadb/ingest.md
       - Query Modes: hetadb/query-modes.md
+  - HetaWiki:
+      - Overview: hetawiki/index.md
+      - Ingest Documents: hetawiki/ingest.md
+      - Query the Wiki: hetawiki/query.md
   - HetaMem:
       - Overview: hetamem/index.md
       - MemoryVG — Episodic: hetamem/memoryvg.md

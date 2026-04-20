@@ -10,6 +10,11 @@ Complete REST API reference for all Heta modules.
 ## Table of Contents
 
 - [System](#system)
+- [HetaWiki — Ingest](#hetawiki--ingest)
+- [HetaWiki — Query](#hetawiki--query)
+- [HetaWiki — Lint](#hetawiki--lint)
+- [HetaWiki — Read](#hetawiki--read)
+- [HetaWiki — Tasks](#hetawiki--tasks)
 - [HetaDB — Chat](#hetadb--chat)
 - [HetaDB — Datasets](#hetadb--datasets)
 - [HetaDB — Knowledge Bases](#hetadb--knowledge-bases)
@@ -29,6 +34,18 @@ Complete REST API reference for all Heta modules.
 |--------|------|-------------|
 | GET | `/` | Service info |
 | GET | `/health` | Health check |
+| **HetaWiki — Ingest** | | |
+| POST | `/api/v1/hetawiki/ingest` | Upload a file and start wiki ingest |
+| **HetaWiki — Query** | | |
+| POST | `/api/v1/hetawiki/query` | Ask a question about the wiki |
+| **HetaWiki — Lint** | | |
+| POST | `/api/v1/hetawiki/lint` | Update lint scheduler config |
+| **HetaWiki — Read** | | |
+| GET | `/api/v1/hetawiki/index` | Read the wiki index |
+| GET | `/api/v1/hetawiki/pages/{filename}` | Read a wiki page |
+| GET | `/api/v1/hetawiki/graph` | Read wiki graph nodes and edges |
+| **HetaWiki — Tasks** | | |
+| GET | `/api/v1/hetawiki/tasks/{task_id}` | Get ingest/query task status |
 | **HetaDB — Chat** | | |
 | POST | `/api/v1/hetadb/chat` | Query a knowledge base |
 | **HetaDB — Datasets** | | |
@@ -91,7 +108,7 @@ Complete REST API reference for all Heta modules.
 
 **Names** — Dataset and KB names must match `^[A-Za-z0-9_\-]+$`, max 64 characters.
 
-**Task states** — `pending` → `running` → `completed` | `failed`; cancel path: `running` → `cancelling` → `cancelled`.
+**Task states** — Heta asynchronous endpoints typically move through `pending` → `running` → `completed` | `failed`. Some modules may expose additional task states or cancellation endpoints; check the module-specific endpoint docs before relying on them.
 
 **Standard response envelope** (HetaDB endpoints):
 ```json
@@ -120,6 +137,156 @@ Returns service name and version.
 **Response**
 ```json
 { "status": "ok" }
+```
+
+---
+
+## HetaWiki — Ingest
+
+### POST /api/v1/hetawiki/ingest
+
+Upload one file and start an asynchronous wiki ingest task.
+
+Use `multipart/form-data`.
+
+**Form fields**
+
+| Field | Type | Required | Description |
+|-------|------|:---:|-------------|
+| `file` | file | ✓ | Source document to ingest |
+| `merge` | boolean |  | `false` = add as new page; `true` = integrate with existing wiki |
+
+**Response**
+
+```json
+{
+  "task_id": "abc123",
+  "status": "queued",
+  "filename": "2026-04-17_194500_deepseek-r1.pdf"
+}
+```
+
+---
+
+## HetaWiki — Query
+
+### POST /api/v1/hetawiki/query
+
+Submit a question about the current wiki. Query runs asynchronously and returns
+a task ID.
+
+**Request body**
+
+| Field | Type | Required | Description |
+|-------|------|:---:|-------------|
+| `question` | string | ✓ | Natural-language question about the wiki |
+
+**Response**
+
+```json
+{
+  "task_id": "abc123",
+  "status": "queued"
+}
+```
+
+The immediate response only returns `task_id` and `status`.
+
+To get the final answer, poll `GET /api/v1/hetawiki/tasks/{task_id}`. When the task completes, `result` includes:
+
+- `answer`
+- `sources`
+- `archived`
+
+---
+
+## HetaWiki — Lint
+
+### POST /api/v1/hetawiki/lint
+
+Update the HetaWiki lint scheduler configuration.
+
+**Request body**
+
+| Field | Type | Required | Description |
+|-------|------|:---:|-------------|
+| `enabled` | boolean\|null |  | Enable or disable scheduled lint |
+| `interval_hours` | integer\|null |  | Hours between lint runs |
+
+**Response**
+
+```json
+{
+  "interval_hours": 24,
+  "enabled": true,
+  "next_run": "2026-04-18T02:00:00"
+}
+```
+
+---
+
+## HetaWiki — Read
+
+### GET /api/v1/hetawiki/index
+
+Read the current wiki index.
+
+**Response**
+
+```json
+{
+  "content": "# Wiki Index\n..."
+}
+```
+
+### GET /api/v1/hetawiki/pages/{filename}
+
+Read one wiki page by filename.
+
+**Response**
+
+```json
+{
+  "path": "pages/DeepSeek-R1.md",
+  "content": "---\ntitle: DeepSeek-R1\n..."
+}
+```
+
+### GET /api/v1/hetawiki/graph
+
+Return wiki pages as graph nodes and `[[links]]` as edges.
+
+**Response**
+
+```json
+{
+  "nodes": [
+    { "id": "pages/DeepSeek-R1", "title": "DeepSeek-R1", "category": null }
+  ],
+  "edges": [
+    { "source": "pages/DeepSeek-R1", "target": "pages/GRPO" }
+  ]
+}
+```
+
+---
+
+## HetaWiki — Tasks
+
+### GET /api/v1/hetawiki/tasks/{task_id}
+
+Read the current state of an ingest or query task.
+
+**Response**
+
+```json
+{
+  "task_id": "abc123",
+  "status": "completed",
+  "message": "done",
+  "error": null,
+  "result": {}
+}
 ```
 
 ---

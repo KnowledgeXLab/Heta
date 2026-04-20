@@ -170,6 +170,37 @@ MemoryVG uses Milvus + Neo4j for structured fact storage across conversations.
 
 ---
 
+### `hetawiki`
+
+HetaWiki uses a small configuration block for ingest limits and the LLM used by
+default ingest, merge ingest, query, and lint.
+
+#### `hetawiki.workspace`
+
+| Key | Current value | Description |
+|-----|---------------|-------------|
+| `hetawiki.workspace` | `"workspace"` | Workspace root setting in `config.yaml`. Note: the current HetaWiki path layer still uses the fixed local path `workspace/hetawiki/`, so changing this key does not yet relocate the wiki workspace. |
+
+#### `hetawiki.ingest`
+
+| Key | Current value | Description |
+|-----|---------------|-------------|
+| `hetawiki.ingest.max_workers` | `4` | Max concurrent ingest worker threads. The query router currently reuses the same thread-pool size. |
+| `hetawiki.ingest.max_input_chars` | `80000` | Maximum parsed text length accepted by `default ingest`. Longer documents are rejected instead of being silently truncated or auto-split. |
+| `hetawiki.ingest.parse_timeout` | `300` | Parser timeout in seconds for MinerU-based document parsing. Large PDFs or OCR-heavy files may need several minutes. |
+
+#### `hetawiki.llm`
+
+| Key | Current value | Description |
+|-----|---------------|-------------|
+| `hetawiki.llm.base_url` | inherited from `*dashscope` | OpenAI-compatible base URL used by HetaWiki LLM calls. Required. |
+| `hetawiki.llm.api_key` | inherited from `*dashscope` | API key for the configured provider. Required. |
+| `hetawiki.llm.model` | `"qwen3.5-flash"` | Model currently used for default ingest, merge ingest, query, and lint. |
+| `hetawiki.llm.timeout` | `300` | Request timeout in seconds. Merge and long-document calls may take substantially longer than ordinary chat requests. |
+| `hetawiki.llm.max_retries` | `2` | Retry attempts for failed HetaWiki LLM requests. |
+
+---
+
 ## db_config.yaml
 
 Located at `src/hetadb/config/db_config.yaml`. Controls document processing pipeline throughput. The defaults work well for most hardware; adjust when scaling to large datasets.
