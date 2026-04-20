@@ -14,6 +14,10 @@
   <img src="https://img.shields.io/github/stars/KnowledgeXLab/Heta?style=social"/>
 </p>
 
+<p align="center">
+  <a href="https://knowledgexllab.github.io/Heta/">Documentation</a>
+</p>
+
 ---
 
 ## What is Heta?
@@ -21,6 +25,7 @@
 Heta is an all-in-one knowledge infrastructure for AI agents. It gives agents a place to store, retrieve, and accumulate knowledge across three complementary layers:
 
 - **HetaDB** — ingest documents (PDF, DOCX, PPTX, XLS/XLSX, images, …), extract knowledge graphs, and query with five retrieval strategies from naive vector search to multi-hop reasoning.
+- **HetaWiki** — compile uploaded documents into a versioned Markdown wiki with page ingest, agent-based merge, query, lint, and graph navigation.
 - **HetaMem** — a dual-layer memory system: fast episodic recall (MemoryVG) for conversation facts, and a long-term knowledge graph (MemoryKB) that grows with the agent.
 - **HetaGen** — knowledge-base-driven structured content generation: table synthesis, tag-tree construction, and Text-to-SQL. *(early stage)*
 
@@ -33,6 +38,12 @@ Heta is an all-in-one knowledge infrastructure for AI agents. It gives agents a 
 - LLM-powered knowledge graph extraction with deduplication (Union-Find merging)
 - Five query strategies: `naive` · `rerank` (BM25 + vector + cross-encoder) · `rewriter` · `multihop` (ReAct) · `direct`
 - Inline citations linking answers back to source documents
+
+**HetaWiki**
+- Compile source documents into versioned Markdown wiki pages
+- Two ingest modes: `Add as New Page` and `Integrate with Wiki`
+- Wiki query, page browsing, graph navigation, and scheduled linting
+- Independent git history for wiki evolution and rollback
 
 **HetaMem**
 - **MemoryVG** — LLM auto-extracts facts from conversations; instant semantic search; full CRUD + history audit
@@ -55,7 +66,7 @@ Heta is an all-in-one knowledge infrastructure for AI agents. It gives agents a 
 **Prerequisites:** Docker ≥ 24.0 · Docker Compose ≥ 2.20 · DashScope and SiliconFlow API keys
 
 ```bash
-git clone https://github.com/HetaTeam/Heta.git
+git clone https://github.com/KnowledgeXLab/Heta.git
 cd Heta
 
 # Chinese API providers (DashScope + SiliconFlow)
@@ -94,6 +105,7 @@ curl localhost:8000/health
 |---|---|
 | http://localhost | Heta web UI |
 | http://localhost:8000/docs | REST API (Swagger) |
+| https://knowledgexllab.github.io/Heta/ | Documentation |
 | http://localhost:7474 | Neo4j browser |
 | http://localhost:9001 | MinIO console |
 
@@ -193,6 +205,18 @@ Load it in your agent system!
 ---
 
 ## Core Workflows
+
+### HetaWiki — Build and Query a Living Wiki
+
+In the web UI, you can:
+
+1. Open the HetaWiki page
+2. Upload a document in the Ingest section
+3. Choose **Add as New Page** or **Integrate with Wiki**
+4. Wait for the task to finish
+5. Continue from the page view, graph, or Query page
+
+The Query page supports chat-style wiki questions, source-page navigation, and synthesis-page archiving.
 
 ### HetaDB — Build a Knowledge Base and Chat
 
@@ -302,6 +326,7 @@ Heta/
     ├── main.py               # Unified entry point (port 8000)
     ├── common/               # Shared utilities: logging, config, LLM client, tasks
     ├── hetadb/               # Knowledge-base ingestion & multi-strategy chat
+    ├── hetawiki/             # Wiki ingest, merge, query, lint, graph
     ├── hetagen/              # Table and tag-tree generation
     └── hetamem/              # Agent memory: MemoryKB + MemoryVG + MCP server
 ```
