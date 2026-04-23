@@ -8,18 +8,48 @@ Usage:
     HETADB_API_BASE=http://host:8001 python src/hetadb/mcp/server.py
 """
 
+import logging
 import os
+import sys
+import types
+from pathlib import Path
 
 import httpx
 from mcp.server.fastmcp import FastMCP
+import uvicorn
+
+_SRC_ROOT = Path(__file__).resolve().parents[2]
+if str(_SRC_ROOT) not in sys.path:
+    sys.path.insert(0, str(_SRC_ROOT))
+
+from common.config import setup_logging
 
 _BASE = os.getenv("HETADB_API_BASE", "http://localhost:8000").rstrip("/")
+
+setup_logging("heta", force=True)
+logger = logging.getLogger("heta.mcp.hetadb")
 
 # Shared async client — created at module level (httpx connects lazily).
 # Disable environment proxy handling to avoid SOCKS proxy validation errors.
 _http = httpx.AsyncClient(base_url=_BASE, timeout=60, trust_env=False)
 
 mcp = FastMCP("hetadb", host="0.0.0.0", port=8012)
+
+
+async def _run_streamable_http_async(self) -> None:
+    starlette_app = self.streamable_http_app()
+    config = uvicorn.Config(
+        starlette_app,
+        host=self.settings.host,
+        port=self.settings.port,
+        log_level=self.settings.log_level.lower(),
+        log_config=None,
+    )
+    server = uvicorn.Server(config)
+    await server.serve()
+
+
+mcp.run_streamable_http_async = types.MethodType(_run_streamable_http_async, mcp)
 
 
 @mcp.tool()
@@ -107,4 +137,5 @@ async def hetadb_query(kb_id: str, query: str, query_mode: str = "naive") -> dic
 
 
 if __name__ == "__main__":
+    logger.info("Starting HetaDB MCP server on 0.0.0.0:8012")
     mcp.run(transport="streamable-http")

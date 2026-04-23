@@ -62,7 +62,7 @@ async def get_section(section: str):
     """Get a specific configuration section.
 
     Args:
-        section: Section name (e.g., "llm", "postgresql", "chunk_config").
+        section: Section name (e.g., "llm", "postgresql", "chunk_rechunk").
 
     Returns:
         The requested config section wrapped in a response envelope.

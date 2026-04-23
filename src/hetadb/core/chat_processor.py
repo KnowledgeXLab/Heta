@@ -83,8 +83,9 @@ def load_kb_datasets(kb_name: str) -> list[str]:
 def _extract_final_answer(answer_trace: list | None) -> str | None:
     """Extract the final answer from a multi-hop agent trace.
 
-    Walks the trace in reverse, looking for an explicit "Final Answer:" marker.
-    Falls back to the last non-empty text block.
+    Walks the trace in reverse, looking for an explicit answer payload.
+    Deliberately ignores intermediate thoughts / actions so they do not leak
+    into the public response.
     """
     if not answer_trace:
         return None
@@ -92,14 +93,18 @@ def _extract_final_answer(answer_trace: list | None) -> str | None:
     for block in reversed(answer_trace):
         if not isinstance(block, dict):
             continue
-        raw = block.get("answer") or block.get("thoughts")
+        raw = block.get("answer")
         if not raw:
             continue
-        if isinstance(raw, str) and "Final Answer:" in raw:
-            return raw.split("Final Answer:", 1)[1].strip()
         cleaned = str(raw).strip()
-        if cleaned:
-            return cleaned
+        if not cleaned:
+            continue
+        if "Final Answer:" in cleaned:
+            cleaned = cleaned.split("Final Answer:", 1)[1].strip()
+        lowered = cleaned.lower()
+        if lowered.startswith(("thought:", "question:", "action:", "observation:", "memory:")):
+            continue
+        return cleaned
     return None
 
 
@@ -154,6 +159,37 @@ def _build_citations(
         })
 
     return citations
+
+
+def _materialize_retrieval_provenance(
+    data_items: list,
+    topk_chunk: list[str],
+    chunk_data_map: dict[str, dict],
+    chunk_to_db_prefix: dict[str, str],
+    kb_id: str,
+) -> tuple[list[dict], list[str], list[int | None]]:
+    """Build citations plus chunk-aligned content/source labels for answering."""
+    citations = _build_citations(topk_chunk, chunk_data_map, chunk_to_db_prefix, kb_id)
+    cite_key_to_idx = {(c["dataset"], c["source_file"]): c["index"] for c in citations}
+
+    content_texts: list[str] = []
+    source_labels: list[int | None] = []
+    for item in data_items:
+        content = item.get("content") if isinstance(item, dict) else getattr(item, "content", "")
+        if not content:
+            continue
+        chunk_id = ((item.get("source_id") or [None])[0]) if isinstance(item, dict) else None
+        label: int | None = None
+        if chunk_id and chunk_id in chunk_data_map:
+            cr = chunk_data_map[chunk_id]
+            if cr.get("status") == "success":
+                src_file = cr["data"].get("source_id", "")
+                dataset = chunk_to_db_prefix.get(chunk_id, f"{kb_id}__unknown").split("__", 1)[-1]
+                label = cite_key_to_idx.get((dataset, src_file))
+        content_texts.append(content)
+        source_labels.append(label)
+
+    return citations, content_texts, source_labels
 
 
 # ---------------------------------------------------------------------------
@@ -540,25 +576,13 @@ async def _naive_kb_response(params: dict) -> dict:
     chunk_to_db_prefix = result.pop("_chunk_to_db_prefix", {})
 
     kb_id = params.get("kb_id", "")
-    citations = _build_citations(topk_chunk, chunk_data_map, chunk_to_db_prefix, kb_id)
-    cite_key_to_idx = {(c["dataset"], c["source_file"]): c["index"] for c in citations}
-
-    content_texts: list[str] = []
-    source_labels: list[int | None] = []
-    for item in result.get("data", []):
-        content = item.get("content") if isinstance(item, dict) else getattr(item, "content", "")
-        if not content:
-            continue
-        chunk_id = ((item.get("source_id") or [None])[0]) if isinstance(item, dict) else None
-        label: int | None = None
-        if chunk_id and chunk_id in chunk_data_map:
-            cr = chunk_data_map[chunk_id]
-            if cr.get("status") == "success":
-                src_file = cr["data"].get("source_id", "")
-                dataset = chunk_to_db_prefix.get(chunk_id, f"{kb_id}__unknown").split("__", 1)[-1]
-                label = cite_key_to_idx.get((dataset, src_file))
-        content_texts.append(content)
-        source_labels.append(label)
+    citations, content_texts, source_labels = _materialize_retrieval_provenance(
+        result.get("data", []),
+        topk_chunk,
+        chunk_data_map,
+        chunk_to_db_prefix,
+        kb_id,
+    )
 
     if not content_texts:
         logger.info("[%s] retrieval returned no content, using no-results prompt", request_id)
@@ -624,9 +648,12 @@ async def _query_rewriter_response(params: dict) -> dict:
     raw_results = await asyncio.gather(*tasks, return_exceptions=True)
 
     aggregated: list[dict] = []
-    content_texts: list[str] = []
     successful: list[dict] = []
     errors: list[str] = []
+    aggregated_topk_chunk: list[str] = []
+    aggregated_chunk_data_map: dict[str, dict] = {}
+    aggregated_chunk_to_db_prefix: dict[str, str] = {}
+    seen_chunk_ids: set[str] = set()
 
     for variation, res in zip(variations, raw_results):
         if isinstance(res, Exception):
@@ -639,23 +666,41 @@ async def _query_rewriter_response(params: dict) -> dict:
             continue
 
         successful.append(res)
+        topk_chunk = res.pop("_topk_chunk", [])
+        chunk_data_map = res.pop("_chunk_data_map", {})
+        chunk_to_db_prefix = res.pop("_chunk_to_db_prefix", {})
+        aggregated_chunk_data_map.update(chunk_data_map)
+        aggregated_chunk_to_db_prefix.update(chunk_to_db_prefix)
+        for cid in topk_chunk:
+            if cid in seen_chunk_ids:
+                continue
+            seen_chunk_ids.add(cid)
+            aggregated_topk_chunk.append(cid)
         for item in res.get("data", []):
             aggregated.append(item)
-            content = item.get("content", "") if isinstance(item, dict) else getattr(item, "content", "")
-            if content and content not in content_texts:
-                content_texts.append(content)
 
     if not successful:
         logger.error("[%s] all %d variations failed", request_id, len(variations))
         return _error_response(request_id, 500, "All query variations failed")
 
+    kb_id = params.get("kb_id", "")
+    citations, content_texts, source_labels = _materialize_retrieval_provenance(
+        aggregated,
+        aggregated_topk_chunk,
+        aggregated_chunk_data_map,
+        aggregated_chunk_to_db_prefix,
+        kb_id,
+    )
+
     if not content_texts:
         logger.info("[%s] all variations returned no content, using no-results prompt", request_id)
         content_texts = [_NO_RESULTS_CONTEXT]
+        source_labels = [None]
 
     t0 = time.time()
     response_text = await generate_answer_from_content(
         query=params["query"], content_texts=content_texts, request_id=request_id,
+        source_labels=source_labels,
     )
     logger.info("[%s] answer generated in %.3fs", request_id, time.time() - t0)
 
@@ -663,6 +708,7 @@ async def _query_rewriter_response(params: dict) -> dict:
     base["data"] = aggregated
     base["total_count"] = len(aggregated)
     base["response"] = response_text
+    base["citations"] = citations
     qi = base.get("query_info", {})
     qi["variations"] = variations
     if errors:
@@ -703,13 +749,72 @@ async def _multi_hop_response(params: dict) -> dict:
         logger.error("[%s] multi-hop agent failed", request_id, exc_info=True)
         return _error_response(request_id, 500, "Multi-hop reasoning failed")
 
-    final_answer = _extract_final_answer(raw_answer)
-    success = final_answer is not None
+    answer_trace = raw_answer.get("trace", []) if isinstance(raw_answer, dict) else raw_answer
+    retrieval_trace = raw_answer.get("retrieval_trace", []) if isinstance(raw_answer, dict) else []
 
+    final_answer = _extract_final_answer(answer_trace)
+    aggregated_topk_chunk: list[str] = []
+    aggregated_chunk_data_map: dict[str, dict] = {}
+    aggregated_chunk_to_db_prefix: dict[str, str] = {}
+    seen_chunk_ids: set[str] = set()
     data_entries: list[dict] = []
-    if success and final_answer is not None:
+    seen_data_keys: set[tuple[str, str]] = set()
+
+    for step in retrieval_trace:
+        for cid in step.get("_topk_chunk", []):
+            if cid in seen_chunk_ids:
+                continue
+            seen_chunk_ids.add(cid)
+            aggregated_topk_chunk.append(cid)
+        aggregated_chunk_data_map.update(step.get("_chunk_data_map", {}))
+        aggregated_chunk_to_db_prefix.update(step.get("_chunk_to_db_prefix", {}))
+        for item in step.get("data", []):
+            if not isinstance(item, dict):
+                continue
+            source_ids = item.get("source_id") or []
+            source_key = source_ids[0] if source_ids else ""
+            content_key = item.get("content", "")
+            dedupe_key = (source_key, content_key)
+            if dedupe_key in seen_data_keys:
+                continue
+            seen_data_keys.add(dedupe_key)
+            data_entries.append(item)
+
+    kb_id = params.get("kb_id", "")
+    citations, _, _ = _materialize_retrieval_provenance(
+        data_entries,
+        aggregated_topk_chunk,
+        aggregated_chunk_data_map,
+        aggregated_chunk_to_db_prefix,
+        kb_id,
+    )
+
+    _, content_texts, source_labels = _materialize_retrieval_provenance(
+        data_entries,
+        aggregated_topk_chunk,
+        aggregated_chunk_data_map,
+        aggregated_chunk_to_db_prefix,
+        kb_id,
+    )
+
+    # If the agent explored but failed to emit an explicit final answer,
+    # synthesise one from the retrieved evidence instead of returning a hard
+    # failure or leaking internal thoughts.
+    if final_answer is None and content_texts:
+        t0 = time.time()
+        final_answer = await generate_answer_from_content(
+            query=params["query"],
+            content_texts=content_texts,
+            request_id=request_id,
+            source_labels=source_labels,
+        )
+        logger.info("[%s] multi-hop fallback answer generated in %.3fs", request_id, time.time() - t0)
+
+    success = bool(final_answer)
+
+    if success and final_answer is not None and not data_entries:
         data_entries.append({
-            "kb_id": params.get("kb_id") or "",
+            "kb_id": kb_id or "",
             "kb_name": "",
             "score": 1.0,
             "content": final_answer,
@@ -725,14 +830,16 @@ async def _multi_hop_response(params: dict) -> dict:
         "request_id": request_id,
         "code": 200 if success else 500,
         "response": final_answer,
+        "citations": citations,
         "query_info": {
             "query": params["query"],
-            "kb_id": params.get("kb_id"),
+            "kb_id": kb_id,
             "kb_name": "",
             "user_id": params.get("user_id"),
             "top_k": top_k,
             "max_results": max_results,
-            "multi_hop_trace": raw_answer,
+            "multi_hop_trace": answer_trace,
+            "multi_hop_retrieval_trace": retrieval_trace,
         },
     }
 
@@ -1107,25 +1214,13 @@ async def _rerank_kb_response(params: dict) -> dict:
     chunk_to_db_prefix = result.pop("_chunk_to_db_prefix", {})
 
     kb_id = params.get("kb_id", "")
-    citations = _build_citations(topk_chunk, chunk_data_map, chunk_to_db_prefix, kb_id)
-    cite_key_to_idx = {(c["dataset"], c["source_file"]): c["index"] for c in citations}
-
-    content_texts: list[str] = []
-    source_labels: list[int | None] = []
-    for item in result.get("data", []):
-        content = item.get("content") if isinstance(item, dict) else getattr(item, "content", "")
-        if not content:
-            continue
-        chunk_id = ((item.get("source_id") or [None])[0]) if isinstance(item, dict) else None
-        label: int | None = None
-        if chunk_id and chunk_id in chunk_data_map:
-            cr = chunk_data_map[chunk_id]
-            if cr.get("status") == "success":
-                src_file = cr["data"].get("source_id", "")
-                dataset = chunk_to_db_prefix.get(chunk_id, f"{kb_id}__unknown").split("__", 1)[-1]
-                label = cite_key_to_idx.get((dataset, src_file))
-        content_texts.append(content)
-        source_labels.append(label)
+    citations, content_texts, source_labels = _materialize_retrieval_provenance(
+        result.get("data", []),
+        topk_chunk,
+        chunk_data_map,
+        chunk_to_db_prefix,
+        kb_id,
+    )
 
     if not content_texts:
         logger.info("[%s] rerank retrieval returned no content, using no-results prompt", request_id)

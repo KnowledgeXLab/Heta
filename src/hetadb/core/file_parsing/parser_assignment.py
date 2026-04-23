@@ -150,7 +150,7 @@ class ParserAssignment:
         except Exception as e:
             logger.error("Failed to extract %s: %s", filepath, e)
 
-    def step2_batch_parse(self, llm: Any, vlm: Any) -> None:
+    def step2_batch_parse(self, llm: Any, vlm: Any, max_workers: int = 4) -> None:
         """Parse all hash-renamed files using type-specific parsers.
 
         Phase 1 — text / html / doc / sheet are independent and run concurrently.
@@ -197,7 +197,7 @@ class ParserAssignment:
 
         # Phase 1: dispatch all independent parsers concurrently.
         from concurrent.futures import ThreadPoolExecutor as _TPE
-        with _TPE(max_workers=4) as executor:
+        with _TPE(max_workers=max_workers) as executor:
             futures = [executor.submit(fn) for fn in (_run_text, _run_doc, _run_html, _run_sheet)]
         for future in futures:
             if future.exception():

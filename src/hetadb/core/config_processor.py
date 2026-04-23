@@ -25,9 +25,9 @@ def _load_configs() -> dict[str, Any]:
     """Load and merge all config files into a unified structure.
 
     Returns:
-        Merged config dict with keys: llm, vlm, embedding_api, postgresql,
-        milvus, query_defaults, search_params, chunk_config, graph_config,
-        vector_config, etc.
+        Merged config dict with keys from ``config.yaml`` plus stage-oriented
+        sections from ``db_config.yaml`` such as ``parse``,
+        ``chunk_rechunk``, ``graph_extraction``, and ``graph_dedup``.
     """
     merged = {}
 
@@ -55,16 +55,15 @@ def _load_configs() -> dict[str, Any]:
 
             # Extract parameter sections
             param = db_cfg.get("parameter", {})
-            if "chunk_config" in param:
-                merged["chunk_config"] = param["chunk_config"]
-            if "graph_config" in param:
-                merged["graph_config"] = param["graph_config"]
-            if "vector_config" in param:
-                merged["vector_config"] = param["vector_config"]
+            for section in ("parse", "chunk_rechunk", "graph_extraction", "graph_dedup"):
+                if section in param:
+                    merged[section] = param[section]
 
             # Also include postgres_batch_size if present
             if "postgres_batch_size" in db_cfg:
                 merged["postgres_batch_size"] = db_cfg["postgres_batch_size"]
+            if "parse_max_workers" in db_cfg:
+                merged["parse_max_workers"] = db_cfg["parse_max_workers"]
 
         logger.debug("Loaded DB config from %s", db_config_path)
     except Exception as e:
@@ -95,7 +94,7 @@ def get_config_section(section: str) -> Any:
     """Get a specific configuration section.
 
     Args:
-        section: Section name (e.g., "llm", "postgresql", "chunk_config").
+        section: Section name (e.g., "llm", "postgresql", "chunk_rechunk").
 
     Returns:
         The config value for that section.

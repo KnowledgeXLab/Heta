@@ -239,23 +239,11 @@ def process_files_with_embedding(
 # Main entry point
 # ---------------------------------------------------------------------------
 
-def main(
+def ingest_original_chunks(
     data_dir: str,
     chunk_table: str,
     write_pg: bool,
     milvus_collections: list[str],
-    run_merge: bool,
-    run_chunks_path: str,
-    run_collection_name: str,
-    run_top_k: int,
-    run_nprobe: int,
-    run_merge_threshold: float,
-    run_max_rounds: int,
-    run_num_topk_param: int,
-    run_num_threads_param: int,
-    run_milvus_host: str,
-    run_milvus_port: int,
-    run_target_merge_collection: str,
     embedding_batch_size: int,
     embedding_num_thread: int,
     embedding_api_base: str,
@@ -264,15 +252,8 @@ def main(
     embedding_dim: int,
     postgres_config: dict[str, Any],
     postgres_batch_size: int,
-    use_llm,
-    merge_and_refine_prompt: str,
-    merge_prompt: str,
-    merged_chunks_file: str = None,
-):
-    """Ingest chunk JSONL files into PostgreSQL / Milvus, then optionally
-    run iterative LLM-based merge rounds to deduplicate and consolidate
-    semantically similar chunks.
-    """
+) -> None:
+    """Ingest chunk JSONL files into PostgreSQL and Milvus collections."""
     data_dir = Path(data_dir)
     if not data_dir.exists():
         logger.error("Data directory does not exist: %s", data_dir)
@@ -304,31 +285,54 @@ def main(
 
     logger.info("Ingestion complete")
 
-    if run_merge:
-        embedding_cfg = {
-            "embedding_api_base": embedding_api_base,
-            "embedding_model": embedding_model,
-            "embedding_api_key": embedding_api_key,
-            "embedding_dim": embedding_dim,
-        }
-        run_merge_rounds(
-            chunks_path=run_chunks_path,
-            collection_name=run_collection_name,
-            top_k=run_top_k,
-            nprobe=run_nprobe,
-            merge_threshold=run_merge_threshold,
-            max_rounds=run_max_rounds,
-            num_topk_param=run_num_topk_param,
-            num_threads_param=run_num_threads_param,
-            milvus_host=run_milvus_host,
-            milvus_port=run_milvus_port,
-            target_merge_collection=run_target_merge_collection,
-            embedding_cfg=embedding_cfg,
-            use_llm=use_llm,
-            merge_and_refine_prompt=merge_and_refine_prompt,
-            merge_prompt=merge_prompt,
-            merged_chunks_file=merged_chunks_file,
-        )
+def merge_original_chunks(
+    chunks_path: str,
+    collection_name: str,
+    top_k: int,
+    nprobe: int,
+    merge_threshold: float,
+    max_rounds: int,
+    num_topk_param: int,
+    num_threads_param: int,
+    milvus_host: str,
+    milvus_port: int,
+    target_merge_collection: str,
+    embedding_api_base: str,
+    embedding_model: str,
+    embedding_api_key: str,
+    embedding_dim: int,
+    use_llm,
+    merge_and_refine_prompt: str,
+    merge_prompt: str,
+    merged_chunks_file: str | None = None,
+) -> None:
+    """Run iterative LLM-based merge rounds over previously ingested chunks."""
+    embedding_cfg = {
+        "embedding_api_base": embedding_api_base,
+        "embedding_model": embedding_model,
+        "embedding_api_key": embedding_api_key,
+        "embedding_dim": embedding_dim,
+    }
+    run_merge_rounds(
+        chunks_path=chunks_path,
+        collection_name=collection_name,
+        top_k=top_k,
+        nprobe=nprobe,
+        merge_threshold=merge_threshold,
+        max_rounds=max_rounds,
+        num_topk_param=num_topk_param,
+        num_threads_param=num_threads_param,
+        milvus_host=milvus_host,
+        milvus_port=milvus_port,
+        target_merge_collection=target_merge_collection,
+        embedding_cfg=embedding_cfg,
+        use_llm=use_llm,
+        merge_and_refine_prompt=merge_and_refine_prompt,
+        merge_prompt=merge_prompt,
+        merged_chunks_file=merged_chunks_file,
+    )
+
+
 
 
 # ---------------------------------------------------------------------------

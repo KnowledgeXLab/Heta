@@ -719,7 +719,7 @@ def run_rel_merge_pipeline(
         if llm_clusters:
             pool_size = min(len(llm_clusters), max(1, max_workers // n))
             with ThreadPoolExecutor(max_workers=pool_size) as ex:
-                futures = [ex.submit(llm_merge_rel_cluster, cluster, temperature) for cluster in llm_clusters]
+                futures = [ex.submit(llm_merge_rel_cluster, cluster) for cluster in llm_clusters]
                 for fut in as_completed(futures):
                     cluster_merged, cluster_mapping = fut.result()
                     merged.extend(cluster_merged)
