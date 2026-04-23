@@ -29,6 +29,9 @@ from hetadb.utils.load_config import get_chat_cfg
 
 logger = logging.getLogger(__name__)
 
+_TRACE_LOCK = threading.Lock()
+_TRACE_STORE: dict[str, list[dict[str, Any]]] = {}
+
 # ---------------------------------------------------------------------------
 # Prompt templates (do NOT modify)
 # ---------------------------------------------------------------------------
@@ -426,6 +429,31 @@ class KnowledgeQueryTool(BaseTool):
         "top_k", "kb_id", "kb_name", "user_id", "max_results", "request_id",
     }
 
+    @classmethod
+    def clear_trace(cls, request_id: str) -> None:
+        """Drop any previously recorded retrieval trace for *request_id*."""
+        with _TRACE_LOCK:
+            _TRACE_STORE.pop(request_id, None)
+
+    @classmethod
+    def pop_trace(cls, request_id: str) -> list[dict[str, Any]]:
+        """Return and remove the recorded retrieval trace for *request_id*."""
+        with _TRACE_LOCK:
+            return _TRACE_STORE.pop(request_id, [])
+
+    @classmethod
+    def _record_trace(cls, request_id: str, result: dict[str, Any], query: str) -> None:
+        """Persist retrieval metadata so multi-hop responses can expose provenance."""
+        trace_entry = {
+            "query": query,
+            "data": list(result.get("data", [])),
+            "_topk_chunk": list(result.get("_topk_chunk", [])),
+            "_chunk_data_map": dict(result.get("_chunk_data_map", {})),
+            "_chunk_to_db_prefix": dict(result.get("_chunk_to_db_prefix", {})),
+        }
+        with _TRACE_LOCK:
+            _TRACE_STORE.setdefault(request_id, []).append(trace_entry)
+
     def call(self, params: str | dict, **kwargs) -> str:  # type: ignore[override]
         payload = self._build_payload(params, kwargs)
         query = payload.get("query")
@@ -440,6 +468,10 @@ class KnowledgeQueryTool(BaseTool):
 
         if not result.get("success"):
             return f"Knowledge query failed: {result.get('message', 'unknown error')}"
+
+        request_id = str(payload.get("request_id", ""))
+        if request_id:
+            self._record_trace(request_id, result, str(query))
 
         response_text = result.get("response") or "No generated answer."
         formatted_hits = self._format_hits(result.get("data", []))
@@ -559,6 +591,8 @@ class MultiHopAgent:
         if request_id is None:
             request_id = f"multi-hop-{int(time.time() * 1000)}"
 
+        KnowledgeQueryTool.clear_trace(request_id)
+
         # Copy the module-level config to avoid mutating shared state across
         # concurrent requests (race condition: two callers would overwrite each
         # other's query / action_count in the same dict).
@@ -586,6 +620,7 @@ class MultiHopAgent:
 
         response_jsons: list[dict[str, Any]] = []
         r = 0
+        has_final_answer = False
         for i in response:
             response_json: dict[str, Any] = {}
             if '"}' in i[0]["content"] and "Memory" not in i[0]["content"]:
@@ -608,5 +643,20 @@ class MultiHopAgent:
             if "Final Answer" in i[0]["content"]:
                 response_json["answer"] = i[0]["content"]
                 response_jsons.append(response_json)
+                has_final_answer = True
 
-        return response_jsons
+        # Final safeguard: if the loop explored and accumulated memory but did
+        # not emit a formal "Final Answer", ask the critic one last time.
+        if not has_final_answer and bot.momery:
+            try:
+                fallback_answer = bot.critic_information(query, bot.momery)
+            except Exception:
+                fallback_answer = None
+                logger.warning("Final critic fallback failed", exc_info=True)
+            if fallback_answer:
+                response_jsons.append({"answer": f"Final Answer: {fallback_answer}"})
+
+        return {
+            "trace": response_jsons,
+            "retrieval_trace": KnowledgeQueryTool.pop_trace(request_id),
+        }

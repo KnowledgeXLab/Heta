@@ -101,14 +101,19 @@ def delete_entities_from_pg(ids: list[str], dataset: str):
             
 def insert_entities_to_pg(records: list[dict[str, Any]], dataset: str):
         """Batch-insert entity records into PostgreSQL."""
+        entities_table = f"{dataset}_entities"
+        insert_entities_to_pg_table(records, entities_table)
+
+
+def insert_entities_to_pg_table(records: list[dict[str, Any]], table_name: str) -> None:
+        """Batch-insert entity records into an explicit PostgreSQL table."""
         if not records:
             return
-        entities_table = f"{dataset}_entities"
         conn = get_postgres_connection()
         try:
             with conn.cursor() as cur:
                 sql = f"""
-                    INSERT INTO public.{entities_table}
+                    INSERT INTO public.{table_name}
                     (node_name, type, sub_type, description, node_id)
                     VALUES %s
                 """
@@ -125,9 +130,9 @@ def insert_entities_to_pg(records: list[dict[str, Any]], dataset: str):
                     )
                 execute_values(cur, sql, batch_data, template=None, page_size=1000)
             conn.commit()
-            logger.info("Inserted %s entity rows to PG", len(records))
+            logger.info("Inserted %s entity rows to PG table %s", len(records), table_name)
         except Exception as e:
-            logger.error("Failed to insert PG entities: %s", e)
+            logger.error("Failed to insert PG entities into %s: %s", table_name, e)
             conn.rollback()
             raise
         finally:
@@ -213,15 +218,20 @@ def batch_insert_chunks_pg(
 
 def insert_relations_to_pg(records: list[dict[str, Any]], dataset: str) -> None:
     """Batch-insert relation records into PostgreSQL."""
+    relations_table = f"{dataset}_relations"
+    insert_relations_to_pg_table(records, relations_table)
+
+
+def insert_relations_to_pg_table(records: list[dict[str, Any]], table_name: str) -> None:
+    """Batch-insert relation records into an explicit PostgreSQL table."""
     if not records:
         return
 
-    relations_table = f"{dataset}_relations"
     conn = get_postgres_connection()
     try:
         with conn.cursor() as cur:
             sql = f"""
-            INSERT INTO public.{relations_table}
+            INSERT INTO public.{table_name}
             (node1, node2, type, semantics, description, node_id)
             VALUES %s
             """
@@ -239,9 +249,9 @@ def insert_relations_to_pg(records: list[dict[str, Any]], dataset: str) -> None:
                 )
             execute_values(cur, sql, batch_data, template=None, page_size=1000)
         conn.commit()
-        logger.info("Inserted %d relation rows to PG", len(records))
+        logger.info("Inserted %d relation rows to PG table %s", len(records), table_name)
     except Exception as e:
-        logger.error("Failed to insert PG relations: %s", e)
+        logger.error("Failed to insert PG relations into %s: %s", table_name, e)
         conn.rollback()
         raise
     finally:
@@ -270,10 +280,15 @@ def delete_relations_from_pg(ids: list[str], dataset: str) -> None:
 
 def insert_cluster_chunk_relations(relations: list[dict[str, Any]], dataset: str) -> None:
     """Batch-insert cluster-chunk relations (ON CONFLICT DO NOTHING)."""
+    table_name = f"{dataset}_cluster_chunk_relation"
+    insert_cluster_chunk_relations_table(relations, table_name)
+
+
+def insert_cluster_chunk_relations_table(relations: list[dict[str, Any]], table_name: str) -> None:
+    """Batch-insert cluster-chunk relations into an explicit PostgreSQL table."""
     if not relations:
         return
-    
-    table_name = f"{dataset}_cluster_chunk_relation"
+
     conn = get_postgres_connection()
     try:
         with conn.cursor() as cur:
@@ -297,9 +312,9 @@ def insert_cluster_chunk_relations(relations: list[dict[str, Any]], dataset: str
                 )
             execute_values(cur, sql, batch_data, template=None, page_size=1000)
         conn.commit()
-        logger.info("Inserted %d cluster-chunk relations to PG", len(relations))
+        logger.info("Inserted %d cluster-chunk relations to PG table %s", len(relations), table_name)
     except Exception as e:
-        logger.error("Failed to insert cluster-chunk relations: %s", e)
+        logger.error("Failed to insert cluster-chunk relations into %s: %s", table_name, e)
         conn.rollback()
         raise
     finally:
@@ -493,6 +508,11 @@ def get_cluster_chunk_mapping(cluster_ids: list[str]) -> dict[str, list[dict[str
 def create_cluster_chunk_relation_table(dataset: str):
     """Create the cluster_chunk_relation table and indexes if they do not exist."""
     table_name = f"{dataset}_cluster_chunk_relation"
+    create_cluster_chunk_relation_table_name(table_name)
+
+
+def create_cluster_chunk_relation_table_name(table_name: str) -> None:
+    """Create an explicit cluster_chunk_relation table and indexes if needed."""
     create_table_sql = f"""
     CREATE TABLE IF NOT EXISTS public.{table_name} (
         id BIGSERIAL PRIMARY KEY,
@@ -525,7 +545,19 @@ def create_graph_tables(dataset: str):
     """Create entities, relations, and cluster-chunk-relation tables."""
     entities_table = f"{dataset}_entities"
     relations_table = f"{dataset}_relations"
+    create_graph_tables_named(
+        entities_table=entities_table,
+        relations_table=relations_table,
+        cluster_chunk_relation_table=f"{dataset}_cluster_chunk_relation",
+    )
 
+
+def create_graph_tables_named(
+    entities_table: str,
+    relations_table: str,
+    cluster_chunk_relation_table: str,
+) -> None:
+    """Create entities, relations, and cluster-chunk-relation tables by explicit names."""
     create_entities_sql = f"""
     CREATE TABLE IF NOT EXISTS public.{entities_table} (
         id SERIAL PRIMARY KEY,
@@ -561,7 +593,7 @@ def create_graph_tables(dataset: str):
             connection.commit()
             logger.info("Graph tables ensured: %s, %s", entities_table, relations_table)
 
-        create_cluster_chunk_relation_table(dataset)
+        create_cluster_chunk_relation_table_name(cluster_chunk_relation_table)
     except Exception as e:
         logger.error("Failed to create graph tables: %s", e)
         raise
@@ -676,7 +708,6 @@ def read_local_relations(data_dir: str) -> list[dict[str, Any]]:
 
     logger.info("Read %s local relations from %s files", len(data), len(jsonl_files))
     return data
-
 
 
 

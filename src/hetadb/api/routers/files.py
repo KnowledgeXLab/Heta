@@ -993,7 +993,10 @@ async def get_processing_config():
         mgr = ConfigManager()
         llm = mgr.get_llm_config()
         emb = mgr.get_embedding_config()
-        graph = mgr.get_graph_config()
+        parse_stage = mgr.get_parse_stage_settings()
+        chunk_rechunk = mgr.get_chunk_rechunk_settings()
+        graph_extraction = mgr.get_graph_config()
+        graph_dedup = mgr.get_graph_dedup_config()
         return ApiResponse(
             success=True,
             message="OK",
@@ -1008,11 +1011,36 @@ async def get_processing_config():
                     "dim": emb.dim,
                     "batch_size": emb.batch_size,
                 },
-                "graph": {
-                    "chunk_size": graph.chunk_size,
-                    "overlap": graph.overlap,
-                    "batch_size": graph.batch_size,
-                    "max_workers": graph.max_workers,
+                "parse": {
+                    "max_workers": parse_stage.max_workers,
+                    "supported_ext": sorted(parse_stage.supported_ext)
+                    if isinstance(parse_stage.supported_ext, set)
+                    else parse_stage.supported_ext,
+                },
+                "chunk_rechunk": {
+                    "chunk_size": chunk_rechunk.chunk_size,
+                    "overlap": chunk_rechunk.overlap,
+                    "max_batch_bytes": chunk_rechunk.max_batch_bytes,
+                    "max_workers": chunk_rechunk.max_workers,
+                    "top_k": chunk_rechunk.top_k,
+                    "nprobe": chunk_rechunk.nprobe,
+                    "merge_threshold": chunk_rechunk.merge_threshold,
+                    "max_rounds": chunk_rechunk.max_rounds,
+                    "num_topk_param": chunk_rechunk.num_topk_param,
+                },
+                "graph_extraction": {
+                    "batch_size": graph_extraction.batch_size,
+                    "max_workers": graph_extraction.max_workers,
+                    "max_file_size_bytes": graph_extraction.max_file_size_bytes,
+                    "persist_raw_graph": graph_extraction.persist_raw_graph,
+                },
+                "graph_dedup": {
+                    "parallel_batches": graph_dedup.parallel_batches,
+                    "batch_size": graph_dedup.batch_size,
+                    "llm_batch_size": graph_dedup.llm_batch_size,
+                    "max_rounds": graph_dedup.max_rounds,
+                    "milvus_dedup_batch_size": graph_dedup.milvus_dedup_batch_size,
+                    "llm_max_retries": graph_dedup.llm_max_retries,
                 },
             },
         )

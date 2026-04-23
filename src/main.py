@@ -13,10 +13,13 @@ import subprocess
 import sys
 from contextlib import asynccontextmanager
 
+from common.config import setup_logging, load_config
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from common.config import setup_logging, load_config
+setup_logging("heta", force=True)
+logger = logging.getLogger("heta")
+
 from hetadb.core.db_build.vector_db.vector_db import ensure_milvus_databases
 from hetadb.api.routers import chat_router, files_router, config_router, schema_router
 from hetagen.api.routers import pipeline, tag_tree
@@ -31,9 +34,6 @@ from hetamem.memkb_manager import manager as kb_manager
 from hetamem.memvg_manager import manager as vg_manager
 from hetamem.utils.path import PACKAGE_ROOT as HETAMEM_ROOT
 from hetadb.utils.path import PACKAGE_ROOT as HETADB_ROOT
-
-setup_logging("heta")
-logger = logging.getLogger("heta")
 
 cfg = load_config("heta")
 
@@ -141,4 +141,5 @@ if __name__ == "__main__":
         port=port,
         reload=fastapi_cfg.get("reload", False),
         log_level=fastapi_cfg.get("log_level", "info"),
+        log_config=None,
     )

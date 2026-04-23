@@ -10,12 +10,21 @@ from concurrent.futures import Future, ThreadPoolExecutor, as_completed
 from pathlib import Path
 from typing import Any, TextIO
 
-from tqdm import tqdm
-
 from hetadb.utils.hash_filename import get_sha256_hash
 from common.llm_client import parse_nodes
 
 logger = logging.getLogger(__name__)
+
+
+def _should_log_progress(done: int, total: int, last_percent: int) -> bool:
+    if total <= 0:
+        return False
+    percent = int(done * 100 / total)
+    if done == 1 or done == total:
+        return True
+    if percent >= last_percent + 10:
+        return True
+    return False
  
 class KGFileManager:
     """Thread-safe JSONL file writer with automatic size-based rotation.
@@ -254,22 +263,20 @@ def batch_extract_kg_from_chunks(
             ]
         ]
 
-        if show_progress:
-            futures_dict: dict[FutureResult, tuple[str, str]] = {  # type: ignore
-                executor.submit(process_chunk, chunk): chunk for chunk in text_chunks
-            }
-            futures_iter = as_completed(futures_dict)
-            progress_iter = tqdm(
-                futures_iter, total=len(text_chunks), desc="Extracting KG"
-            )
-        else:
-            futures_list: list[FutureResult] = [                   # type: ignore
-                executor.submit(process_chunk, chunk) for chunk in text_chunks
-            ]
-            progress_iter = iter(futures_list)
+        futures_dict: dict[FutureResult, tuple[str, str]] = {  # type: ignore
+            executor.submit(process_chunk, chunk): chunk for chunk in text_chunks
+        }
+        progress_iter = as_completed(futures_dict)
+
+        total_chunks = len(text_chunks)
+        completed = 0
+        last_logged_percent = -1
+        if show_progress and total_chunks:
+            logger.info("Extracting KG: 0/%d (0%%)", total_chunks)
 
         for future in progress_iter:
             chunk_id, relations, nodes, error = future.result()
+            completed += 1
 
             if error is None:
                 all_relations.extend(relations)
@@ -299,6 +306,17 @@ def batch_extract_kg_from_chunks(
                 )
             else:
                 logger.warning("Failed chunk %s: %s", chunk_id, error)
+
+            if show_progress and total_chunks:
+                percent = int(completed * 100 / total_chunks)
+                if _should_log_progress(completed, total_chunks, last_logged_percent):
+                    logger.info(
+                        "Extracting KG: %d/%d (%d%%)",
+                        completed,
+                        total_chunks,
+                        percent,
+                    )
+                    last_logged_percent = percent
 
     # Flush remaining data
     if output_dir and (all_relations or all_nodes):
