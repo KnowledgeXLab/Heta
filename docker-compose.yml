@@ -1,10 +1,8 @@
-version: '3.8'
-
 # Heta MVP — one-command startup
 # Usage:
 #   1. cp config.example.yaml config.yaml
 #   2. Fill in your LLM / VLM / Embedding API keys in config.yaml
-#   3. docker-compose up -d
+#   3. ./scripts/bootstrap.sh
 
 services:
 
@@ -102,9 +100,7 @@ services:
   # ── Application ───────────────────────────────────────────────────────────
 
   backend:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ${HETA_BACKEND_IMAGE:-ghcr.io/knowledgexlab/heta-backend:latest}
     restart: unless-stopped
     volumes:
       - ./config.yaml:/app/config.yaml:ro
@@ -126,12 +122,11 @@ services:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 30s
       timeout: 10s
-      retries: 3
+      retries: 10
+      start_period: 5m
 
   frontend:
-    build:
-      context: ./heta-frontend
-      dockerfile: Dockerfile
+    image: ${HETA_FRONTEND_IMAGE:-ghcr.io/knowledgexlab/heta-frontend:latest}
     restart: unless-stopped
     ports:
       - "80:80"

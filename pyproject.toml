@@ -107,9 +107,12 @@ docs = [
     "sphinx-rtd-theme>=1.0",
 ]
 
+[project.scripts]
+heta = "heta.cli:main"
+
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["hetamem", "hetamem.*", "common", "common.*", "hetadb", "hetadb.*", "hetagen", "hetagen.*", "hetawiki", "hetawiki.*"]
+include = ["heta", "heta.*", "hetamem", "hetamem.*", "common", "common.*", "hetadb", "hetadb.*", "hetagen", "hetagen.*", "hetawiki", "hetawiki.*"]
 
 
 [tool.pytest.ini_options]
