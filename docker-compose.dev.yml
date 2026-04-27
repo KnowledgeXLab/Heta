@@ -1,0 +1,18 @@
+services:
+  backend:
+    image: heta-backend:dev
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        DEBIAN_MIRROR: ${HETA_APT_MIRROR:-}
+        PIP_INDEX_URL: ${HETA_PIP_INDEX_URL:-}
+        PIP_TRUSTED_HOST: ${HETA_PIP_TRUSTED_HOST:-}
+
+  frontend:
+    image: heta-frontend:dev
+    build:
+      context: ./heta-frontend
+      dockerfile: Dockerfile
+      args:
+        NPM_REGISTRY: ${HETA_NPM_REGISTRY:-}
