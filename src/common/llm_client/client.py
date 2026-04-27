@@ -24,6 +24,16 @@ _THINK_RE_CLOSED = re.compile(r"<think>.*?</think>", re.DOTALL)
 _THINK_RE_OPEN = re.compile(r"<think>.*", re.DOTALL)
 
 
+def _normalise_base_url(url: str) -> str:
+    """Return a base URL that is safe for OpenAI-compatible endpoint joins."""
+    return url.rstrip("/") + "/"
+
+
+def _join_endpoint(base_url: str, endpoint: str) -> str:
+    """Join API base URLs without requiring config authors to manage slashes."""
+    return _normalise_base_url(base_url) + endpoint.lstrip("/")
+
+
 def _strip_think_tags(text: str) -> str:
     """Remove <think>...</think> blocks (including unclosed ones) from LLM output."""
     text = _THINK_RE_CLOSED.sub("", text).strip()
@@ -64,6 +74,7 @@ def create_use_llm(
     max_retries: int = 3,
 ) -> Callable[..., str]:
     """Return a synchronous ``use_llm(prompt, **kwargs) -> str`` callable."""
+    endpoint = _join_endpoint(url, "chat/completions")
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {api_key}",
@@ -75,7 +86,7 @@ def create_use_llm(
         for attempt in range(max_retries):
             try:
                 resp = requests.post(
-                    url + "chat/completions",
+                    endpoint,
                     headers=headers,
                     json={"model": model, "messages": messages, "stream": False, "enable_thinking": False, **kwargs},
                     timeout=timeout,
@@ -121,7 +132,7 @@ def create_use_llm_async(
     """Return an async ``use_llm(prompt, **kwargs) -> str`` callable with concurrency control."""
     client = AsyncClient(
         headers={"Content-Type": "application/json", "Authorization": f"Bearer {api_key}"},
-        base_url=url,
+        base_url=_normalise_base_url(url),
         timeout=timeout,
         verify=False,
     )
@@ -177,7 +188,7 @@ def create_use_vlm(
     """Return an async ``use_vlm(prompt, base64_img, mime_type) -> str`` callable."""
     client = AsyncClient(
         headers={"Authorization": f"Bearer {api_key}"},
-        base_url=url,
+        base_url=_normalise_base_url(url),
         timeout=timeout,
         verify=False,
     )
