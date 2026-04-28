@@ -59,6 +59,17 @@ heta:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# Heta CLI — model used by CLI-only orchestration, such as answer judging.
+# ─────────────────────────────────────────────────────────────────────────────
+heta_cli:
+  judge:
+    <<: *dashscope
+    model: "qwen3.5-flash"
+    max_retries: 3
+    timeout: 60
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 hetadb:
   title: "HetaDB API"
   version: "0.1.0"
