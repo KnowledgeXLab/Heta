@@ -17,13 +17,13 @@ Credential blocks shared across modules via YAML anchors. Define the providers y
 
 | Key | Required | Description |
 |-----|----------|-------------|
-| `providers.dashscope.api_key` | Required (domestic) | Alibaba Cloud DashScope API key |
+| `providers.dashscope.api_key` | Required by selected template | Alibaba Cloud DashScope API key |
 | `providers.dashscope.base_url` | — | DashScope OpenAI-compatible endpoint (pre-filled) |
 | `providers.siliconflow.api_key` | Required | SiliconFlow API key (used for embeddings) |
 | `providers.siliconflow.base_url` | — | SiliconFlow endpoint (pre-filled) |
-| `providers.openai.api_key` | Required (international) | OpenAI API key |
+| `providers.openai.api_key` | Required by selected template | OpenAI API key |
 | `providers.openai.base_url` | — | OpenAI endpoint (pre-filled) |
-| `providers.gemini.api_key` | Required (international) | Google Gemini API key |
+| `providers.gemini.api_key` | Required by selected template | Google Gemini API key |
 | `providers.gemini.base_url` | — | Gemini OpenAI-compatible endpoint (pre-filled) |
 
 ---

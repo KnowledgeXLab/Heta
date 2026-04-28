@@ -24,7 +24,7 @@ cd heta-frontend && npm install && npm run build && cd ..
 
 # 4. Copy and fill in config
 cp config.example.yaml config.yaml
-# Edit config.yaml: set providers.dashscope.api_key etc.
+# Edit config.yaml: set provider API keys.
 ```
 
 ## Run — Unified Mode
@@ -32,8 +32,21 @@ cp config.example.yaml config.yaml
 Runs all modules (HetaDB, HetaMem, HetaGen) on a single port:
 
 ```bash
-PYTHONPATH=src python src/main.py
+heta serve
 # → http://localhost:8000
+```
+
+`python src/main.py` remains available as a backward-compatible entry point, but `heta serve` is the recommended command.
+
+## CLI workflow
+
+With the unified service running:
+
+```bash
+heta status
+heta insert ./docs --kb research
+heta query "What does this project contain?" --kb research
+heta remember "The user prefers concise examples"
 ```
 
 ## Run — Per-Module Mode

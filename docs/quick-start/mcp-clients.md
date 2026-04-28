@@ -33,7 +33,7 @@ Refer to your client's MCP configuration documentation. Use the URLs above.
 **1. Start the stack**
 
 ```bash
-docker-compose up -d
+./scripts/bootstrap.sh
 ```
 
 **2. Load the skill into your agent**

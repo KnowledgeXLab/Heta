@@ -1,9 +1,9 @@
-# Heta 配置示例（国内版）
+# Heta 配置示例（zh 模板）
 #
 # 使用步骤：
 #   1. cp config.example.zh.yaml config.yaml
 #   2. 在 providers 中填入你的 API 密钥
-#   3. docker-compose up -d
+#   3. ./scripts/bootstrap.sh
 #
 # 持久化服务地址已与 docker-compose.yml 对齐，直接启动无需修改。
 # 若在宿主机直接运行（不走 Docker），将各 host 改为 127.0.0.1。

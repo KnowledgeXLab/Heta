@@ -59,8 +59,8 @@ HetaDB and HetaMem expose optional MCP servers (ports 8012 / 8011) for direct in
 
 ## Quick Links
 
-- [Docker Compose Quick Start](quick-start/docker.md) — recommended, full stack in one command
-- [Manual Setup](quick-start/manual.md) — run modules independently
+- [Bootstrap with Docker](quick-start/docker.md) — recommended, full stack from published images with local-build fallback
+- [Manual Setup](quick-start/manual.md) — run `heta serve` from your own Python environment
 - [Connect MCP Clients](quick-start/mcp-clients.md) — Claude Desktop, Cursor
 - [HetaWiki Overview](hetawiki/index.md)
 - [REST API Reference](reference/api.md)
