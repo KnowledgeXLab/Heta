@@ -33,7 +33,7 @@ Heta 提供两个 MCP 服务器，可直接集成 Claude Desktop、Cursor 等任
 **1. 启动服务栈**
 
 ```bash
-docker-compose up -d
+./scripts/bootstrap.sh
 ```
 
 **2. 将技能加载给 Agent**

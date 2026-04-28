@@ -1,6 +1,8 @@
-# Docker Compose
+# Docker 自动部署
 
-推荐的 Heta 运行方式。一条命令即可启动完整服务栈——API、Web UI、PostgreSQL、Milvus、Neo4j 和 MinIO。
+推荐的 Heta 运行方式。`bootstrap.sh` 一条命令即可启动完整服务栈——API、Web UI、PostgreSQL、Milvus、Neo4j 和 MinIO。
+
+脚本会优先拉取已发布的 GHCR 镜像；如果镜像不可用，会自动回退到本地源码构建。
 
 ## 前提条件
 
@@ -10,29 +12,29 @@
 
 ## 1. 克隆并复制配置
 
-=== "国内（DashScope + SiliconFlow）"
+=== "zh（DashScope + SiliconFlow）"
 
     ```bash
-    git clone https://github.com/HetaTeam/Heta.git
+    git clone https://github.com/KnowledgeXLab/Heta.git
     cd Heta
     cp config.example.zh.yaml config.yaml
     ```
 
-=== "国际（OpenAI + Gemini）"
+=== "默认模板"
 
     ```bash
-    git clone https://github.com/HetaTeam/Heta.git
+    git clone https://github.com/KnowledgeXLab/Heta.git
     cd Heta
     cp config.example.yaml config.yaml
     ```
 
 ## 2. 填入 API Key
 
-`config.yaml` 的 `providers` 块定义服务商连接信息，各模块通过 YAML anchor（`<<: *provider_name`）引用。示例配置以阿里云 DashScope 和硅基流动为默认服务商，但**任何兼容 OpenAI 接口的 API 或自部署模型均可替换**——只需修改对应 provider 的 `api_key`、`base_url` 和模型名即可。
+`config.yaml` 的 `providers` 块定义模型服务商凭据。Docker Compose 所需的数据库和对象存储地址已预配置，通常无需修改。
 
-=== "国内（DashScope + SiliconFlow）"
+=== "zh（DashScope + SiliconFlow）"
 
-    `config.example.zh.yaml` 已全部指向国内服务商，并配置好对应模型。只需填入 API Key：
+    `config.example.zh.yaml` 已指向 DashScope 和 SiliconFlow，并配置好对应模型。只需填入 API Key：
 
     ```yaml
     providers:
@@ -42,9 +44,9 @@
         api_key: "YOUR_SILICONFLOW_API_KEY" # https://siliconflow.cn
     ```
 
-=== "国际（全部四个服务商）"
+=== "默认模板"
 
-    `config.example.yaml` 使用全部四个服务商，填入各 API Key 即可，无需修改模块配置：
+    按 `config.example.yaml` 填入所需服务商 API Key：
 
     ```yaml
     providers:
@@ -58,22 +60,26 @@
         api_key: "YOUR_GEMINI_API_KEY"
     ```
 
-    各服务商默认分工：DashScope → HetaDB LLM/VLM 和 MemoryVG LLM；SiliconFlow → HetaDB 向量化和 HetaGen VLM/向量化；OpenAI → MemoryKB 和 MemoryVG embedder；Gemini → HetaGen LLM。
+    CLI 判断模型使用 `heta_cli.judge`。默认模板指向 Gemini。
 
 
 ## 3. 启动
 
 ```bash
-docker-compose up -d
+./scripts/bootstrap.sh
 ```
 
-首次运行需拉取镜像并构建（约 10–20 分钟）。
+常用参数：
+
+```bash
+./scripts/bootstrap.sh --no-open  # 不自动打开浏览器
+./scripts/bootstrap.sh --build    # 跳过 GHCR 拉取，直接本地构建
+```
 
 ## 4. 验证
 
 ```bash
-docker-compose ps           # 所有服务状态应为 healthy
-curl localhost:8000/health
+heta status
 ```
 
 ## 服务地址
@@ -84,6 +90,17 @@ curl localhost:8000/health
 | http://localhost:8000/docs | REST API（Swagger） |
 | http://localhost:7474 | Neo4j 浏览器 |
 | http://localhost:9001 | MinIO 控制台 |
+
+## CLI 使用流
+
+```bash
+heta insert ./docs --kb research
+heta query "这个项目包含什么？" --kb research
+heta remember "用户喜欢简洁示例"
+heta status
+```
+
+`heta insert` 会把支持的文件上传到 HetaDB，并默认跟踪解析进度。使用 `-b` / `--background` 可让解析在后台继续执行。
 
 ## 停止
 

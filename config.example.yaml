@@ -3,10 +3,10 @@
 # Usage:
 #   1. cp config.example.yaml config.yaml
 #   2. Fill in your API keys in the [providers] section below
-#   3. docker-compose up -d
+#   3. ./scripts/bootstrap.sh
 #
 # ┌─────────────────────────────────────────────────────────────────────────┐
-# │  DOMESTIC-ONLY SETUP (no OpenAI / Gemini needed)                        │
+# │  ZH TEMPLATE STYLE SETUP (no OpenAI / Gemini needed)                     │
 # │  If you only have DashScope + SiliconFlow accounts, replace each        │
 # │  <<: *openai  →  <<: *dashscope                                         │
 # │  <<: *gemini  →  <<: *dashscope                                         │
@@ -27,8 +27,8 @@ providers:
     api_key: "YOUR_SILICONFLOW_API_KEY"
     base_url: "https://api.siliconflow.cn/v1/"
 
-  # ── Optional: international providers ────────────────────────────────────
-  # Remove or leave empty if using domestic APIs only.
+  # ── Optional providers ───────────────────────────────────────────────────
+  # Remove or leave empty if using only DashScope + SiliconFlow.
 
   openai: &openai              # OpenAI — MemoryKB LLM + Embedding
     api_key: "YOUR_OPENAI_API_KEY"

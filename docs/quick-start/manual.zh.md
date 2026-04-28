@@ -24,7 +24,7 @@ cd heta-frontend && npm install && npm run build && cd ..
 
 # 4. 复制并填写配置
 cp config.example.yaml config.yaml
-# 编辑 config.yaml：填写 providers.dashscope.api_key 等
+# 编辑 config.yaml：填写 provider API Key
 ```
 
 ## 运行——统一模式
@@ -32,8 +32,21 @@ cp config.example.yaml config.yaml
 在单一端口上运行所有模块（HetaDB、HetaMem、HetaGen）：
 
 ```bash
-PYTHONPATH=src python src/main.py
+heta serve
 # → http://localhost:8000
+```
+
+`python src/main.py` 仍作为兼容入口保留，但推荐使用 `heta serve`。
+
+## CLI 使用流
+
+统一服务运行后：
+
+```bash
+heta status
+heta insert ./docs --kb research
+heta query "这个项目包含什么？" --kb research
+heta remember "用户喜欢简洁示例"
 ```
 
 ## 运行——独立模式

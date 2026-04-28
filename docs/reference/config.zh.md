@@ -17,13 +17,13 @@ Heta 的配置由两个文件控制：
 
 | 参数 | 是否必填 | 说明 |
 |------|---------|------|
-| `providers.dashscope.api_key` | 必填（国内） | 阿里云 DashScope API Key |
+| `providers.dashscope.api_key` | 按模板需要填写 | 阿里云 DashScope API Key |
 | `providers.dashscope.base_url` | — | DashScope OpenAI 兼容端点（已预填） |
 | `providers.siliconflow.api_key` | 必填 | SiliconFlow API Key（用于向量化） |
 | `providers.siliconflow.base_url` | — | SiliconFlow 端点（已预填） |
-| `providers.openai.api_key` | 必填（国际） | OpenAI API Key |
+| `providers.openai.api_key` | 按模板需要填写 | OpenAI API Key |
 | `providers.openai.base_url` | — | OpenAI 端点（已预填） |
-| `providers.gemini.api_key` | 必填（国际） | Google Gemini API Key |
+| `providers.gemini.api_key` | 按模板需要填写 | Google Gemini API Key |
 | `providers.gemini.base_url` | — | Gemini OpenAI 兼容端点（已预填） |
 
 ---
@@ -134,7 +134,7 @@ Heta 的配置由两个文件控制：
 
 MemoryKB 基于 LightRAG（NanoVectorDB + NetworkX），轻量低延迟。
 
-| 参数 | 默认值 | 国内替代方案 |
+| 参数 | 默认值 | zh 模板替代方案 |
 |------|--------|------------|
 | `hetamem.memorykb.llm.model` | `gpt-4o-mini-2024-07-18` | DashScope `qwen-plus` |
 | `hetamem.memorykb.embedding.model` | `text-embedding-3-small` | DashScope `text-embedding-v4` |
@@ -144,7 +144,7 @@ MemoryKB 基于 LightRAG（NanoVectorDB + NetworkX），轻量低延迟。
 
 MemoryVG 基于 Milvus + Neo4j，用于多轮对话的结构化事实存储。
 
-| 参数 | 默认值 | 国内替代方案 |
+| 参数 | 默认值 | zh 模板替代方案 |
 |------|--------|------------|
 | `hetamem.memoryvg.llm.config.model` | `qwen3-32b` | 同上 |
 | `hetamem.memoryvg.embedder.config.model` | `text-embedding-3-large` | SiliconFlow `BAAI/bge-m3` |
@@ -159,7 +159,7 @@ MemoryVG 基于 Milvus + Neo4j，用于多轮对话的结构化事实存储。
 
 ### `hetagen`
 
-| 参数 | 默认值 | 国内替代方案 |
+| 参数 | 默认值 | zh 模板替代方案 |
 |------|--------|------------|
 | `hetagen.llm.model` | `gemini-3-flash-preview` | DashScope `qwen3-32b` |
 | `hetagen.llm.max_concurrent_requests` | `10` | — |

@@ -61,44 +61,43 @@ Heta is an all-in-one knowledge infrastructure for AI agents. It gives agents a 
 
 ## Quick Start
 
-### Option A — Docker Compose (recommended)
+### Option A — Bootstrap with Docker (recommended)
 
-**Prerequisites:** Docker ≥ 24.0 · Docker Compose ≥ 2.20 · DashScope and SiliconFlow API keys
+**Prerequisites:** Docker ≥ 24.0 · Docker Compose ≥ 2.20 · provider API keys
 
 ```bash
 git clone https://github.com/KnowledgeXLab/Heta.git
 cd Heta
 
-# Chinese API providers (DashScope + SiliconFlow)
-cp config.example.zh.yaml config.yaml
+# Default template
+cp config.example.yaml config.yaml
 
-# International API providers (OpenAI + Gemini)
-# cp config.example.yaml config.yaml
-
-# Processing parameters (chunk, graph, merge thresholds)
-cp db_config.example.yaml src/hetadb/config/db_config.yaml
+# zh template (DashScope + SiliconFlow)
+# cp config.example.zh.yaml config.yaml
 ```
 
 Open `config.yaml` and fill in your API keys:
 
 ```yaml
 providers:
+  gemini:
+    api_key: "YOUR_GEMINI_KEY"       # default template
+
   dashscope:
-    api_key: "YOUR_DASHSCOPE_KEY"    # required
+    api_key: "YOUR_DASHSCOPE_KEY"    # zh template
 
   siliconflow:
-    api_key: "YOUR_SILICONFLOW_KEY"  # required
+    api_key: "YOUR_SILICONFLOW_KEY"  # zh template
 ```
 
 ```bash
-docker-compose up -d
+./scripts/bootstrap.sh
 ```
 
-First run pulls images and builds the stack (~10–20 min). Verify:
+`bootstrap.sh` starts the full stack with Docker Compose. It first pulls published GHCR images; if they are unavailable, it automatically falls back to a local source build.
 
 ```bash
-docker-compose ps           # all services: healthy
-curl localhost:8000/health
+heta status
 ```
 
 | URL | Description |
@@ -112,6 +111,17 @@ curl localhost:8000/health
 ```bash
 docker-compose down         # stop, keep data
 docker-compose down -v      # stop and delete all volumes
+```
+
+### Use the CLI
+
+After the service is running:
+
+```bash
+heta insert ./docs --kb research
+heta query "What does this project contain?" --kb research
+heta remember "The user prefers concise examples"
+heta status
 ```
 
 ---
@@ -139,7 +149,7 @@ pip install -e .
 cd heta-frontend && npm install && npm run build && cd ..
 
 # 3. Run (unified — all modules on one port)
-PYTHONPATH=src python src/main.py          # → http://localhost:8000
+heta serve                                 # → http://localhost:8000
 ```
 
 **Run each module independently:**
@@ -313,8 +323,8 @@ The bundled [querying skill](skills/querying-knowledge-and-memory/SKILL.md) enco
 
 ```
 Heta/
-├── config.example.yaml       # Config template (international: OpenAI / Gemini)
-├── config.example.zh.yaml    # Config template (domestic: DashScope / SiliconFlow)
+├── config.example.yaml       # Default config template
+├── config.example.zh.yaml    # zh config template (DashScope / SiliconFlow)
 ├── docker-compose.yml        # Full-stack deployment
 ├── Dockerfile
 ├── pyproject.toml

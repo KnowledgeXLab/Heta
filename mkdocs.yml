@@ -48,7 +48,7 @@ plugins:
 nav:
   - Home: index.md
   - Quick Start:
-      - Docker Compose: quick-start/docker.md
+      - Bootstrap with Docker: quick-start/docker.md
       - Manual Setup: quick-start/manual.md
       - Connect MCP Clients: quick-start/mcp-clients.md
   - HetaDB:

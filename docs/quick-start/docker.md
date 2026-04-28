@@ -1,6 +1,8 @@
-# Docker Compose
+# Bootstrap with Docker
 
-The recommended way to run Heta. Brings up the full stack — API, web UI, PostgreSQL, Milvus, Neo4j, and MinIO — with a single command.
+The recommended way to run Heta. `bootstrap.sh` brings up the full stack — API, web UI, PostgreSQL, Milvus, Neo4j, and MinIO — with one command.
+
+The script first pulls published GHCR images. If those images are unavailable, it automatically falls back to building backend and frontend images from local source.
 
 ## Prerequisites
 
@@ -10,29 +12,29 @@ The recommended way to run Heta. Brings up the full stack — API, web UI, Postg
 
 ## 1. Clone and copy config
 
-=== "Global"
+=== "Default"
 
     ```bash
-    git clone https://github.com/HetaTeam/Heta.git
+    git clone https://github.com/KnowledgeXLab/Heta.git
     cd Heta
     cp config.example.yaml config.yaml
     ```
 
-=== "China"
+=== "zh"
 
     ```bash
-    git clone https://github.com/HetaTeam/Heta.git
+    git clone https://github.com/KnowledgeXLab/Heta.git
     cd Heta
     cp config.example.zh.yaml config.yaml
     ```
 
 ## 2. Fill in API keys
 
-The `providers` block in `config.yaml` defines service connection details. Modules reference them via YAML anchors (`<<: *provider_name`). The example configs use Alibaba Cloud DashScope and SiliconFlow as defaults, but **any OpenAI-compatible API or self-hosted model works** — just update `api_key`, `base_url`, and the model name for the relevant provider.
+The `providers` block in `config.yaml` defines model provider credentials. Other infrastructure settings are preconfigured for Docker Compose.
 
-=== "Global"
+=== "Default"
 
-    `config.example.yaml` uses four providers. Fill in all API keys — no other changes needed:
+    Fill in the provider keys required by `config.example.yaml`:
 
     ```yaml
     providers:
@@ -46,11 +48,11 @@ The `providers` block in `config.yaml` defines service connection details. Modul
         api_key: "YOUR_GEMINI_API_KEY"
     ```
 
-    Default assignment: DashScope → HetaDB LLM/VLM and MemoryVG LLM; SiliconFlow → HetaDB embedding and HetaGen VLM/embedding; OpenAI → MemoryKB and MemoryVG embedder; Gemini → HetaGen LLM.
+    The CLI judge uses `heta_cli.judge`. By default, this template points it to Gemini.
 
-=== "China"
+=== "zh"
 
-    `config.example.zh.yaml` already points to DashScope and SiliconFlow with Chinese-region models. Just fill in your API keys:
+    `config.example.zh.yaml` already points to DashScope and SiliconFlow. Just fill in your API keys:
 
     ```yaml
     providers:
@@ -64,16 +66,20 @@ The `providers` block in `config.yaml` defines service connection details. Modul
 ## 3. Start
 
 ```bash
-docker-compose up -d
+./scripts/bootstrap.sh
 ```
 
-First run pulls images and builds the stack (~10–20 min).
+Useful options:
+
+```bash
+./scripts/bootstrap.sh --no-open  # do not open the browser
+./scripts/bootstrap.sh --build    # skip GHCR pull and build locally
+```
 
 ## 4. Verify
 
 ```bash
-docker-compose ps           # all services should show: healthy
-curl localhost:8000/health
+heta status
 ```
 
 ## Service URLs
@@ -84,6 +90,17 @@ curl localhost:8000/health
 | http://localhost:8000/docs | REST API (Swagger) |
 | http://localhost:7474 | Neo4j browser |
 | http://localhost:9001 | MinIO console |
+
+## CLI workflow
+
+```bash
+heta insert ./docs --kb research
+heta query "What does this project contain?" --kb research
+heta remember "The user prefers concise examples"
+heta status
+```
+
+`heta insert` uploads supported files into HetaDB and follows parsing progress by default. Use `-b` / `--background` to start parsing and return immediately.
 
 ## Stop
 
