@@ -40,7 +40,7 @@ class CliSettings:
     """Runtime settings shared by CLI commands."""
 
     base_url: str
-    timeout_seconds: float = 30.0
+    timeout_seconds: float = 120.0
     poll_interval_seconds: float = 2.0
 
 
@@ -157,12 +157,29 @@ class HetaClient:
     def __exit__(self, exc_type, exc, tb) -> None:
         self.close()
 
-    def check_health(self) -> dict[str, Any]:
-        return self._request("GET", "/health")
+    def check_health(self, *, timeout: float | None = None) -> dict[str, Any]:
+        return self._request("GET", "/health", timeout=timeout)
 
-    def list_knowledge_bases(self) -> list[dict[str, Any]]:
-        payload = self._request("GET", "/api/v1/hetadb/files/knowledge-bases")
+    def list_knowledge_bases(self, *, timeout: float | None = None) -> list[dict[str, Any]]:
+        payload = self._request("GET", "/api/v1/hetadb/files/knowledge-bases", timeout=timeout)
         return payload.get("data", [])
+
+    def list_processing_tasks(
+        self,
+        *,
+        limit: int = 5,
+        timeout: float | None = None,
+    ) -> list[dict[str, Any]]:
+        payload = self._request(
+            "GET",
+            "/api/v1/hetadb/files/processing/tasks",
+            params={"limit": limit},
+            timeout=timeout,
+        )
+        if isinstance(payload, list):
+            return payload
+        data = payload.get("data", [])
+        return data if isinstance(data, list) else []
 
     def create_knowledge_base(self, name: str) -> dict[str, Any]:
         return self._request("POST", "/api/v1/hetadb/files/knowledge-bases", json={"name": name})
@@ -193,10 +210,17 @@ class HetaClient:
     def get_processing_task(self, task_id: str) -> dict[str, Any]:
         return self._request("GET", f"/api/v1/hetadb/files/processing/tasks/{task_id}")
 
-    def search_memory_vg(self, query: str, *, limit: int = 5) -> list[dict[str, Any]]:
+    def search_memory_vg(
+        self,
+        query: str,
+        *,
+        limit: int = 5,
+        timeout: float | None = None,
+    ) -> list[dict[str, Any]]:
         payload = self._request(
             "POST",
             "/api/v1/hetamem/vg/search",
+            timeout=timeout,
             json={
                 "query": query,
                 "user_id": DEFAULT_AGENT_ID,
@@ -205,6 +229,18 @@ class HetaClient:
             },
         )
         results = payload.get("results", [])
+        return results if isinstance(results, list) else []
+
+    def list_memory_vg(self, *, limit: int = 1, timeout: float | None = None) -> list[dict[str, Any]]:
+        payload = self._request(
+            "GET",
+            "/api/v1/hetamem/vg",
+            params={"user_id": DEFAULT_AGENT_ID, "agent_id": DEFAULT_AGENT_ID, "limit": limit},
+            timeout=timeout,
+        )
+        if isinstance(payload, list):
+            return payload
+        results = payload.get("results", payload.get("data", []))
         return results if isinstance(results, list) else []
 
     def query_memory_kb(self, query: str) -> dict[str, Any]:
@@ -226,9 +262,33 @@ class HetaClient:
             },
         )
 
+    def add_memory_vg(self, text: str) -> dict[str, Any]:
+        return self._request(
+            "POST",
+            "/api/v1/hetamem/vg/add",
+            json={
+                "messages": [{"role": "user", "content": text}],
+                "user_id": DEFAULT_AGENT_ID,
+                "agent_id": DEFAULT_AGENT_ID,
+            },
+        )
+
+    def add_memory_kb(self, text: str) -> dict[str, Any]:
+        return self._request(
+            "POST",
+            "/api/v1/hetamem/kb/insert",
+            data={"query": text},
+        )
+
     def _request(self, method: str, path: str, **kwargs) -> dict[str, Any]:
+        request_timeout = kwargs.get("timeout", self.settings.timeout_seconds)
         try:
             response = self._http.request(method, path, **kwargs)
+        except httpx.TimeoutException as exc:
+            raise HetaCliError(
+                f"{method} {path} timed out after {float(request_timeout):g}s. "
+                "The backend may still be processing; check server logs."
+            ) from exc
         except httpx.HTTPError as exc:
             raise HetaCliError(
                 f"Cannot reach Heta at {self.base_url}. Start it with `heta serve` "
