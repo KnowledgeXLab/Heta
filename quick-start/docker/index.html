@@ -29,7 +29,7 @@
     
     
       
-        <title>Docker Compose - Heta</title>
+        <title>Bootstrap with Docker - Heta</title>
       
     
     
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#docker-compose" class="md-skip">
+        <a href="#bootstrap-with-docker" class="md-skip">
           Skip to content
         </a>
       
@@ -115,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Docker Compose
+              Bootstrap with Docker
             
           </span>
         </div>
@@ -598,7 +598,7 @@
   <span class="md-ellipsis">
     
   
-    Docker Compose
+    Bootstrap with Docker
   
 
     
@@ -616,7 +616,7 @@
   <span class="md-ellipsis">
     
   
-    Docker Compose
+    Bootstrap with Docker
   
 
     
@@ -701,6 +701,17 @@
     <span class="md-ellipsis">
       
         Service URLs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cli-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CLI workflow
       
     </span>
   </a>
@@ -1599,6 +1610,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#cli-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CLI workflow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#stop" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1629,8 +1651,9 @@
   
 
 
-<h1 id="docker-compose">Docker Compose</h1>
-<p>The recommended way to run Heta. Brings up the full stack — API, web UI, PostgreSQL, Milvus, Neo4j, and MinIO — with a single command.</p>
+<h1 id="bootstrap-with-docker">Bootstrap with Docker</h1>
+<p>The recommended way to run Heta. <code>bootstrap.sh</code> brings up the full stack — API, web UI, PostgreSQL, Milvus, Neo4j, and MinIO — with one command.</p>
+<p>The script first pulls published GHCR images. If those images are unavailable, it automatically falls back to building backend and frontend images from local source.</p>
 <h2 id="prerequisites">Prerequisites</h2>
 <ul>
 <li>Docker ≥ 24.0</li>
@@ -1638,16 +1661,16 @@
 <li>At least one LLM provider account</li>
 </ul>
 <h2 id="1-clone-and-copy-config">1. Clone and copy config</h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Global</label><label for="__tabbed_1_2">China</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Default</label><label for="__tabbed_1_2">zh</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/HetaTeam/Heta.git
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/KnowledgeXLab/Heta.git
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">cd</span><span class="w"> </span>Heta
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>cp<span class="w"> </span>config.example.yaml<span class="w"> </span>config.yaml
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/HetaTeam/Heta.git
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/KnowledgeXLab/Heta.git
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">cd</span><span class="w"> </span>Heta
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>cp<span class="w"> </span>config.example.zh.yaml<span class="w"> </span>config.yaml
 </code></pre></div>
@@ -1655,11 +1678,11 @@
 </div>
 </div>
 <h2 id="2-fill-in-api-keys">2. Fill in API keys</h2>
-<p>The <code>providers</code> block in <code>config.yaml</code> defines service connection details. Modules reference them via YAML anchors (<code>&lt;&lt;: *provider_name</code>). The example configs use Alibaba Cloud DashScope and SiliconFlow as defaults, but <strong>any OpenAI-compatible API or self-hosted model works</strong> — just update <code>api_key</code>, <code>base_url</code>, and the model name for the relevant provider.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Global</label><label for="__tabbed_2_2">China</label></div>
+<p>The <code>providers</code> block in <code>config.yaml</code> defines model provider credentials. Other infrastructure settings are preconfigured for Docker Compose.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Default</label><label for="__tabbed_2_2">zh</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<p><code>config.example.yaml</code> uses four providers. Fill in all API keys — no other changes needed:</p>
+<p>Fill in the provider keys required by <code>config.example.yaml</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">providers</span><span class="p">:</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">dashscope</span><span class="p">:</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="nt">api_key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;YOUR_DASHSCOPE_API_KEY&quot;</span>
@@ -1670,10 +1693,10 @@
 <a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">  </span><span class="nt">gemini</span><span class="p">:</span>
 <a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="nt">api_key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;YOUR_GEMINI_API_KEY&quot;</span>
 </code></pre></div>
-<p>Default assignment: DashScope → HetaDB LLM/VLM and MemoryVG LLM; SiliconFlow → HetaDB embedding and HetaGen VLM/embedding; OpenAI → MemoryKB and MemoryVG embedder; Gemini → HetaGen LLM.</p>
+<p>The CLI judge uses <code>heta_cli.judge</code>. By default, this template points it to Gemini.</p>
 </div>
 <div class="tabbed-block">
-<p><code>config.example.zh.yaml</code> already points to DashScope and SiliconFlow with Chinese-region models. Just fill in your API keys:</p>
+<p><code>config.example.zh.yaml</code> already points to DashScope and SiliconFlow. Just fill in your API keys:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">providers</span><span class="p">:</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">dashscope</span><span class="p">:</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="nt">api_key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;YOUR_DASHSCOPE_API_KEY&quot;</span><span class="w">   </span><span class="c1"># https://dashscope.aliyun.com</span>
@@ -1684,12 +1707,14 @@
 </div>
 </div>
 <h2 id="3-start">3. Start</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>docker-compose<span class="w"> </span>up<span class="w"> </span>-d
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>./scripts/bootstrap.sh
 </code></pre></div>
-<p>First run pulls images and builds the stack (~10–20 min).</p>
+<p>Useful options:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>./scripts/bootstrap.sh<span class="w"> </span>--no-open<span class="w">  </span><span class="c1"># do not open the browser</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>./scripts/bootstrap.sh<span class="w"> </span>--build<span class="w">    </span><span class="c1"># skip GHCR pull and build locally</span>
+</code></pre></div>
 <h2 id="4-verify">4. Verify</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>docker-compose<span class="w"> </span>ps<span class="w">           </span><span class="c1"># all services should show: healthy</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>curl<span class="w"> </span>localhost:8000/health
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>heta<span class="w"> </span>status
 </code></pre></div>
 <h2 id="service-urls">Service URLs</h2>
 <table>
@@ -1718,9 +1743,16 @@
 </tr>
 </tbody>
 </table>
+<h2 id="cli-workflow">CLI workflow</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>heta<span class="w"> </span>insert<span class="w"> </span>./docs<span class="w"> </span>--kb<span class="w"> </span>research
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>heta<span class="w"> </span>query<span class="w"> </span><span class="s2">&quot;What does this project contain?&quot;</span><span class="w"> </span>--kb<span class="w"> </span>research
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>heta<span class="w"> </span>remember<span class="w"> </span><span class="s2">&quot;The user prefers concise examples&quot;</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>heta<span class="w"> </span>status
+</code></pre></div>
+<p><code>heta insert</code> uploads supported files into HetaDB and follows parsing progress by default. Use <code>-b</code> / <code>--background</code> to start parsing and return immediately.</p>
 <h2 id="stop">Stop</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>docker-compose<span class="w"> </span>down<span class="w">         </span><span class="c1"># stop, keep data</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>docker-compose<span class="w"> </span>down<span class="w"> </span>-v<span class="w">      </span><span class="c1"># stop and delete all volumes</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>docker-compose<span class="w"> </span>down<span class="w">         </span><span class="c1"># stop, keep data</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>docker-compose<span class="w"> </span>down<span class="w"> </span>-v<span class="w">      </span><span class="c1"># stop and delete all volumes</span>
 </code></pre></div>
 
 

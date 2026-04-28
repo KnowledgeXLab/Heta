@@ -29,7 +29,7 @@
     
     
       
-        <title>Docker Compose - Heta</title>
+        <title>Bootstrap with Docker - Heta</title>
       
     
     
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#docker-compose" class="md-skip">
+        <a href="#docker" class="md-skip">
           跳转至
         </a>
       
@@ -115,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Docker Compose
+              Bootstrap with Docker
             
           </span>
         </div>
@@ -598,7 +598,7 @@
   <span class="md-ellipsis">
     
   
-    Docker Compose
+    Bootstrap with Docker
   
 
     
@@ -616,7 +616,7 @@
   <span class="md-ellipsis">
     
   
-    Docker Compose
+    Bootstrap with Docker
   
 
     
@@ -701,6 +701,17 @@
     <span class="md-ellipsis">
       
         服务地址
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CLI 使用流
       
     </span>
   </a>
@@ -1599,6 +1610,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CLI 使用流
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1629,8 +1651,9 @@
   
 
 
-<h1 id="docker-compose">Docker Compose</h1>
-<p>推荐的 Heta 运行方式。一条命令即可启动完整服务栈——API、Web UI、PostgreSQL、Milvus、Neo4j 和 MinIO。</p>
+<h1 id="docker">Docker 自动部署</h1>
+<p>推荐的 Heta 运行方式。<code>bootstrap.sh</code> 一条命令即可启动完整服务栈——API、Web UI、PostgreSQL、Milvus、Neo4j 和 MinIO。</p>
+<p>脚本会优先拉取已发布的 GHCR 镜像；如果镜像不可用，会自动回退到本地源码构建。</p>
 <h2 id="_1">前提条件</h2>
 <ul>
 <li>Docker ≥ 24.0</li>
@@ -1638,16 +1661,16 @@
 <li>至少一个 LLM 服务商账号</li>
 </ul>
 <h2 id="1">1. 克隆并复制配置</h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">国内（DashScope + SiliconFlow）</label><label for="__tabbed_1_2">国际（OpenAI + Gemini）</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">zh（DashScope + SiliconFlow）</label><label for="__tabbed_1_2">默认模板</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/HetaTeam/Heta.git
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/KnowledgeXLab/Heta.git
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">cd</span><span class="w"> </span>Heta
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>cp<span class="w"> </span>config.example.zh.yaml<span class="w"> </span>config.yaml
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/HetaTeam/Heta.git
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/KnowledgeXLab/Heta.git
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">cd</span><span class="w"> </span>Heta
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>cp<span class="w"> </span>config.example.yaml<span class="w"> </span>config.yaml
 </code></pre></div>
@@ -1655,11 +1678,11 @@
 </div>
 </div>
 <h2 id="2-api-key">2. 填入 API Key</h2>
-<p><code>config.yaml</code> 的 <code>providers</code> 块定义服务商连接信息，各模块通过 YAML anchor（<code>&lt;&lt;: *provider_name</code>）引用。示例配置以阿里云 DashScope 和硅基流动为默认服务商，但<strong>任何兼容 OpenAI 接口的 API 或自部署模型均可替换</strong>——只需修改对应 provider 的 <code>api_key</code>、<code>base_url</code> 和模型名即可。</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">国内（DashScope + SiliconFlow）</label><label for="__tabbed_2_2">国际（全部四个服务商）</label></div>
+<p><code>config.yaml</code> 的 <code>providers</code> 块定义模型服务商凭据。Docker Compose 所需的数据库和对象存储地址已预配置，通常无需修改。</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">zh（DashScope + SiliconFlow）</label><label for="__tabbed_2_2">默认模板</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<p><code>config.example.zh.yaml</code> 已全部指向国内服务商，并配置好对应模型。只需填入 API Key：</p>
+<p><code>config.example.zh.yaml</code> 已指向 DashScope 和 SiliconFlow，并配置好对应模型。只需填入 API Key：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">providers</span><span class="p">:</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">dashscope</span><span class="p">:</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="nt">api_key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;YOUR_DASHSCOPE_API_KEY&quot;</span><span class="w">   </span><span class="c1"># https://dashscope.aliyun.com</span>
@@ -1668,7 +1691,7 @@
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<p><code>config.example.yaml</code> 使用全部四个服务商，填入各 API Key 即可，无需修改模块配置：</p>
+<p>按 <code>config.example.yaml</code> 填入所需服务商 API Key：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">providers</span><span class="p">:</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">dashscope</span><span class="p">:</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="nt">api_key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;YOUR_DASHSCOPE_API_KEY&quot;</span>
@@ -1679,17 +1702,19 @@
 <a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">  </span><span class="nt">gemini</span><span class="p">:</span>
 <a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">    </span><span class="nt">api_key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;YOUR_GEMINI_API_KEY&quot;</span>
 </code></pre></div>
-<p>各服务商默认分工：DashScope → HetaDB LLM/VLM 和 MemoryVG LLM；SiliconFlow → HetaDB 向量化和 HetaGen VLM/向量化；OpenAI → MemoryKB 和 MemoryVG embedder；Gemini → HetaGen LLM。</p>
+<p>CLI 判断模型使用 <code>heta_cli.judge</code>。默认模板指向 Gemini。</p>
 </div>
 </div>
 </div>
 <h2 id="3">3. 启动</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>docker-compose<span class="w"> </span>up<span class="w"> </span>-d
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>./scripts/bootstrap.sh
 </code></pre></div>
-<p>首次运行需拉取镜像并构建（约 10–20 分钟）。</p>
+<p>常用参数：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>./scripts/bootstrap.sh<span class="w"> </span>--no-open<span class="w">  </span><span class="c1"># 不自动打开浏览器</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>./scripts/bootstrap.sh<span class="w"> </span>--build<span class="w">    </span><span class="c1"># 跳过 GHCR 拉取，直接本地构建</span>
+</code></pre></div>
 <h2 id="4">4. 验证</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>docker-compose<span class="w"> </span>ps<span class="w">           </span><span class="c1"># 所有服务状态应为 healthy</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>curl<span class="w"> </span>localhost:8000/health
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>heta<span class="w"> </span>status
 </code></pre></div>
 <h2 id="_2">服务地址</h2>
 <table>
@@ -1718,9 +1743,16 @@
 </tr>
 </tbody>
 </table>
+<h2 id="cli">CLI 使用流</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>heta<span class="w"> </span>insert<span class="w"> </span>./docs<span class="w"> </span>--kb<span class="w"> </span>research
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>heta<span class="w"> </span>query<span class="w"> </span><span class="s2">&quot;这个项目包含什么？&quot;</span><span class="w"> </span>--kb<span class="w"> </span>research
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>heta<span class="w"> </span>remember<span class="w"> </span><span class="s2">&quot;用户喜欢简洁示例&quot;</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>heta<span class="w"> </span>status
+</code></pre></div>
+<p><code>heta insert</code> 会把支持的文件上传到 HetaDB，并默认跟踪解析进度。使用 <code>-b</code> / <code>--background</code> 可让解析在后台继续执行。</p>
 <h2 id="_3">停止</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>docker-compose<span class="w"> </span>down<span class="w">         </span><span class="c1"># 停止，保留数据</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>docker-compose<span class="w"> </span>down<span class="w"> </span>-v<span class="w">      </span><span class="c1"># 停止并删除所有数据卷</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>docker-compose<span class="w"> </span>down<span class="w">         </span><span class="c1"># 停止，保留数据</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>docker-compose<span class="w"> </span>down<span class="w"> </span>-v<span class="w">      </span><span class="c1"># 停止并删除所有数据卷</span>
 </code></pre></div>
 
 
