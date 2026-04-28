@@ -154,6 +154,319 @@ def query(ctx: click.Context, question: str, kb: str | None, source: str) -> Non
     _render_query_result(result)
 
 
+@cli.command("remember")
+@click.argument("text")
+@click.option("--long-term", is_flag=True, help="Store in MemoryKB instead of fast MemoryVG.")
+@click.pass_context
+def remember(ctx: click.Context, text: str, long_term: bool) -> None:
+    """Store a fact in Heta memory."""
+    text = text.strip()
+    if not text:
+        raise HetaCliError("Memory text must not be empty.")
+
+    with _client_from_context(ctx) as client:
+        client.check_health()
+        if long_term:
+            payload = client.add_memory_kb(text)
+            click.echo("Saved to MemoryKB.")
+            click.echo("Indexing will run in the background and may take a few minutes.")
+            if payload.get("id"):
+                click.echo(f"Task: {payload['id']}")
+        else:
+            payload = client.add_memory_vg(text)
+            click.echo("Saved to MemoryVG.")
+            _render_saved_memories(payload)
+
+    click.echo()
+    click.echo("Next:")
+    click.echo(f'  heta query "{_query_hint(text)}" --from memory')
+
+
+@cli.command("status")
+@click.pass_context
+def status(ctx: click.Context) -> None:
+    """Show the current Heta service status."""
+    probe_timeout = 3.0
+
+    with _client_from_context(ctx) as client:
+        health = _probe("Heta API", lambda: client.check_health(timeout=probe_timeout))
+        if not health["ok"]:
+            _render_unavailable_status(client.base_url, health["error"])
+            return
+
+        kb_probe = _probe(
+            "HetaDB",
+            lambda: client.list_knowledge_bases(timeout=probe_timeout),
+        )
+        task_probe = _probe(
+            "Processing tasks",
+            lambda: client.list_processing_tasks(limit=5, timeout=probe_timeout),
+        )
+        vg_probe = _probe(
+            "MemoryVG",
+            lambda: client.list_memory_vg(limit=1, timeout=probe_timeout),
+        )
+
+    _render_status(
+        base_url=ctx.obj["settings"].base_url,
+        health=health["data"],
+        kb_probe=kb_probe,
+        task_probe=task_probe,
+        vg_probe=vg_probe,
+    )
+
+
+def _probe(name: str, fn) -> dict:
+    try:
+        return {"name": name, "ok": True, "data": fn(), "error": None}
+    except HetaCliError as exc:
+        return {"name": name, "ok": False, "data": None, "error": str(exc)}
+
+
+def _render_status(
+    *,
+    base_url: str,
+    health: dict,
+    kb_probe: dict,
+    task_probe: dict,
+    vg_probe: dict,
+) -> None:
+    if _use_rich_output():
+        _render_status_rich(
+            base_url=base_url,
+            health=health,
+            kb_probe=kb_probe,
+            task_probe=task_probe,
+            vg_probe=vg_probe,
+        )
+        return
+
+    mode = health.get("mode")
+    click.echo("Heta: running")
+    click.echo(f"API: {base_url}")
+    if mode:
+        click.echo(f"Mode: {mode}")
+
+    click.echo()
+    click.echo("Modules:")
+    click.echo(f"  HetaDB: {_probe_label(kb_probe)}")
+    click.echo(f"  MemoryVG: {_probe_label(vg_probe)}")
+    click.echo("  MemoryKB: not probed (long-running module)")
+
+    _render_status_kbs(kb_probe)
+    _render_status_tasks(task_probe)
+
+    click.echo()
+    click.echo("Next:")
+    click.echo("  heta insert ./docs --kb research")
+    click.echo('  heta query "..." --kb research')
+    click.echo('  heta remember "..."')
+
+
+def _render_unavailable_status(base_url: str, error: str) -> None:
+    if _use_rich_output():
+        from rich.console import Console, Group
+        from rich.panel import Panel
+        from rich.table import Table
+        from rich.text import Text
+
+        console = Console()
+        table = Table.grid(padding=(0, 2))
+        table.add_column(style="bold")
+        table.add_column()
+        table.add_row("Heta", Text("unavailable", style="red"))
+        table.add_row("API", base_url)
+
+        body = Group(
+            table,
+            Text(""),
+            Text("Error", style="bold"),
+            Text(f"  {error}", style="red"),
+            Text(""),
+            Text("Next", style="bold"),
+            Text("  heta serve"),
+            Text("  ./scripts/bootstrap.sh"),
+        )
+        console.print(Panel(body, title="Heta Status", border_style="red", expand=True))
+        return
+
+    click.echo("Heta: unavailable")
+    click.echo(f"API: {base_url}")
+    click.echo()
+    click.echo("Error:")
+    click.echo(f"  {error}")
+    click.echo()
+    click.echo("Next:")
+    click.echo("  heta serve")
+    click.echo("  ./scripts/bootstrap.sh")
+
+
+def _render_status_rich(
+    *,
+    base_url: str,
+    health: dict,
+    kb_probe: dict,
+    task_probe: dict,
+    vg_probe: dict,
+) -> None:
+    from rich.console import Console, Group
+    from rich.panel import Panel
+    from rich.table import Table
+    from rich.text import Text
+
+    console = Console()
+
+    summary = Table.grid(padding=(0, 2))
+    summary.add_column(style="bold cyan", no_wrap=True)
+    summary.add_column()
+    summary.add_row("Heta", Text("running", style="green"))
+    summary.add_row("API", base_url)
+    if health.get("mode"):
+        summary.add_row("Mode", str(health["mode"]))
+
+    modules = Table.grid(padding=(0, 2))
+    modules.add_column(style="bold")
+    modules.add_column()
+    modules.add_row("HetaDB", _rich_probe_label(kb_probe))
+    modules.add_row("MemoryVG", _rich_probe_label(vg_probe))
+    modules.add_row("MemoryKB", Text("not probed", style="yellow"))
+
+    body = [
+        summary,
+        Text(""),
+        Text("Modules", style="bold"),
+        modules,
+        Text(""),
+        Text("Knowledge Bases", style="bold"),
+        _rich_kb_table(kb_probe),
+        Text(""),
+        Text("Recent Tasks", style="bold"),
+        _rich_task_table(task_probe),
+        Text(""),
+        Text("Next", style="bold"),
+        Text("  heta insert ./docs --kb research"),
+        Text('  heta query "..." --kb research'),
+        Text('  heta remember "..."'),
+    ]
+
+    console.print(Panel(Group(*body), title="Heta Status", border_style="cyan", expand=True))
+
+
+def _rich_probe_label(probe: dict):
+    from rich.text import Text
+
+    if probe["ok"]:
+        return Text("ok", style="green")
+    return Text("unavailable", style="red")
+
+
+def _rich_kb_table(probe: dict):
+    from rich.table import Table
+    from rich.text import Text
+
+    if not probe["ok"]:
+        return Text(f"  unavailable: {probe['error']}", style="red")
+
+    kbs = probe["data"] or []
+    if not kbs:
+        return Text("  none", style="dim")
+
+    table = Table.grid()
+    table.add_column()
+    for kb in kbs[:10]:
+        name = kb.get("name") or kb.get("id") or "unknown"
+        table.add_row(f"  {name}")
+    if len(kbs) > 10:
+        table.add_row(f"  ... {len(kbs) - 10} more")
+    return table
+
+
+def _rich_task_table(probe: dict):
+    from rich.table import Table
+    from rich.text import Text
+
+    if not probe["ok"]:
+        return Text(f"  unavailable: {probe['error']}", style="red")
+
+    tasks = probe["data"] or []
+    if not tasks:
+        return Text("  none", style="dim")
+
+    table = Table.grid(padding=(0, 2))
+    table.add_column(style="bold")
+    table.add_column()
+    table.add_column(style="dim")
+    for task in tasks[:5]:
+        status_value = str(task.get("status") or "unknown")
+        task_id = str(task.get("task_id") or "unknown")
+        message = str(task.get("message") or task.get("error") or "").strip()
+        table.add_row(_rich_task_status(status_value), task_id, message)
+    return table
+
+
+def _rich_task_status(status_value: str):
+    from rich.text import Text
+
+    styles = {
+        "completed": "green",
+        "running": "cyan",
+        "pending": "yellow",
+        "failed": "red",
+        "cancelled": "dim",
+        "cancelling": "yellow",
+    }
+    return Text(status_value, style=styles.get(status_value.lower(), "white"))
+
+
+def _use_rich_output() -> bool:
+    return sys.stdout.isatty()
+
+
+def _probe_label(probe: dict) -> str:
+    if probe["ok"]:
+        return "ok"
+    return "unavailable"
+
+
+def _render_status_kbs(probe: dict) -> None:
+    click.echo()
+    click.echo("Knowledge Bases:")
+    if not probe["ok"]:
+        click.echo(f"  unavailable: {probe['error']}")
+        return
+
+    kbs = probe["data"] or []
+    if not kbs:
+        click.echo("  none")
+        return
+
+    for kb in kbs[:10]:
+        name = kb.get("name") or kb.get("id") or "unknown"
+        click.echo(f"  - {name}")
+    if len(kbs) > 10:
+        click.echo(f"  ... {len(kbs) - 10} more")
+
+
+def _render_status_tasks(probe: dict) -> None:
+    click.echo()
+    click.echo("Recent Tasks:")
+    if not probe["ok"]:
+        click.echo(f"  unavailable: {probe['error']}")
+        return
+
+    tasks = probe["data"] or []
+    if not tasks:
+        click.echo("  none")
+        return
+
+    for task in tasks[:5]:
+        status_value = str(task.get("status") or "unknown")
+        task_id = str(task.get("task_id") or "unknown")
+        message = str(task.get("message") or task.get("error") or "").strip()
+        suffix = f" - {message}" if message else ""
+        click.echo(f"  - {status_value} {task_id}{suffix}")
+
+
 def _query_auto(client: HetaClient, judge: AnswerJudge, question: str, kb: str | None) -> dict:
     path: list[str] = []
     memories = _safe_search_memory_vg(client, question)
@@ -192,13 +505,13 @@ def _query_auto(client: HetaClient, judge: AnswerJudge, question: str, kb: str |
 
 def _query_memory(client: HetaClient, judge: AnswerJudge, question: str) -> dict:
     path: list[str] = []
-    memories = client.search_memory_vg(question, limit=5)
+    memories = _safe_search_memory_vg(client, question)
     path.append("MemoryVG")
 
     if memories and _judge_accepts(judge, question, str(memories[0].get("memory") or "")):
         return _answer_result(memories[0]["memory"], "MemoryVG", path)
 
-    memory_kb = client.query_memory_kb(question)
+    memory_kb = _safe_query_memory_kb(client, question)
     path.append("MemoryKB")
     memory_kb_answer = str(memory_kb.get("final_answer") or "")
     if _judge_accepts(judge, question, memory_kb_answer):
@@ -223,6 +536,26 @@ def _query_kb(client: HetaClient, judge: AnswerJudge, question: str, kb: str) ->
             citations=hetadb.get("citations") or [],
         )
     return _not_found_result(["HetaDB"], tip=f"No answer found in knowledge base: {kb}.")
+
+
+def _render_saved_memories(payload: dict) -> None:
+    results = payload.get("results")
+    if not isinstance(results, list) or not results:
+        return
+    click.echo()
+    click.echo("Memory:")
+    for item in results[:5]:
+        memory = str(item.get("memory") or "").strip()
+        event = str(item.get("event") or "").strip()
+        if memory and event:
+            click.echo(f"  - {event}: {memory}")
+        elif memory:
+            click.echo(f"  - {memory}")
+
+
+def _query_hint(text: str) -> str:
+    text = " ".join(text.split())
+    return text if len(text) <= 40 else text[:37] + "..."
 
 
 def _safe_search_memory_vg(client: HetaClient, question: str) -> list[dict]:
