@@ -80,6 +80,18 @@ heta:
 
 
 # ─────────────────────────────────────────────────────────────────────────
+# Heta CLI — model used by CLI-only orchestration, such as answer judging.
+# Default: Google Gemini
+# ─────────────────────────────────────────────────────────────────────────
+heta_cli:
+  judge:
+    <<: *gemini
+    model: "gemini-3-flash-preview"
+    max_retries: 3
+    timeout: 60
+
+
+# ─────────────────────────────────────────────────────────────────────────
 hetadb:
   title: "HetaDB API"
   version: "0.1.0"
